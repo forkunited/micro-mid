@@ -139,7 +139,7 @@ public class ConstructMID4NewsDocumentSet {
 		
 			if (documentStr.toString().trim().length() > 0) {
 				String[] lines = documentStr.toString().split("\\n");
-				if (lines.length > 4) { // Handle edge case where there are garbage lines at the end
+				if (lines.length > 9) { // Handle edge case where there are garbage lines at the end
 					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
 						if (prevDocument != null) {
 							System.out.println("--------------------------------\n\n\nPrior to failure, the most recent processed document was: " + prevDocument);
