@@ -237,7 +237,7 @@ public class ConstructMID4NewsDocumentSet {
 		
 		DateTimeFormatter partialDateParser2 = DateTimeFormat.forPattern("MMMM yyyy");
 		try {
-			partialDateParser2.parseDateTime(line);
+			partialDateParser2.parseDateTime(line.trim());
 		} catch (Exception e) {
 			return false;
 		}
@@ -295,7 +295,7 @@ public class ConstructMID4NewsDocumentSet {
 			if (dateLine < 0)
 				return false;
 			
-			String date = firstLines[dateLine];
+			String date = firstLines[dateLine].trim();
 			DateTime dateObj = null;
 			try {
 				dateObj = dateParser.parseDateTime(date);
@@ -304,8 +304,6 @@ public class ConstructMID4NewsDocumentSet {
 					dateObj = partialDateParser.parseDateTime(date);
 				} catch (IllegalArgumentException e2) {
 					dateObj = partialDateParser2.parseDateTime(date);
-					System.out.println(date);
-					System.exit(0);
 				}
 			}
 			
