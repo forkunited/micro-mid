@@ -191,21 +191,22 @@ public class ConstructMID4NewsDocumentSet {
 	
 	private static boolean hasFormatWithClassHeader(String text) {
 		String[] lines = text.split("\n");
-		String recentLine = null;
+		
 		for (int i = 0; i < lines.length; i++) {
 			if (lines[i].trim().length() == 0)
 				break;
-			recentLine = lines[i].trim();
+			
+			if (isLineShortDate(lines[i]))
+				return true;
 		}
 
-		if (recentLine == null)
-			return false;
-		
-		String[] dateParts = recentLine.split("/");
-		if (dateParts.length < 3)
-			return false;
-		
-		return StringUtils.isNumeric(dateParts[0]) && StringUtils.isNumeric(dateParts[1]) && StringUtils.isNumeric(dateParts[2]);
+		return false;
+	}
+	
+	private static boolean isLineShortDate(String line) {
+		String[] dateParts = line.trim().split("/");
+		return dateParts.length == 3 
+				&& StringUtils.isNumeric(dateParts[0]) && StringUtils.isNumeric(dateParts[1]) && StringUtils.isNumeric(dateParts[2]);
 	}
 	
 	/*
@@ -214,7 +215,7 @@ public class ConstructMID4NewsDocumentSet {
 	 *  [Lines of garbage]
      *  false|true|cigar
      *  Line of garbage
-     *  MM/DD/YYYY
+     *  MM/DD/YYYY  (actually, this can appear anywhere before an empty line)
      *
      *  Source (e.g. The New York Times)
      *
@@ -245,11 +246,17 @@ public class ConstructMID4NewsDocumentSet {
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MM/dd/yyyy");
 		String documentText = null;
 		try {
-			if (r.readLine() == null || r.readLine() == null) // Read two garbage lines
+			String[] firstLines = readUntilEmptyLine(r).split("\\s+");
+			int dateLine = -1;
+			for (int i = 0; i < firstLines.length; i++) {
+				if (isLineShortDate(firstLines[i]))
+					dateLine = i;
+			}
+			
+			if (dateLine < 0)
 				return false;
 			
-			String[] firstLines = readUntilEmptyLine(r).split("\\s+");			
-			String date = firstLines[firstLines.length - 1];
+			String date = firstLines[dateLine];
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
 					dateParser.parseDateTime(date).toString(dateOutputFormat)));
