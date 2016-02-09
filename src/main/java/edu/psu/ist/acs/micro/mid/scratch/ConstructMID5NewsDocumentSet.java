@@ -53,8 +53,8 @@ public class ConstructMID5NewsDocumentSet {
 		annotationTypes.addAll(dataTools.getAnnotationTypesNLP());
 		annotationTypes.remove(AnnotationTypeNLP.SENTENCE);
 		
-		String unlabeledCollectionName = properties.getMIDNewsUnlabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
-		String labeledCollectionName = properties.getMIDNewsRelevanceLabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
+		String unlabeledCollectionName = properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
+		String labeledCollectionName = properties.getMIDNewsSvmRelevanceLabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
 		
 		Storage<?, Document> storage = properties.getStorage(dataTools, annotationTypes);
 		if (!onlyLabeled && storage.hasCollection(unlabeledCollectionName)) {

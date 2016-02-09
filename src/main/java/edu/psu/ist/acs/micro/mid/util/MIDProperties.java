@@ -31,8 +31,9 @@ public class MIDProperties extends Properties {
 	private String storageFileSystemMicroEventDirPath;
 	private boolean useMongoStorage;
 	
-	private String midNewsUnlabeledDocumentCollectionName;
-	private String midNewsRelevanceLabeledDocumentCollectionName;
+	private String midNewsSvmUnlabeledDocumentCollectionName;
+	private String midNewsSvmRelevanceLabeledDocumentCollectionName;
+	private String midNewsGoldLabeledDocumentCollectionName;
 	
 	private String mid4CollectionName;
 	private String mid4NarrativeDocumentCollectionName;
@@ -49,8 +50,9 @@ public class MIDProperties extends Properties {
 		this.storageFileSystemMicroEventDirPath = loadProperty("storageFileSystemMicroEventDirPath");
 		this.storageMongoMicroEventDatabaseName = loadProperty("storageMongoMicroEventDatabaseName");
 		this.useMongoStorage = Boolean.valueOf(loadProperty("useMongoStorage"));
-		this.midNewsUnlabeledDocumentCollectionName = loadProperty("midNewsUnlabeledDocumentCollectionName");
-		this.midNewsRelevanceLabeledDocumentCollectionName = loadProperty("midNewsRelevanceLabeledDocumentCollectionName");
+		this.midNewsSvmUnlabeledDocumentCollectionName = loadProperty("midNewsSvmUnlabeledDocumentCollectionName");
+		this.midNewsSvmRelevanceLabeledDocumentCollectionName = loadProperty("midNewsSvmRelevanceLabeledDocumentCollectionName");
+		this.midNewsGoldLabeledDocumentCollectionName = loadProperty("midNewsGoldLabeledDocumentCollectionName");
 		this.mid4CollectionName = loadProperty("mid4CollectionName");
 		this.mid4NarrativeDocumentCollectionName = loadProperty("mid4NarrativeDocumentCollectionName");
 	}
@@ -74,12 +76,16 @@ public class MIDProperties extends Properties {
 		}
 	}
 	
-	public String getMIDNewsUnlabeledDocumentCollectionName() {
-		return this.midNewsUnlabeledDocumentCollectionName;
+	public String getMIDNewsSvmUnlabeledDocumentCollectionName() {
+		return this.midNewsSvmUnlabeledDocumentCollectionName;
 	}
 	
-	public String getMIDNewsRelevanceLabeledDocumentCollectionName() {
-		return this.midNewsRelevanceLabeledDocumentCollectionName;
+	public String getMIDNewsSvmRelevanceLabeledDocumentCollectionName() {
+		return this.midNewsSvmRelevanceLabeledDocumentCollectionName;
+	}
+	
+	public String getMIDNewsGoldLabeledDocumentCollectionName() {
+		return this.midNewsGoldLabeledDocumentCollectionName;
 	}
 	
 	public String getMID4CollectionName() {
