@@ -117,15 +117,25 @@ public class ConstructMID4NewsDocumentSet {
 			int id = 0;
 			while ((line = r.readLine()) != null) {
 				String[] lineTokens = line.split("\\s+");
-
+				if (lineTokens.length == 0)
+					continue;
+				
 				if (lineTokens[0].toLowerCase().matches("x+")) {
 					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
 						r.close();
 						System.exit(0);
 					}
+					documentStr = new StringBuilder();
 					id++;
 				} else {
 					documentStr.append(line.trim() + "\n");
+				}
+			}
+			
+			if (documentStr.length() > 0) {
+				if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
+					r.close();
+					System.exit(0);
 				}
 			}
 			
