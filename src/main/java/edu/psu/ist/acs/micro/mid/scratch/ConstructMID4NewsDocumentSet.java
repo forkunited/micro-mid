@@ -304,6 +304,8 @@ public class ConstructMID4NewsDocumentSet {
 					dateObj = partialDateParser.parseDateTime(date);
 				} catch (IllegalArgumentException e2) {
 					dateObj = partialDateParser2.parseDateTime(date);
+					System.out.println(date);
+					System.exit(0);
 				}
 			}
 			
