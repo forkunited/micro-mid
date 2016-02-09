@@ -759,7 +759,7 @@ public class ConstructMID4NewsDocumentSet {
 			if (textLine2 == null)
 				return false;
 			
-			if (junk.startsWith("Cigar report") && textLine.equals("ASIA") && textLine2.startsWith("Car Bomb in Kashmir Kills 8")) {
+			if (junk.startsWith("Cigar report") && textLine.startsWith("ASIA") && textLine2.startsWith("Car Bomb in Kashmir Kills 8")) {
 				r.close();
 				return true;
 			}
@@ -802,7 +802,7 @@ public class ConstructMID4NewsDocumentSet {
 				}
 			
 				documentText = textBuilder.toString();
-			} else if (secondLine.equals("ASIA")) {
+			} else if (secondLine.startsWith("ASIA")) {
 				String title = readUntilNonEmptyLine(r);
 				metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
 
