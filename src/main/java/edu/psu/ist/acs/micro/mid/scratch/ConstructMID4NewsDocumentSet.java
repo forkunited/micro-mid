@@ -572,7 +572,7 @@ public class ConstructMID4NewsDocumentSet {
 			if (line == null)
 				return false;
 			
-			String securityCouncilLine = readUntilNonEmptyLine(r);
+			String securityCouncilLine = readUntilNonEmptyLine(r).trim();
 			if (!securityCouncilLine.equals("Security Council"))
 				return false;
 			
@@ -582,7 +582,7 @@ public class ConstructMID4NewsDocumentSet {
 			if (garbage == null)
 				return false;
 			
-			String[] junkPlusDate = garbage.split("\\s+");
+			String[] junkPlusDate = garbage.trim().split("\\s+");
 			String date = junkPlusDate[junkPlusDate.length - 3] + " " + junkPlusDate[junkPlusDate.length - 2] + " " + junkPlusDate[junkPlusDate.length - 1];
 			
 			metaData.add(
