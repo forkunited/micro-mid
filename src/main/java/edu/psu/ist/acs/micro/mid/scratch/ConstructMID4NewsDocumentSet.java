@@ -576,20 +576,15 @@ public class ConstructMID4NewsDocumentSet {
 			if (!securityCouncilLine.equals("Security Council"))
 				return false;
 			
-			
+			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, "United Nations"));
+
 			String garbage = readUntilNonEmptyLine(r);
 			if (garbage == null)
 				return false;
 			
-			String garbage2 = readUntilNonEmptyLine(r);
-			if (garbage2 == null)
-				return false;
+			String[] junkPlusDate = garbage.split("\\s+");
+			String date = junkPlusDate[junkPlusDate.length - 3] + " " + junkPlusDate[junkPlusDate.length - 2] + " " + junkPlusDate[junkPlusDate.length - 1];
 			
-			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, "United Nations"));
-
-			String date = readUntilNonEmptyLine(r);
-			if (date == null)
-				return false;
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
 					dateParser.parseDateTime(date.trim()).toString(dateOutputFormat)));
