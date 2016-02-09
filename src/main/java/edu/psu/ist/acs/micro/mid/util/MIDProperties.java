@@ -33,7 +33,7 @@ public class MIDProperties extends Properties {
 	
 	private String midNewsSvmUnlabeledDocumentCollectionName;
 	private String midNewsSvmRelevanceLabeledDocumentCollectionName;
-	private String midNewsGoldLabeledDocumentCollectionName;
+	private String midNewsGoldRelevanceLabeledDocumentCollectionName;
 	
 	private String mid4CollectionName;
 	private String mid4NarrativeDocumentCollectionName;
@@ -52,7 +52,7 @@ public class MIDProperties extends Properties {
 		this.useMongoStorage = Boolean.valueOf(loadProperty("useMongoStorage"));
 		this.midNewsSvmUnlabeledDocumentCollectionName = loadProperty("midNewsSvmUnlabeledDocumentCollectionName");
 		this.midNewsSvmRelevanceLabeledDocumentCollectionName = loadProperty("midNewsSvmRelevanceLabeledDocumentCollectionName");
-		this.midNewsGoldLabeledDocumentCollectionName = loadProperty("midNewsGoldLabeledDocumentCollectionName");
+		this.midNewsGoldRelevanceLabeledDocumentCollectionName = loadProperty("midNewsGoldRelevanceLabeledDocumentCollectionName");
 		this.mid4CollectionName = loadProperty("mid4CollectionName");
 		this.mid4NarrativeDocumentCollectionName = loadProperty("mid4NarrativeDocumentCollectionName");
 	}
@@ -84,8 +84,8 @@ public class MIDProperties extends Properties {
 		return this.midNewsSvmRelevanceLabeledDocumentCollectionName;
 	}
 	
-	public String getMIDNewsGoldLabeledDocumentCollectionName() {
-		return this.midNewsGoldLabeledDocumentCollectionName;
+	public String getMIDNewsGoldRelevanceLabeledDocumentCollectionName() {
+		return this.midNewsGoldRelevanceLabeledDocumentCollectionName;
 	}
 	
 	public String getMID4CollectionName() {

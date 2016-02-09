@@ -53,7 +53,7 @@ public class ConstructMID4NewsDocumentSet {
 		annotationTypes.addAll(dataTools.getAnnotationTypesNLP());
 		annotationTypes.remove(AnnotationTypeNLP.SENTENCE);
 		
-		String collectionName = properties.getMIDNewsGoldLabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
+		String collectionName = properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
 	
 		Storage<?, Document> storage = properties.getStorage(dataTools, annotationTypes);
 		if (storage.hasCollection(collectionName)) {
