@@ -332,26 +332,35 @@ public class ConstructMID4NewsDocumentSet {
 	}
 	
 	private static boolean hasFormatNoClassHeader(String text) {
-		String[] lines = text.split("\n");
-		
 		// Hack to check if date of form MMMM dd, yyyy occurs in first 5 lines
-		int numNonEmptyLines = 0;
-		for (int i = 0; i < lines.length; i++) {
-			if (lines[i].length() == 0)
-				continue;
-			
-			numNonEmptyLines++;
-			
-			if (isLineLongDate(lines[i]))
-				return true;
-			
-			if (numNonEmptyLines == 2 && lines[i].startsWith("http://"))
-				return true;
-			
-			
-			if (numNonEmptyLines == 5)
-				break;
-		}
+		BufferedReader r = new BufferedReader(new StringReader(text));
+		
+		String line1 = readUntilNonEmptyLine(r);
+		if (line1 == null)
+			return false;
+		
+		String line2 = readUntilNonEmptyLine(r);
+		if (line2 == null)
+			return false;
+		
+		String line3 = readUntilNonEmptyLine(r);
+		if (line3 == null)
+			return false;
+		
+		if (line2.startsWith("http://") || isLineLongDate(line1) || isLineLongDate(line2) || isLineLongDate(line3))
+			return true;
+		
+		String line4 = readUntilNonEmptyLine(r);
+		if (line4 == null)
+			return false;
+		else if (isLineLongDate(line4))
+			return true;
+		
+		String line5 = readUntilNonEmptyLine(r);
+		if (line5 == null)
+			return false;
+		else if (isLineLongDate(line5))
+			return true;
 		
 		return false; 
 	}
@@ -727,6 +736,7 @@ public class ConstructMID4NewsDocumentSet {
 		return true;
 	}
 	
+	/*
 	private static int countNonEmptyLines(String str) {
 		String[] lines = str.split("\n");
 		int count = 0;
@@ -734,5 +744,5 @@ public class ConstructMID4NewsDocumentSet {
 			if (lines[i].trim().length() > 0)
 				count++;
 		return count;
-	}
+	}*/
 }
