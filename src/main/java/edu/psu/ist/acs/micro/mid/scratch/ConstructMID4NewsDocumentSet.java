@@ -358,6 +358,8 @@ public class ConstructMID4NewsDocumentSet {
 		if (line1 == null)
 			return false;
 		
+		if (line1.startsWith("The Gazette"));
+		
 		String line2 = readUntilNonEmptyLine(r);
 		if (line2 == null)
 			return false;
@@ -474,6 +476,9 @@ public class ConstructMID4NewsDocumentSet {
 					} else if (line2.startsWith("http://")){
 						source = line3;
 						title = line4;
+					} else if (line1.startsWith("The Gazette")) {
+						source = line1;
+						title = line2;
 					}
 				}
 			}
