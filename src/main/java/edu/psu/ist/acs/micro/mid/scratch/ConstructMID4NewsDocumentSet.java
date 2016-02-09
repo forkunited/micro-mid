@@ -345,6 +345,8 @@ public class ConstructMID4NewsDocumentSet {
 		
 		String[] monthDay = lineParts[0].split("\\s+");
 		String year = lineParts[1].trim().split("\\s+")[0];
+		if (year.length() > 4)
+			year = year.substring(0, 4);
 		
 		if (monthDay.length < 2)
 			return false;
@@ -433,7 +435,11 @@ public class ConstructMID4NewsDocumentSet {
 				metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, source));
 
 			String[] dateParts = date.split(",");
-			date = dateParts[0].trim() + ", " + dateParts[1].trim().split("\\s+")[0];
+			String dateMonthDay = dateParts[0].trim();
+			String dateYear = dateParts[1].trim().split("\\s+")[0];
+			if (dateYear.length() > 4)
+				dateYear = dateYear.substring(0, 4);
+			date = dateMonthDay + ", " + dateYear;
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
 					dateParser.parseDateTime(date).toString(dateOutputFormat)));
