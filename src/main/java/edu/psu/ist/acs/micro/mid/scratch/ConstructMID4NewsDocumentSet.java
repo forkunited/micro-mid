@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.bson.Document;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -180,9 +181,9 @@ public class ConstructMID4NewsDocumentSet {
 			if (!processDocumentFormatNoClassHeader(documentName, text, ternaryClass))
 				error = true;
 		} else {
-			System.out.println("/n-----------------------------------------/n/nWARNING: Document from " + sourceFileName + " has unrecognized format: " + text + "/n------------------------------/n/n");
+			System.out.println("\n-----------------------------------------\n\nError: Document from " + sourceFileName + " has unrecognized format: " + text + "\n------------------------------\n\n");
 			badFormatCount++;
-			return true;
+			return false;
 		}
 		
 		if (error) {
@@ -210,8 +211,15 @@ public class ConstructMID4NewsDocumentSet {
 	
 	private static boolean isLineShortDate(String line) {
 		String[] dateParts = line.trim().split("/");
-		return dateParts.length == 3 
-				&& StringUtils.isNumeric(dateParts[0]) && StringUtils.isNumeric(dateParts[1]) && StringUtils.isNumeric(dateParts[2]);
+		return (dateParts.length == 3 
+				&& StringUtils.isNumeric(dateParts[0]) 
+				&& StringUtils.isNumeric(dateParts[1]) 
+				&& StringUtils.isNumeric(dateParts[2]))
+			||
+				(dateParts.length == 2
+				&& StringUtils.isNumeric(dateParts[0]) 
+				&& StringUtils.isNumeric(dateParts[1]) 
+				);
 	}
 	
 	/*
@@ -249,6 +257,8 @@ public class ConstructMID4NewsDocumentSet {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MM/dd/yyyy");
+		DateTimeFormatter partialDateParser = DateTimeFormat.forPattern("MM/yyyy");
+		
 		String documentText = null;
 		try {
 			String[] firstLines = readUntilEmptyLine(r).split("\\s+");
@@ -262,9 +272,14 @@ public class ConstructMID4NewsDocumentSet {
 				return false;
 			
 			String date = firstLines[dateLine];
-			metaData.add(
-					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
-					dateParser.parseDateTime(date).toString(dateOutputFormat)));
+			DateTime dateObj = null;
+			try {
+				dateObj = dateParser.parseDateTime(date);
+			} catch (IllegalArgumentException e) {
+				dateObj = partialDateParser.parseDateTime(date);
+			}
+			
+			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, dateObj.toString(dateOutputFormat)));
 			
 			String source = readUntilNonEmptyLine(r);
 			if (source == null)
@@ -384,9 +399,10 @@ public class ConstructMID4NewsDocumentSet {
 			String date = null;
 			String title = null;
 			
-			if (isLineLongDate(line1)) {
-				System.out.println("WARNING: Date occurred on first line for document " + documentName + ".  Skipping...");
-				return true;
+			if (isLineLongDate(line1) && !isText(line2)) { 
+				// Note: There's a chance that some of the text will be confused for the title in this case
+				date = line1;
+				title = line2;
 			} else if (isLineLongDate(line2)) {
 				source = line1;
 				date = line2;
@@ -413,7 +429,8 @@ public class ConstructMID4NewsDocumentSet {
 				}
 			}
 			
-			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, source));
+			if (source != null)
+				metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, source));
 
 			String[] dateParts = date.split(",");
 			date = dateParts[0].trim() + ", " + dateParts[1].trim().split("\\s+")[0];
