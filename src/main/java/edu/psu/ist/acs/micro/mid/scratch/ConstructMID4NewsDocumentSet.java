@@ -381,7 +381,7 @@ public class ConstructMID4NewsDocumentSet {
 			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, source));
 
 			String[] dateParts = date.split(",");
-			date = dateParts[0] + "," + dateParts[1];
+			date = dateParts[0].trim() + "," + dateParts[1].trim();
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
 					dateParser.parseDateTime(date).toString(dateOutputFormat)));
@@ -485,7 +485,7 @@ public class ConstructMID4NewsDocumentSet {
 				return false;
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
-					dateParser.parseDateTime(date).toString(dateOutputFormat)));
+					dateParser.parseDateTime(date.trim()).toString(dateOutputFormat)));
 			
 			// Multiline title
 			String title = readUntilNonEmptyLine(r);
