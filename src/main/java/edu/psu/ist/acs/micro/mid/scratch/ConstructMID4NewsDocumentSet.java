@@ -190,13 +190,28 @@ public class ConstructMID4NewsDocumentSet {
 	
 	
 	private static boolean hasFormatWithClassHeader(String text) {
-		String lowerText = text.toLowerCase();
-		return lowerText.startsWith("cigar\n") || lowerText.startsWith("true\n") || lowerText.startsWith("false\n");
+		String[] lines = text.split("\n");
+		String recentLine = null;
+		for (int i = 0; i < lines.length; i++) {
+			if (lines[i].trim().length() == 0)
+				break;
+			recentLine = lines[i].trim();
+		}
+
+		if (recentLine == null)
+			return false;
+		
+		String[] dateParts = recentLine.split("/");
+		if (dateParts.length < 3)
+			return false;
+		
+		return StringUtils.isNumeric(dateParts[0]) && StringUtils.isNumeric(dateParts[1]) && StringUtils.isNumeric(dateParts[2]);
 	}
 	
 	/*
 	 * Process document text of format: 
-	 * 
+	 *  
+	 *  [Lines of garbage]
      *  false|true|cigar
      *  Line of garbage
      *  MM/DD/YYYY
