@@ -42,6 +42,7 @@ public class ConstructMID4NewsDocumentSet {
 	private static Collection<AnnotationType<?>> annotationTypes = new ArrayList<AnnotationType<?>>();
 	private static StoredCollection<DocumentNLPMutable, Document> documents;
 	private static PipelineNLP nlpPipeline;
+	private static int badFormatCount = 0;
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
@@ -82,9 +83,12 @@ public class ConstructMID4NewsDocumentSet {
 		for (Pair<File, TernaryRelevanceClass> file : files) {
 			if (!processFile(file.getFirst(), file.getSecond())) {
 				System.out.println("Error: Failed to process file " + file.getFirst() + ". ");
+				System.out.println("Bad format files: " + badFormatCount);
 				System.exit(0);
 			}
 		}
+		
+		System.out.println("Bad format files: " + badFormatCount);
 	}
 	
 	private static List<Pair<File, TernaryRelevanceClass>> getFiles(File inputDir) {
@@ -164,7 +168,7 @@ public class ConstructMID4NewsDocumentSet {
 	private static boolean processDocument(String sourceFileName, String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		if (text.length() == 0)
 			return true;
-			
+		
 		boolean error = false;
 		if (hasFormatWithClassHeader(text)) {
 			if (!processDocumentFormatWithClassHeader(documentName, text, ternaryClass))
@@ -176,8 +180,9 @@ public class ConstructMID4NewsDocumentSet {
 			if (!processDocumentFormatNoClassHeader(documentName, text, ternaryClass))
 				error = true;
 		} else {
-			System.out.println("Document from " + sourceFileName + " has unrecognized format: " + text);
-			return false;
+			System.out.println("/n-----------------------------------------/n/nWARNING: Document from " + sourceFileName + " has unrecognized format: " + text + "/n------------------------------/n/n");
+			badFormatCount++;
+			return true;
 		}
 		
 		if (error) {
