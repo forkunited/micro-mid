@@ -177,6 +177,9 @@ public class ConstructMID4NewsDocumentSet {
 		} else if (hasFormatUnitedNations(text)) {
 			if (!processDocumentFormatUnitedNations(documentName, text, ternaryClass))
 				error = true;
+		} else if (hasFormatUnitedNations2(text)) {
+			if (!processDocumentFormatUnitedNations2(documentName, text, ternaryClass))
+				error = true;
 		} else if (hasFormatNoClassHeader(text)) {
 			if (!processDocumentFormatNoClassHeader(documentName, text, ternaryClass))
 				error = true;
@@ -204,7 +207,7 @@ public class ConstructMID4NewsDocumentSet {
 		if (secondLine != null) {
 			return secondLine.startsWith("http://") && readUntilNonEmptyLine(r) == null;
 		} else {
-			return firstLine.startsWith("http://");
+			return firstLine.startsWith("http://") || firstLine.startsWith("UN Documents");
 		}
 	}
 	
@@ -609,6 +612,109 @@ public class ConstructMID4NewsDocumentSet {
 			
 			// Read text
 			StringBuilder textBuilder = new StringBuilder();
+			while ((line = r.readLine()) != null) {
+				textBuilder.append(line + "\n");
+			}
+		
+			documentText = textBuilder.toString();
+			
+			r.close();
+		} catch (IOException e) {
+			return false;
+		}
+		
+		return constructAndSaveDocumentNLP(documentName, metaData, documentText, ternaryClass);
+	}
+	
+	private static boolean hasFormatUnitedNations2(String text) {
+		BufferedReader r = new BufferedReader(new StringReader(text));
+		
+		String junk = readUntilNonEmptyLine(r);
+		if (junk == null)
+			return false;
+		
+		String dateLine = readUntilNonEmptyLine(r);
+		if (dateLine == null)
+			return false;
+		String[] dateLineParts = dateLine.split("\\s+");
+		if (dateLineParts.length < 3)
+			return false;
+		
+		String dateStr = dateLineParts[dateLineParts.length - 3] + " " + dateLineParts[dateLineParts.length - 2] + " " + dateLineParts[dateLineParts.length - 1];
+		DateTimeFormatter dateParser = DateTimeFormat.forPattern("dd MMMM yyyy");
+		try {
+			dateParser.parseDateTime(dateStr);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+		
+		try {
+			r.close();
+		} catch (IOException e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/*
+	 * Junk line
+	 * 
+	 * Junk [whitespace] MMMM dd yyyy
+	 * 
+	 * Garbagelines
+	 * Garbagelines
+	 * ...
+	 * 
+	 * Title
+	 * 
+	 * Text
+	 * ...
+	 */
+	private static boolean processDocumentFormatUnitedNations2(String documentName, String text, TernaryRelevanceClass ternaryClass) {
+		BufferedReader r = new BufferedReader(new StringReader(text));
+		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
+		DateTimeFormatter dateParser = DateTimeFormat.forPattern("dd MMMM yyyy");
+		String documentText = null;
+		try {
+			String junkLine = readUntilNonEmptyLine(r);
+			if (junkLine == null)
+				return false;
+			
+			String dateLine = readUntilNonEmptyLine(r);
+			if (dateLine == null)
+				return false;
+			String[] dateLineParts = dateLine.split("\\s+");
+			if (dateLineParts.length < 3)
+				return false;
+			
+			String dateStr = dateLineParts[dateLineParts.length - 3] + " " + dateLineParts[dateLineParts.length - 2] + " " + dateLineParts[dateLineParts.length - 1];
+			try {
+				metaData.add(
+						new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
+						dateParser.parseDateTime(dateStr).toString(dateOutputFormat)));
+			} catch (IllegalArgumentException e) {
+				return false;
+			}
+			
+			
+			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, "United Nations"));
+
+			String garbage = readUntilNonEmptyLine(r);
+			if (garbage == null)
+				return false;
+			
+			
+			// Multiline title
+			String title = readUntilNonEmptyLine(r);
+			if (title == null)
+				return false;
+			
+			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
+			
+			// Read text
+			StringBuilder textBuilder = new StringBuilder();
+			String line = null;
 			while ((line = r.readLine()) != null) {
 				textBuilder.append(line + "\n");
 			}
