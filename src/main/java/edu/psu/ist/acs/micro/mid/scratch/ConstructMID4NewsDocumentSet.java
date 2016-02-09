@@ -122,7 +122,7 @@ public class ConstructMID4NewsDocumentSet {
 				if (lineTokens.length > 0 && lineTokens[0].toLowerCase().matches("x+")) {
 					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
 						if (prevDocument != null) {
-							System.out.println("Prior to failure, the most recent processed document was: " + prevDocument);
+							System.out.println("--------------------------------\n\n\nPrior to failure, the most recent processed document was: " + prevDocument);
 						}
 						
 						r.close();
@@ -142,7 +142,7 @@ public class ConstructMID4NewsDocumentSet {
 				if (lines.length > 4) { // Handle edge case where there are garbage lines at the end
 					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
 						if (prevDocument != null) {
-							System.out.println("Prior to failure, the most recent processed document was: " + prevDocument);
+							System.out.println("--------------------------------\n\n\nPrior to failure, the most recent processed document was: " + prevDocument);
 						}
 						
 						r.close();
@@ -313,7 +313,7 @@ public class ConstructMID4NewsDocumentSet {
 	 * 
 	 * Source 
 	 * 
-	 * MMM DD, YYYY, [...] (date line)  (or Title (can be reverse order))
+	 * MMM DD, YYYY[, [...]] (date line)  (or Title (can be reverse order))
 	 * 
 	 * Title (or Date (can be reverse order))
 	 * 
@@ -381,7 +381,7 @@ public class ConstructMID4NewsDocumentSet {
 			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, source));
 
 			String[] dateParts = date.split(",");
-			date = dateParts[0].trim() + ", " + dateParts[1].trim();
+			date = dateParts[0].trim() + ", " + dateParts[1].split("\\s+")[0].trim();
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
 					dateParser.parseDateTime(date).toString(dateOutputFormat)));
