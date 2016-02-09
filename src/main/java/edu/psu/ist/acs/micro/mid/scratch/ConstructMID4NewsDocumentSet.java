@@ -286,18 +286,20 @@ public class ConstructMID4NewsDocumentSet {
 		String documentText = null;
 		try {
 			String[] firstLines = readUntilEmptyLine(r).split("\\s+");
-			int dateLine = -1;
+			String date = null;
 			for (int i = 0; i < firstLines.length; i++) {
-				if (isLineShortDate(firstLines[i])
-						|| (i < firstLines.length - 1 && isLineShortDate(firstLines[i] + " " + firstLines[i + 1])))
-					dateLine = i;
+				if (isLineShortDate(firstLines[i])) {
+					date = firstLines[i];
+				} else if (i < firstLines.length - 1 && isLineShortDate(firstLines[i] + " " + firstLines[i + 1])) {
+					date = firstLines[i] + " " + firstLines[i + 1];
+				}
 			}
 			
-			if (dateLine < 0) {
+			if (date == null) {
 				return false;
 			}
 			
-			String date = firstLines[dateLine].trim();
+			date = date.trim();
 			DateTime dateObj = null;
 			try {
 				dateObj = dateParser.parseDateTime(date);
