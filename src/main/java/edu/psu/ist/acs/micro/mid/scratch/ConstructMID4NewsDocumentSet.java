@@ -125,8 +125,7 @@ public class ConstructMID4NewsDocumentSet {
 				String[] lineTokens = line.split("\\s+");
 				
 				if (lineTokens.length > 0 && 
-						(lineTokens[0].toLowerCase().matches("xx+.*")
-								|| lineTokens[0].toLowerCase().matches("xx+.*"))) {
+						(lineTokens[0].toLowerCase().matches("xx+.*"))) {
 					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
 						if (prevDocument != null) {
 							System.out.println("--------------------------------\n\n\nPrior to failure, the most recent processed document was: " + prevDocument);
@@ -853,8 +852,11 @@ public class ConstructMID4NewsDocumentSet {
 			return false;
 		
 		String[] lineTokens = line.split("\\s+");
-		if (lineTokens[0].endsWith(":"))
-			return line.length() > 70;
+		if (lineTokens[0].endsWith(":")) {
+			if (!lineTokens[0].toUpperCase().equals(lineTokens[0]) || line.length() > 100)
+				return true;
+		}
+		
 		return true;
 	}
 	
