@@ -754,6 +754,15 @@ public class ConstructMID4NewsDocumentSet {
 				r.close();
 				return true;
 			}
+			
+			String textLine2 = readUntilNonEmptyLine(r);
+			if (textLine2 == null)
+				return false;
+			
+			if (junk.startsWith("Cigar report") && textLine.equals("ASIA") && textLine2.startsWith("Car Bomb in Kashmir Kills 8")) {
+				r.close();
+				return true;
+			}
 		
 			r.close();
 		} catch (IOException e) {
@@ -780,15 +789,32 @@ public class ConstructMID4NewsDocumentSet {
 			if (junkLine == null)
 				return false;
 			
-			// Read text
-			StringBuilder textBuilder = new StringBuilder();
-			String line = null;
-			while ((line = r.readLine()) != null) {
-				textBuilder.append(line + "\n");
-			}
-		
-			documentText = textBuilder.toString();
+			String secondLine = readUntilNonEmptyLine(r);
+			if (secondLine == null)
+				return false;
 			
+			if (secondLine.startsWith("CONDEMNING the nuclear tests")) {
+				// Read text
+				StringBuilder textBuilder = new StringBuilder();
+				String line = null;
+				while ((line = r.readLine()) != null) {
+					textBuilder.append(line + "\n");
+				}
+			
+				documentText = textBuilder.toString();
+			} else if (secondLine.equals("ASIA")) {
+				String title = readUntilNonEmptyLine(r);
+				metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
+
+				// Read text
+				StringBuilder textBuilder = new StringBuilder();
+				String line = null;
+				while ((line = r.readLine()) != null) {
+					textBuilder.append(line + "\n");
+				}
+			
+				documentText = textBuilder.toString();
+			}
 			
 			r.close();
 		} catch (IOException e) {
