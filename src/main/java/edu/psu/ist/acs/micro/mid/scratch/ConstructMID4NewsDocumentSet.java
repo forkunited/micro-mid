@@ -358,7 +358,8 @@ public class ConstructMID4NewsDocumentSet {
 		if (line1 == null)
 			return false;
 		
-		if (line1.startsWith("The Gazette"));
+		if (line1.startsWith("The Gazette"))
+			return true;
 		
 		String line2 = readUntilNonEmptyLine(r);
 		if (line2 == null)
