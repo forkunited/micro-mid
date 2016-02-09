@@ -292,17 +292,20 @@ public class ConstructMID4NewsDocumentSet {
 					dateLine = i;
 			}
 			
-			if (dateLine < 0)
-				return false;
+			if (dateLine < 0) {
+				System.out.println("BANG");
+				System.exit(0);
+				//return false;
+			}
 			
 			String date = firstLines[dateLine].trim();
 			DateTime dateObj = null;
 			try {
 				dateObj = dateParser.parseDateTime(date);
-			} catch (IllegalArgumentException e) {
+			} catch (Exception e) {
 				try {
 					dateObj = partialDateParser.parseDateTime(date);
-				} catch (IllegalArgumentException e2) {
+				} catch (Exception e2) {
 					dateObj = partialDateParser2.parseDateTime(date);
 				}
 			}
