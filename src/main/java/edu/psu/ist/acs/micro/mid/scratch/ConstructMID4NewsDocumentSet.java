@@ -641,7 +641,7 @@ public class ConstructMID4NewsDocumentSet {
 			return false;
 		
 		String dateStr = dateLineParts[dateLineParts.length - 3] + " " + dateLineParts[dateLineParts.length - 2] + " " + dateLineParts[dateLineParts.length - 1];
-		DateTimeFormatter dateParser = DateTimeFormat.forPattern("dd MMMM yyyy");
+		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MMMM dd yyyy");
 		try {
 			dateParser.parseDateTime(dateStr);
 		} catch (IllegalArgumentException e) {
@@ -674,7 +674,7 @@ public class ConstructMID4NewsDocumentSet {
 	private static boolean processDocumentFormatUnitedNations2(String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
-		DateTimeFormatter dateParser = DateTimeFormat.forPattern("dd MMMM yyyy");
+		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MMMM dd yyyy");
 		String documentText = null;
 		try {
 			String junkLine = readUntilNonEmptyLine(r);
