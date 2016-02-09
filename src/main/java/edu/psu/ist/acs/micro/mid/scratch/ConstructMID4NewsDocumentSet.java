@@ -114,15 +114,21 @@ public class ConstructMID4NewsDocumentSet {
 		try {
 			String line = null;
 			StringBuilder documentStr = new StringBuilder();
+			String prevDocument = null;
 			int id = 0;
 			while ((line = r.readLine()) != null) {
 				String[] lineTokens = line.split("\\s+");
 				
 				if (lineTokens.length > 0 && lineTokens[0].toLowerCase().matches("x+")) {
 					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
+						if (prevDocument != null) {
+							System.out.println("Prior to failure, the most recent processed document was: " + prevDocument);
+						}
+						
 						r.close();
 						System.exit(0);
 					}
+					prevDocument = documentStr.toString();
 					documentStr = new StringBuilder();
 					id++;
 				} else {
@@ -133,6 +139,10 @@ public class ConstructMID4NewsDocumentSet {
 		
 			if (documentStr.toString().trim().length() > 0) {
 				if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
+					if (prevDocument != null) {
+						System.out.println("Prior to failure, the most recent processed document was: " + prevDocument);
+					}
+					
 					r.close();
 					System.exit(0);
 				}
