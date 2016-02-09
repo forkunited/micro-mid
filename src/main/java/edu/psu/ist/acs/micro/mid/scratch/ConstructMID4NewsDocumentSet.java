@@ -248,7 +248,8 @@ public class ConstructMID4NewsDocumentSet {
 			if (r.readLine() == null || r.readLine() == null) // Read two garbage lines
 				return false;
 			
-			String date = r.readLine();
+			String[] firstLines = readUntilEmptyLine(r).split("\\s+");			
+			String date = firstLines[firstLines.length - 1];
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
 					dateParser.parseDateTime(date).toString(dateOutputFormat)));
