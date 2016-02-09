@@ -603,11 +603,11 @@ public class ConstructMID4NewsDocumentSet {
 				else
 					return textLines.toString();
 			}
+			
+			return textLines.toString();
 		} catch (IOException e) {
 			return null;
 		}
-		
-		return null;
 	}
 	
 	private static boolean constructAndSaveDocumentNLP(String name, List<Pair<AnnotationTypeNLP<String>, String>> metaData, String text, TernaryRelevanceClass ternaryClass) {
