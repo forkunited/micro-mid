@@ -288,14 +288,13 @@ public class ConstructMID4NewsDocumentSet {
 			String[] firstLines = readUntilEmptyLine(r).split("\\s+");
 			int dateLine = -1;
 			for (int i = 0; i < firstLines.length; i++) {
-				if (isLineShortDate(firstLines[i]))
+				if (isLineShortDate(firstLines[i])
+						|| (i < firstLines.length - 1 && isLineShortDate(firstLines[i] + " " + firstLines[i + 1])))
 					dateLine = i;
 			}
 			
 			if (dateLine < 0) {
-				System.out.println("BANG");
-				System.exit(0);
-				//return false;
+				return false;
 			}
 			
 			String date = firstLines[dateLine].trim();
