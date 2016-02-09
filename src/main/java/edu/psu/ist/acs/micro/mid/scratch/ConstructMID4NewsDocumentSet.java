@@ -327,10 +327,15 @@ public class ConstructMID4NewsDocumentSet {
 			if (lines[i].length() == 0)
 				continue;
 			
+			numNonEmptyLines++;
+			
 			if (isLineLongDate(lines[i]))
 				return true;
 			
-			numNonEmptyLines++;
+			if (numNonEmptyLines == 2 && lines[i].startsWith("http://"))
+				return true;
+			
+			
 			if (numNonEmptyLines == 5)
 				break;
 		}
@@ -361,7 +366,7 @@ public class ConstructMID4NewsDocumentSet {
 	 * 
 	 * Source 
 	 * 
-	 * MMM DD, YYYY[, [...]] (date line)  (or Title (can be reverse order))
+	 * MMM DD, YYYY[, [...]] (date line)  (or Title (can be reverse order)) (or date can be missing)
 	 * 
 	 * Title (or Date (can be reverse order))
 	 * 
@@ -401,7 +406,7 @@ public class ConstructMID4NewsDocumentSet {
 			String date = null;
 			String title = null;
 			
-			if (isLineLongDate(line1) && !isText(line2)) { 
+			if (isLineLongDate(line1)) { 
 				// Note: There's a chance that some of the text will be confused for the title in this case
 				date = line1;
 				title = line2;
@@ -425,8 +430,9 @@ public class ConstructMID4NewsDocumentSet {
 						source = line3;
 						title = line4;
 						date = line5;
-					} else {
-						return false;
+					} else if (line2.startsWith("http://")){
+						source = line3;
+						title = line4;
 					}
 				}
 			}
@@ -434,15 +440,17 @@ public class ConstructMID4NewsDocumentSet {
 			if (source != null)
 				metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, source));
 
-			String[] dateParts = date.split(",");
-			String dateMonthDay = dateParts[0].trim();
-			String dateYear = dateParts[1].trim().split("\\s+")[0];
-			if (dateYear.length() > 4)
-				dateYear = dateYear.substring(0, 4);
-			date = dateMonthDay + ", " + dateYear;
-			metaData.add(
-					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
-					dateParser.parseDateTime(date).toString(dateOutputFormat)));
+			if (date != null) {
+				String[] dateParts = date.split(",");
+				String dateMonthDay = dateParts[0].trim();
+				String dateYear = dateParts[1].trim().split("\\s+")[0];
+				if (dateYear.length() > 4)
+					dateYear = dateYear.substring(0, 4);
+				date = dateMonthDay + ", " + dateYear;
+				metaData.add(
+						new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
+						dateParser.parseDateTime(date).toString(dateOutputFormat)));
+			}
 			
 			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
 			
