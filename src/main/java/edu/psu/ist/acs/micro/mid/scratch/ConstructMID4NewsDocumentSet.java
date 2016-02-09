@@ -224,7 +224,7 @@ public class ConstructMID4NewsDocumentSet {
 	
 	private static boolean isLineShortDate(String line) {
 		String[] dateParts = line.trim().split("/");
-		return (dateParts.length == 3 
+		if ((dateParts.length == 3 
 				&& StringUtils.isNumeric(dateParts[0]) 
 				&& StringUtils.isNumeric(dateParts[1]) 
 				&& StringUtils.isNumeric(dateParts[2]))
@@ -232,7 +232,17 @@ public class ConstructMID4NewsDocumentSet {
 				(dateParts.length == 2
 				&& StringUtils.isNumeric(dateParts[0]) 
 				&& StringUtils.isNumeric(dateParts[1]) 
-				);
+				))
+			return true;
+		
+		DateTimeFormatter partialDateParser2 = DateTimeFormat.forPattern("MMMM yyyy");
+		try {
+			partialDateParser2.parseDateTime(line);
+		} catch (Exception e) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/*
@@ -271,6 +281,7 @@ public class ConstructMID4NewsDocumentSet {
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MM/dd/yyyy");
 		DateTimeFormatter partialDateParser = DateTimeFormat.forPattern("MM/yyyy");
+		DateTimeFormatter partialDateParser2 = DateTimeFormat.forPattern("MMMM yyyy");
 		
 		String documentText = null;
 		try {
@@ -289,7 +300,11 @@ public class ConstructMID4NewsDocumentSet {
 			try {
 				dateObj = dateParser.parseDateTime(date);
 			} catch (IllegalArgumentException e) {
-				dateObj = partialDateParser.parseDateTime(date);
+				try {
+					dateObj = partialDateParser.parseDateTime(date);
+				} catch (IllegalArgumentException e2) {
+					dateObj = partialDateParser2.parseDateTime(date);
+				}
 			}
 			
 			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, dateObj.toString(dateOutputFormat)));
