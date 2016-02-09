@@ -381,7 +381,7 @@ public class ConstructMID4NewsDocumentSet {
 			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_SOURCE, source));
 
 			String[] dateParts = date.split(",");
-			date = dateParts[0].trim() + ", " + dateParts[1].split("\\s+")[0].trim();
+			date = dateParts[0].trim() + ", " + dateParts[1].trim().split("\\s+")[0];
 			metaData.add(
 					new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
 					dateParser.parseDateTime(date).toString(dateOutputFormat)));
