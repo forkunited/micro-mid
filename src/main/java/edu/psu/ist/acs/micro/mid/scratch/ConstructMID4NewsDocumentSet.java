@@ -126,7 +126,7 @@ public class ConstructMID4NewsDocumentSet {
 				
 				if (lineTokens.length > 0 && 
 						(lineTokens[0].toLowerCase().matches("x+")
-								|| lineTokens[0].toLowerCase().matches("x+.+x+"))) {
+								|| lineTokens[0].toLowerCase().matches("xxx+.+"))) {
 					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
 						if (prevDocument != null) {
 							System.out.println("--------------------------------\n\n\nPrior to failure, the most recent processed document was: " + prevDocument);
