@@ -167,7 +167,7 @@ public class ConstructMID4NewsDocumentSet {
 	}
 	
 	private static boolean processDocument(String sourceFileName, String documentName, String text, TernaryRelevanceClass ternaryClass) {
-		if (text.length() == 0 || countNonEmptyLines(text) <= 2)
+		if (text.length() == 0 || (hasBadFormat(text)))
 			return true;
 		
 		boolean error = false;
@@ -194,6 +194,19 @@ public class ConstructMID4NewsDocumentSet {
 		}
 	}
 	
+	private static boolean hasBadFormat(String text) {
+		BufferedReader r = new BufferedReader(new StringReader(text));
+		
+		String firstLine = readUntilNonEmptyLine(r);
+		if (firstLine == null)
+			return true;
+		String secondLine = readUntilNonEmptyLine(r);
+		if (secondLine != null) {
+			return secondLine.startsWith("http://") && readUntilNonEmptyLine(r) == null;
+		}
+		
+		return false;
+	}
 	
 	private static boolean hasFormatWithClassHeader(String text) {
 		String[] lines = text.split("\n");
