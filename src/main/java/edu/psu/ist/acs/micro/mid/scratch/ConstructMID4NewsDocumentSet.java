@@ -368,7 +368,11 @@ public class ConstructMID4NewsDocumentSet {
 			String source = null;
 			String date = null;
 			String title = null;
-			if (isLineLongDate(line2)) {
+			
+			if (isLineLongDate(line1)) {
+				System.out.println("WARNING: Date occurred on first line for document " + documentName + ".  Skipping...");
+				return true;
+			} else if (isLineLongDate(line2)) {
 				source = line1;
 				date = line2;
 				title = line3;
