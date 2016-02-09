@@ -375,6 +375,9 @@ public class ConstructMID4NewsDocumentSet {
 		if (line3 == null)
 			return false;
 		
+		if (line2.startsWith("2000 Summer") && line3.startsWith("New Delhi's"))
+			return true;
+		
 		if (line2.startsWith("http://") || isLineLongDate(line1) || isLineLongDate(line2) || isLineLongDate(line3))
 			return true;
 		
@@ -486,6 +489,9 @@ public class ConstructMID4NewsDocumentSet {
 					} else if (line1.startsWith("The Gazette")) {
 						source = line1;
 						title = line2;
+					} else if (line2.equals("2000 Summer")) {
+						source = line1;
+						title = line3;
 					}
 				}
 			}
