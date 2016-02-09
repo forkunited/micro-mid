@@ -138,13 +138,16 @@ public class ConstructMID4NewsDocumentSet {
 			
 		
 			if (documentStr.toString().trim().length() > 0) {
-				if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
-					if (prevDocument != null) {
-						System.out.println("Prior to failure, the most recent processed document was: " + prevDocument);
+				String[] lines = documentStr.toString().split("\\n");
+				if (lines.length > 4) { // Handle edge case where there are garbage lines at the end
+					if (!processDocument(file.getName(), file.getName() + "." + id, documentStr.toString().trim(), ternaryClass)) {
+						if (prevDocument != null) {
+							System.out.println("Prior to failure, the most recent processed document was: " + prevDocument);
+						}
+						
+						r.close();
+						System.exit(0);
 					}
-					
-					r.close();
-					System.exit(0);
 				}
 			}
 			
