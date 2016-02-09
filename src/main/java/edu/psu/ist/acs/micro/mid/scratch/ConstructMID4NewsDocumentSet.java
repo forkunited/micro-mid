@@ -301,7 +301,7 @@ public class ConstructMID4NewsDocumentSet {
 			return false;
 		
 		String[] monthDay = lineParts[0].split("\\s+");
-		String year = lineParts[1].trim();
+		String year = lineParts[1].trim().split("\\s+")[0];
 		
 		return StringUtils.isNumeric(year) && StringUtils.isNumeric(monthDay[1]);
 	}
