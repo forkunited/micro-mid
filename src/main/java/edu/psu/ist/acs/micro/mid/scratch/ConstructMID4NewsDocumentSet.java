@@ -101,10 +101,10 @@ public class ConstructMID4NewsDocumentSet {
 			String fileNameLwr = file.getName().toLowerCase();
 			if (fileNameLwr.contains("false")) {
 				retFiles.add(new Pair<File, TernaryRelevanceClass>(file, TernaryRelevanceClass.FALSE));
-			} else if (fileNameLwr.contains("true")) {
-				retFiles.add(new Pair<File, TernaryRelevanceClass>(file, TernaryRelevanceClass.TRUE));
 			} else if (fileNameLwr.contains("cigar")) {
 				retFiles.add(new Pair<File, TernaryRelevanceClass>(file, TernaryRelevanceClass.CIGAR));
+			} else {
+				retFiles.add(new Pair<File, TernaryRelevanceClass>(file, TernaryRelevanceClass.TRUE));
 			}
 		}
 	
