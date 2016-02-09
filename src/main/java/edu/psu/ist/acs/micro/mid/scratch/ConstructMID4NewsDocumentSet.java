@@ -183,6 +183,9 @@ public class ConstructMID4NewsDocumentSet {
 		} else if (hasFormatNoClassHeader(text)) {
 			if (!processDocumentFormatNoClassHeader(documentName, text, ternaryClass))
 				error = true;
+		} else if (hasFormatEdgeCases(text)) {
+			if (!processDocumentFormatEdgeCases(documentName, text, ternaryClass))
+				error = true;
 		} else {
 			System.out.println("\n-----------------------------------------\n\nError: Document from " + sourceFileName + " has unrecognized format: " + text + "\n------------------------------\n\n");
 			badFormatCount++;
@@ -726,6 +729,66 @@ public class ConstructMID4NewsDocumentSet {
 			} else {
 				documentText = garbage + "\n\n" + textBuilder.toString();
 			}
+			
+			r.close();
+		} catch (IOException e) {
+			return false;
+		}
+		
+		return constructAndSaveDocumentNLP(documentName, metaData, documentText, ternaryClass);
+	}
+	
+	private static boolean hasFormatEdgeCases(String text) {
+		BufferedReader r = new BufferedReader(new StringReader(text));
+		
+		try {
+			String junk = readUntilNonEmptyLine(r);
+			if (junk == null)
+				return false;
+			
+			String textLine = readUntilNonEmptyLine(r);
+			if (textLine == null)
+				return false;
+		
+			if (junk.startsWith("Cigar report") && textLine.startsWith("CONDEMNING the nuclear tests")) {
+				r.close();
+				return true;
+			}
+		
+			r.close();
+		} catch (IOException e) {
+			return false;
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * Cigar report
+	 * ...
+	 * 
+	 * CONDEMNING the nuclear tests
+	 * 
+	 */
+	private static boolean processDocumentFormatEdgeCases(String documentName, String text, TernaryRelevanceClass ternaryClass) {
+		BufferedReader r = new BufferedReader(new StringReader(text));
+		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
+
+		String documentText = null;
+		try {
+			String junkLine = readUntilNonEmptyLine(r);
+			if (junkLine == null)
+				return false;
+			
+			// Read text
+			StringBuilder textBuilder = new StringBuilder();
+			String line = null;
+			while ((line = r.readLine()) != null) {
+				textBuilder.append(line + "\n");
+			}
+		
+			documentText = textBuilder.toString();
+			
 			
 			r.close();
 		} catch (IOException e) {
