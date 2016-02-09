@@ -637,10 +637,10 @@ public class ConstructMID4NewsDocumentSet {
 		if (dateLine == null)
 			return false;
 		String[] dateLineParts = dateLine.split("\\s+");
-		if (dateLineParts.length < 3)
+		if (dateLineParts.length < 4)
 			return false;
 		
-		String dateStr = dateLineParts[dateLineParts.length - 3] + " " + dateLineParts[dateLineParts.length - 2] + " " + dateLineParts[dateLineParts.length - 1];
+		String dateStr = dateLineParts[1] + " " + dateLineParts[2] + " " + dateLineParts[3];
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MMMM dd yyyy");
 		try {
 			dateParser.parseDateTime(dateStr);
@@ -686,10 +686,10 @@ public class ConstructMID4NewsDocumentSet {
 			if (dateLine == null)
 				return false;
 			String[] dateLineParts = dateLine.split("\\s+");
-			if (dateLineParts.length < 3)
+			if (dateLineParts.length < 4)
 				return false;
 			
-			String dateStr = dateLineParts[dateLineParts.length - 3] + " " + dateLineParts[dateLineParts.length - 2] + " " + dateLineParts[dateLineParts.length - 1];
+			String dateStr = dateLineParts[1] + " " + dateLineParts[2] + " " + dateLineParts[3];
 			try {
 				metaData.add(
 						new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_PUBLICATION_DATE, 
