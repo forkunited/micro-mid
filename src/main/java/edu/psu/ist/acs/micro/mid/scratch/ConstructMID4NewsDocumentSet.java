@@ -319,6 +319,9 @@ public class ConstructMID4NewsDocumentSet {
 		String[] monthDay = lineParts[0].split("\\s+");
 		String year = lineParts[1].trim().split("\\s+")[0];
 		
+		if (monthDay.length < 2)
+			return false;
+		
 		return StringUtils.isNumeric(year) && StringUtils.isNumeric(monthDay[1]);
 	}
 	
