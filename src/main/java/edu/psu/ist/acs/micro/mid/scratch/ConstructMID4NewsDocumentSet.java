@@ -662,11 +662,12 @@ public class ConstructMID4NewsDocumentSet {
 	 * 
 	 * Junk [whitespace] MMMM dd yyyy
 	 * 
+	 * [
 	 * Garbagelines
 	 * Garbagelines
-	 * ...
+	 * ...]
 	 * 
-	 * Title
+	 * [Title]
 	 * 
 	 * Text
 	 * ...
@@ -704,13 +705,14 @@ public class ConstructMID4NewsDocumentSet {
 			if (garbage == null)
 				return false;
 			
-			
-			// Multiline title
-			String title = readUntilNonEmptyLine(r);
-			if (title == null)
-				return false;
-			
-			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
+			if (garbage.contains("/")) {		
+				// Multiline title
+				String title = readUntilNonEmptyLine(r);
+				if (title == null)
+					return false;
+				
+				metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
+			}
 			
 			// Read text
 			StringBuilder textBuilder = new StringBuilder();
@@ -719,7 +721,11 @@ public class ConstructMID4NewsDocumentSet {
 				textBuilder.append(line + "\n");
 			}
 		
-			documentText = textBuilder.toString();
+			if (garbage.contains("/")) {
+				documentText = textBuilder.toString();
+			} else {
+				documentText = garbage + "\n\n" + textBuilder.toString();
+			}
 			
 			r.close();
 		} catch (IOException e) {
