@@ -203,9 +203,9 @@ public class ConstructMID4NewsDocumentSet {
 		String secondLine = readUntilNonEmptyLine(r);
 		if (secondLine != null) {
 			return secondLine.startsWith("http://") && readUntilNonEmptyLine(r) == null;
+		} else {
+			return firstLine.startsWith("http://");
 		}
-		
-		return false;
 	}
 	
 	private static boolean hasFormatWithClassHeader(String text) {
