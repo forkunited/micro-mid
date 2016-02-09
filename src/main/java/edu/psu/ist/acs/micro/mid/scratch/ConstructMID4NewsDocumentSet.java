@@ -167,7 +167,7 @@ public class ConstructMID4NewsDocumentSet {
 	}
 	
 	private static boolean processDocument(String sourceFileName, String documentName, String text, TernaryRelevanceClass ternaryClass) {
-		if (text.length() == 0)
+		if (text.length() == 0 || countNonEmptyLines(text) <= 2)
 			return true;
 		
 		boolean error = false;
@@ -712,5 +712,14 @@ public class ConstructMID4NewsDocumentSet {
 		documents.addItem(document);
 		
 		return true;
+	}
+	
+	private static int countNonEmptyLines(String str) {
+		String[] lines = str.split("\n");
+		int count = 0;
+		for (int i = 0; i < lines.length; i++)
+			if (lines[i].trim().length() > 0)
+				count++;
+		return count;
 	}
 }
