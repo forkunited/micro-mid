@@ -77,6 +77,8 @@ public class TrainMIDRelevanceGST {
 				data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
 				context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
 				datumId++;
+			} else {
+				context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
 			}
 		}
 		
