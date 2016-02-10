@@ -101,7 +101,7 @@ public class TrainMIDRelevanceGST {
 				return true;
 			}
 			
-		}, context.getIntValue("maxThreads"), dataTools.getGlobalRandom());
+		}, 1, dataTools.getGlobalRandom());
 
 		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Finished loading documents");
 		
