@@ -28,7 +28,7 @@ import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID.Ternar
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
 public class TrainMIDRelevanceGST {
-	private static final double POSITIVE_RATE = .01;
+	private static final double POSITIVE_RATE = .1;
 	
 	private static String experimentName;
 	private static int randomSeed;
