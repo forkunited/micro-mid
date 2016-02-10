@@ -71,11 +71,11 @@ public class TrainMIDRelevanceGST {
 		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"));
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
-		
 		for (DocumentNLP document : goldDocuments) {
 			TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
 			if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
 				data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
+				context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
 				datumId++;
 			}
 		}
@@ -84,9 +84,10 @@ public class TrainMIDRelevanceGST {
 		
 		for (DocumentNLP document : unlabeledDocuments) {
 			data.add(new DocumentNLPDatum<Boolean>(datumId, document, false));
+			context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded negative document " + document.getName() + " (" + datumId + ")... ");
 			datumId++;
 			
-			if (datumId == positiveCount / POSITIVE_RATE)
+			if (datumId >= positiveCount / POSITIVE_RATE)
 				break;
 		}
 		
