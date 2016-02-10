@@ -474,12 +474,12 @@ public class ConstructMID4NewsDocumentSet {
 				date = line3;
 			} else {
 				String line4 = readUntilNonEmptyLine(r);
+				String line5 = readUntilNonEmptyLine(r);
 				if (isLineLongDate(line4)) {
-					source = line2;
-					title = line3;
+					source = line3;
 					date = line4;
+					title = line5;
 				} else {
-					String line5 = readUntilNonEmptyLine(r);
 					if (isLineLongDate(line5)) {
 						source = line3;
 						title = line4;
