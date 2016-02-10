@@ -1,8 +1,5 @@
 package edu.psu.ist.acs.micro.mid.scratch;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 
 public class Scratch {
 	public static void main(String[] args) {
@@ -20,6 +17,10 @@ public class Scratch {
 		DateTime date = dateParser.parseDateTime("january 27, 2016 wednesday");
 		System.out.println(date.toString(dateOutputFormat));*/
 		
+		String s = "DATELINE: Cairo";
+		System.out.println(ConstructMID4NewsDocumentSet.isText(s) + " " + ConstructMID4NewsDocumentSet.isGarbageMetaData(s));
+		
+		/*
 		String s = "asdf\nalskdjf";
 		System.out.println(s.contains("df a"));
 		System.out.println(s);
@@ -29,6 +30,6 @@ public class Scratch {
 			System.out.println(partialDateParser2.parseDateTime("March 1995"));
 		} catch (Exception e) {
 			System.out.println("No");
-		}
+		}*/
 	}
 }

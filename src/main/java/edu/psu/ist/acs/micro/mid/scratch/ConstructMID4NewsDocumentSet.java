@@ -92,7 +92,7 @@ public class ConstructMID4NewsDocumentSet {
 		System.out.println("Bad format files: " + badFormatCount);
 	}
 	
-	private static List<Pair<File, TernaryRelevanceClass>> getFiles(File inputDir) {
+	public static List<Pair<File, TernaryRelevanceClass>> getFiles(File inputDir) {
 		File[] allFiles = inputDir.listFiles();
 		List<Pair<File, TernaryRelevanceClass>> retFiles = new ArrayList<Pair<File, TernaryRelevanceClass>>();
 	
@@ -112,7 +112,7 @@ public class ConstructMID4NewsDocumentSet {
 		return retFiles;
 	}
 	
-	private static boolean processFile(File file, TernaryRelevanceClass ternaryClass) {
+	public static boolean processFile(File file, TernaryRelevanceClass ternaryClass) {
 		System.out.println("Processing file " + file.getName() + "...");
 		BufferedReader r = FileUtil.getFileReader(file.getAbsolutePath());
 		
@@ -167,7 +167,7 @@ public class ConstructMID4NewsDocumentSet {
 		return true;
 	}
 	
-	private static boolean processDocument(String sourceFileName, String documentName, String text, TernaryRelevanceClass ternaryClass) {
+	public static boolean processDocument(String sourceFileName, String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		if (text.length() == 0 || (hasBadFormat(text)))
 			return true;
 		
@@ -201,7 +201,7 @@ public class ConstructMID4NewsDocumentSet {
 		}
 	}
 	
-	private static boolean hasBadFormat(String text) {
+	public static boolean hasBadFormat(String text) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		
 		String firstLine = readUntilNonEmptyLine(r);
@@ -215,7 +215,7 @@ public class ConstructMID4NewsDocumentSet {
 		}
 	}
 	
-	private static boolean hasFormatWithClassHeader(String text) {
+	public static boolean hasFormatWithClassHeader(String text) {
 		String[] lines = text.split("\n");
 		
 		for (int i = 0; i < lines.length; i++) {
@@ -229,7 +229,7 @@ public class ConstructMID4NewsDocumentSet {
 		return false;
 	}
 	
-	private static boolean isLineShortDate(String line) {
+	public static boolean isLineShortDate(String line) {
 		String[] dateParts = line.trim().split("/");
 		if ((dateParts.length == 3 
 				&& StringUtils.isNumeric(dateParts[0]) 
@@ -283,7 +283,7 @@ public class ConstructMID4NewsDocumentSet {
      *  GARBAGE META-DATA LINES MOSTLY CAPITALIZED WITH NUMBERS
      *
 	 */
-	private static boolean processDocumentFormatWithClassHeader(String documentName, String text, TernaryRelevanceClass ternaryClass) {
+	public static boolean processDocumentFormatWithClassHeader(String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MM/dd/yyyy");
@@ -357,7 +357,7 @@ public class ConstructMID4NewsDocumentSet {
 		return constructAndSaveDocumentNLP(documentName, metaData, documentText, ternaryClass);
 	}
 	
-	private static boolean hasFormatNoClassHeader(String text) {
+	public static boolean hasFormatNoClassHeader(String text) {
 		// Hack to check if date of form MMMM dd, yyyy occurs in first 5 lines
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		
@@ -397,7 +397,7 @@ public class ConstructMID4NewsDocumentSet {
 		return false; 
 	}
 	
-	private static boolean isLineLongDate(String line) {
+	public static boolean isLineLongDate(String line) {
 		String[] lineParts = line.split(",");
 		if (lineParts.length < 2)
 			return false;
@@ -438,7 +438,7 @@ public class ConstructMID4NewsDocumentSet {
      *
      *  GARBAGE META-DATA LINES MOSTLY CAPITALIZED WITH NUMBERS
      */
-	private static boolean processDocumentFormatNoClassHeader(String documentName, String text, TernaryRelevanceClass ternaryClass) {
+	public static boolean processDocumentFormatNoClassHeader(String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MMMM dd, yyyy");
@@ -535,7 +535,7 @@ public class ConstructMID4NewsDocumentSet {
 	}
 
 	
-	private static boolean hasFormatUnitedNations(String text) {
+	public static boolean hasFormatUnitedNations(String text) {
 		String lowerText = text.toLowerCase();
 		return lowerText.contains("united\nnations\n") && lowerText.contains("general assembly\nsecurity council");
 	}
@@ -576,7 +576,7 @@ public class ConstructMID4NewsDocumentSet {
 	 * Several paragraphs of text
 	 * 
 	 */
-	private static boolean processDocumentFormatUnitedNations(String documentName, String text, TernaryRelevanceClass ternaryClass) {
+	public static boolean processDocumentFormatUnitedNations(String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("dd MMMM yyyy");
@@ -636,7 +636,7 @@ public class ConstructMID4NewsDocumentSet {
 		return constructAndSaveDocumentNLP(documentName, metaData, documentText, ternaryClass);
 	}
 	
-	private static boolean hasFormatUnitedNations2(String text) {
+	public static boolean hasFormatUnitedNations2(String text) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		
 		String junk = readUntilNonEmptyLine(r);
@@ -682,7 +682,7 @@ public class ConstructMID4NewsDocumentSet {
 	 * Text
 	 * ...
 	 */
-	private static boolean processDocumentFormatUnitedNations2(String documentName, String text, TernaryRelevanceClass ternaryClass) {
+	public static boolean processDocumentFormatUnitedNations2(String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 		DateTimeFormatter dateParser = DateTimeFormat.forPattern("MMMM dd yyyy");
@@ -745,7 +745,7 @@ public class ConstructMID4NewsDocumentSet {
 		return constructAndSaveDocumentNLP(documentName, metaData, documentText, ternaryClass);
 	}
 	
-	private static boolean hasFormatEdgeCases(String text) {
+	public static boolean hasFormatEdgeCases(String text) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		
 		try {
@@ -786,7 +786,7 @@ public class ConstructMID4NewsDocumentSet {
 	 * CONDEMNING the nuclear tests
 	 * 
 	 */
-	private static boolean processDocumentFormatEdgeCases(String documentName, String text, TernaryRelevanceClass ternaryClass) {
+	public static boolean processDocumentFormatEdgeCases(String documentName, String text, TernaryRelevanceClass ternaryClass) {
 		BufferedReader r = new BufferedReader(new StringReader(text));
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 
@@ -831,7 +831,7 @@ public class ConstructMID4NewsDocumentSet {
 		return constructAndSaveDocumentNLP(documentName, metaData, documentText, ternaryClass);
 	}
 	
-	private static List<Pair<AnnotationTypeNLP<String>, String>> parseMetaData(String text) {
+	public static List<Pair<AnnotationTypeNLP<String>, String>> parseMetaData(String text) {
 		List<Pair<AnnotationTypeNLP<String>, String>> metaData = new ArrayList<Pair<AnnotationTypeNLP<String>, String>>();
 		String[] lines = text.split("\n");
 		for (int i = 0; i < lines.length; i++) {
@@ -847,20 +847,26 @@ public class ConstructMID4NewsDocumentSet {
 		return metaData;
 	}
 	
-	private static boolean isText(String line) {
+	public static boolean isText(String line) {
 		if (line.length() == 0 || isGarbageMetaData(line))
 			return false;
 		
 		String[] lineTokens = line.split("\\s+");
-		if (lineTokens[0].endsWith(":")) {
-			if (!lineTokens[0].toUpperCase().equals(lineTokens[0]) || line.length() > 100)
-				return true;
+		if (lineTokens[0].endsWith(":")) {	
+			String heading = lineTokens[0].substring(0, lineTokens[0].length() - 1);
+			return !StringUtils.isAllUpperCase(heading) 
+					|| (line.length() > 100 
+							&& !heading.equals("DATELINE") 
+							&& !heading.equals("LENGTH") 
+							&& !heading.equals("BYLINE") 
+							&& !heading.equals("SOURCE")
+							&& !heading.equals("TITLE"));
 		}
 		
 		return true;
 	}
 	
-	private static boolean isGarbageMetaData(String line) {
+	public static boolean isGarbageMetaData(String line) {
 		if (line.length() == 0)
 			return false;
 		
@@ -877,7 +883,7 @@ public class ConstructMID4NewsDocumentSet {
 		return numAlertChars / cs.length > 0.5 && line.contains("%");
 	}
 	
-	private static String readUntilNonEmptyLine(BufferedReader r) {
+	public static String readUntilNonEmptyLine(BufferedReader r) {
 		String line = null;
 		try {
 			while ((line = r.readLine()) != null) {
@@ -892,7 +898,7 @@ public class ConstructMID4NewsDocumentSet {
 		return null;
 	}
 	
-	private static String readUntilEmptyLine(BufferedReader r) {
+	public static String readUntilEmptyLine(BufferedReader r) {
 		String line = null;
 		try {
 			StringBuilder nonEmptyLines = new StringBuilder();
@@ -909,7 +915,7 @@ public class ConstructMID4NewsDocumentSet {
 		return null;
 	}
 	
-	private static Pair<String, String> readUntilText(BufferedReader r) {
+	public static Pair<String, String> readUntilText(BufferedReader r) {
 		String line = null;
 		try {
 			StringBuilder beforeLines = new StringBuilder();
@@ -926,7 +932,7 @@ public class ConstructMID4NewsDocumentSet {
 		return null;
 	}
 	
-	private static String readUntilGarbageMetaData(BufferedReader r) {
+	public static String readUntilGarbageMetaData(BufferedReader r) {
 		String line = null;
 		try {
 			StringBuilder textLines = new StringBuilder();
@@ -943,7 +949,7 @@ public class ConstructMID4NewsDocumentSet {
 		}
 	}
 	
-	private static boolean constructAndSaveDocumentNLP(String name, List<Pair<AnnotationTypeNLP<String>, String>> metaData, String text, TernaryRelevanceClass ternaryClass) {
+	public static boolean constructAndSaveDocumentNLP(String name, List<Pair<AnnotationTypeNLP<String>, String>> metaData, String text, TernaryRelevanceClass ternaryClass) {
 		PipelineNLPExtendable metaDataPipeline = new PipelineNLPExtendable();
 		
 		for (Pair<AnnotationTypeNLP<String>, String> metaDatum : metaData) {
@@ -979,7 +985,7 @@ public class ConstructMID4NewsDocumentSet {
 	}
 	
 	/*
-	private static int countNonEmptyLines(String str) {
+	public static int countNonEmptyLines(String str) {
 		String[] lines = str.split("\n");
 		int count = 0;
 		for (int i = 0; i < lines.length; i++)
