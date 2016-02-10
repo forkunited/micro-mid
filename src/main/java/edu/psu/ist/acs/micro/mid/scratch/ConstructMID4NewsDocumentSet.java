@@ -867,13 +867,14 @@ public class ConstructMID4NewsDocumentSet {
 		line = line.replaceAll("\\s+", "");
 		char[] cs = line.toCharArray();
 		double numAlertChars = 0.0;
+		
 		for (char c : cs) {
-			if (c == ')' || c == '(' || Character.isDigit(c) || c == '%' || c == ':' || Character.isUpperCase(c)) {
+			if (!Character.isAlphabetic(c) || Character.isUpperCase(c)) {
 				numAlertChars++;
 			}
 		}
 	
-		return numAlertChars / cs.length > 0.5 && line.contains(":");
+		return numAlertChars / cs.length > 0.5 && line.contains("%");
 	}
 	
 	private static String readUntilNonEmptyLine(BufferedReader r) {
@@ -956,6 +957,16 @@ public class ConstructMID4NewsDocumentSet {
 				}
 			});
 		}
+		
+		metaDataPipeline.extend(new AnnotatorDocument<TernaryRelevanceClass>() {
+			public String getName() { return "MID4-News"; }
+			public boolean measuresConfidence() { return false; }
+			public AnnotationType<TernaryRelevanceClass> produces() { return AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS; }
+			public AnnotationType<?>[] requires() { return new AnnotationType<?>[0]; }
+			public Pair<TernaryRelevanceClass, Double> annotate(DocumentNLP document) {
+				return new Pair<TernaryRelevanceClass, Double>(ternaryClass, null);
+			}
+		});
 			
 		PipelineNLP fullPipeline = nlpPipeline.weld(metaDataPipeline);
 		
