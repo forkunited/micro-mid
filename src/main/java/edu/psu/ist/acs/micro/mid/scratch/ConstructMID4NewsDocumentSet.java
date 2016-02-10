@@ -44,6 +44,10 @@ public class ConstructMID4NewsDocumentSet {
 	private static StoredCollection<DocumentNLPMutable, Document> documents;
 	private static PipelineNLP nlpPipeline;
 	private static int badFormatCount = 0;
+	private static int falseCount = 0;
+	private static int trueCount = 0;
+	private static int cigarCount = 0;
+	private static int totalCount = 0;
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
@@ -89,7 +93,11 @@ public class ConstructMID4NewsDocumentSet {
 			}
 		}
 		
-		System.out.println("Bad format files: " + badFormatCount);
+		System.out.println("Bad format document count: " + badFormatCount);
+		System.out.println("True document count: " + trueCount);
+		System.out.println("False document count: " + falseCount);
+		System.out.println("Cigar document count: " + cigarCount);
+		System.out.println("Total document count: " + totalCount);
 	}
 	
 	public static List<Pair<File, TernaryRelevanceClass>> getFiles(File inputDir) {
@@ -197,6 +205,13 @@ public class ConstructMID4NewsDocumentSet {
 			System.out.println("Error processing document from " + sourceFileName + ": " + text);
 			return false;
 		} else {
+			if (ternaryClass == TernaryRelevanceClass.TRUE)
+				trueCount++;
+			else if (ternaryClass == TernaryRelevanceClass.FALSE)
+				falseCount++;
+			else if (ternaryClass == TernaryRelevanceClass.CIGAR)
+				cigarCount++;
+			totalCount++;
 			return true;
 		}
 	}
