@@ -137,14 +137,6 @@ public class TrainMIDGSTBinary {
 			.ofType(Integer.class)
 			.defaultsTo(1);
 		
-		parser.accepts("nlpDocumentSetPath").withRequiredArg()
-			.ofType(String.class)
-			.describedAs("Path to the NLP document set directory");
-		
-		parser.accepts("disputeDataPath").withRequiredArg()
-			.ofType(String.class)
-			.describedAs("Path to the MID dispute data directory");
-		
 		parser.accepts("predictionType").withRequiredArg()
 			.ofType(String.class)
 			.describedAs("Type of predictions to make (either HOSTILITY_LEVEL or ACTION)")
