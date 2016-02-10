@@ -21,6 +21,7 @@ import edu.cmu.ml.rtw.generic.data.store.StoredCollection;
 import edu.cmu.ml.rtw.generic.model.evaluation.ValidationGST;
 import edu.cmu.ml.rtw.generic.util.FileUtil;
 import edu.cmu.ml.rtw.generic.util.OutputWriter;
+import edu.cmu.ml.rtw.generic.util.ThreadMapper.Fn;
 import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID.TernaryRelevanceClass;
@@ -68,7 +69,6 @@ public class TrainMIDRelevanceGST {
 		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Constructing data...");
 		
 		DocumentSet<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
-		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 450000);
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
 		for (DocumentNLP document : goldDocuments) {
@@ -84,14 +84,24 @@ public class TrainMIDRelevanceGST {
 		
 		int positiveCount = datumId;
 		
-		for (DocumentNLP document : unlabeledDocuments) {
-			data.add(new DocumentNLPDatum<Boolean>(datumId, document, false));
-			context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded negative document " + document.getName() + " (" + datumId + ")... ");
-			datumId++;
+		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
+				(StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 
+				(int)Math.floor(positiveCount / POSITIVE_RATE - positiveCount));
+		
+		unlabeledDocuments.map(new Fn<DocumentNLP, Boolean>() {
+			@Override
+			public Boolean apply(DocumentNLP document) {
+				// Note that this is useful because "map" function deserializes documents in parallel internally
+				synchronized (this) {
+					data.add(new DocumentNLPDatum<Boolean>(datumId, document, false));
+					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded negative document " + document.getName() + " (" + datumId + ")... ");
+					datumId++;
+				}
+				
+				return true;
+			}
 			
-			if (datumId >= positiveCount / POSITIVE_RATE)
-				break;
-		}
+		}, context.getIntValue("maxThreads"));
 		
 		return data.makePartition(new double[] { .8,  .1, .1 }, dataTools.getGlobalRandom());
 	}
