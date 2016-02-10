@@ -527,7 +527,8 @@ public class ConstructMID4NewsDocumentSet {
 						dateParser.parseDateTime(date).toString(dateOutputFormat)));
 			}
 			
-			metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
+			if (title != null)
+				metaData.add(new Pair<AnnotationTypeNLP<String>, String>(AnnotationTypeNLPMID.ARTICLE_TITLE, title));
 			
 			Pair<String, String> metaDataAndFirstTextLine = readUntilText(r);
 			if (metaDataAndFirstTextLine == null)
