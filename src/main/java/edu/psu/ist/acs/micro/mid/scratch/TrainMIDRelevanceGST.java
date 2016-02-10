@@ -68,7 +68,7 @@ public class TrainMIDRelevanceGST {
 		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Constructing data...");
 		
 		DocumentSet<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
-		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"));
+		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 450000);
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
 		for (DocumentNLP document : goldDocuments) {
