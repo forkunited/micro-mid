@@ -73,13 +73,15 @@ public class TrainMIDRelevanceGST {
 		goldDocuments.map(new Fn<DocumentNLP, Boolean>() {
 			@Override
 			public Boolean apply(DocumentNLP document) {
-				TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
-				if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
-					data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
-					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
-					datumId++;
-				} else {
-					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
+				synchronized (this) {
+					TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
+					if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
+						data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
+						context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
+						datumId++;
+					} else {
+						context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
+					}
 				}
 				
 				return true;
@@ -123,13 +125,16 @@ public class TrainMIDRelevanceGST {
 		goldDocuments.map(new Fn<DocumentNLP, Boolean>() {
 			@Override
 			public Boolean apply(DocumentNLP document) {
-				TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
-				if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
-					data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
-					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
-					datumId++;
-				} else {
-					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
+				
+				synchronized (this) {
+					TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
+					if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
+						data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
+						context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
+						datumId++;
+					} else {
+						context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
+					}
 				}
 				
 				return true;
@@ -140,7 +145,7 @@ public class TrainMIDRelevanceGST {
 		List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> positiveDataParts = data.makePartition(new double[] { .8,  .1, .1 }, dataTools.getGlobalRandom());
 		int trainingPositiveCount = positiveDataParts.get(0).size();
 		int devPositiveCount = positiveDataParts.get(1).size();
-		int testPositiveCount = positiveDataParts.get(1).size();
+		int testPositiveCount = positiveDataParts.get(2).size();
 		
 		double nonTrainingPositiveRate = context.getDoubleValue("positiveRate");
 		
