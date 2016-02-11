@@ -1,0 +1,56 @@
+value randomSeed="1";
+value maxThreads="33";
+value trainOnDev="false";
+value errorExampleExtractor="FirstTokenSpan";
+array validLabels=("true", "false");
+
+evaluation accuracy=Accuracy();
+evaluation accuracyBase=Accuracy(computeBaseline="true");
+evaluation f.5=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="0.5");
+evaluation f1=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="1");
+evaluation prec=Precision(weighted="false", filterLabel="true");
+evaluation recall=Recall(weighted="false", filterLabel="true");
+
+ts_fn doc1=NGramDocument(n="1", noSentence="true");
+ts_fn doc2=NGramDocument(n="2", noSentence="true");
+ts_fn doc3=NGramDocument(n="3", noSentence="true");
+ts_str_fn strBoW=String(cleanFn="CatBagOfWordsFeatureCleanFn");
+
+feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc1}));
+
+model yadll=YADLL()
+{
+	array validLabels=${validLabels};
+};
+
+
+array net0 =       ("Sigmoid");
+array reluNet1 =   ("Relu", "Sigmoid");
+array reluNet2 =   ("Relu", "Relu", "Sigmoid");
+array netParams0 = ("FanIn", "Zeros");
+array netParams1 = ("FanIn", "Zeros", "FanIn", "Zeros");
+array netParams2 = ("FanIn", "Zeros", "FanIn", "Zeros", "FanIn", "Zeros");
+
+gs g=GridSearch() { 
+ 	dimension fnNodes=Dimension(name="fnNodes", values=(${net0}, ${reluNet1}, ${reluNet2}), trainingDimension="true") {
+ 		dimension fnParameters0=Dimension(name="fnParameters", parentValueIndex="0", values=(${netParams0}), trainingDimension="true") {
+ 			dimension Sigmoid_0_input=Dimension(name="Sigmoid_0_input", parentValueIndex="0", values=("FanIn_0*x+Zeros_1"), trainingDimension="true");
+ 			dimension Sigmoid_0_size=Dimension(name="Sigmoid_0_size", parentValueIndex="0", values=("2"), trainingDimension="true");
+			dimension targetFnNode=Dimension(name="targetFnNode", parentValueIndex="0", values=("Sigmoid_0"), trainingDimension="true");
+ 		};
+ 		
+ 		dimension fnParameters1=Dimension(name="fnParameters", parentValueIndex="1", values=(${netParams1}), trainingDimension="true") {
+ 			dimension Relu_0_input=Dimension(name="Relu_0_input", parentValueIndex="0", values=("FanIn_0*x+Zeros_1"), trainingDimension="true");
+ 			dimension Relu_0_size=Dimension(name="Relu_0_size", parentValueIndex="0", values=("500", "1000"), trainingDimension="true");
+ 			dimension Sigmoid_1_input=Dimension(name="Sigmoid_1_input", parentValueIndex="0", values=("FanIn_2*Relu_0+Zeros_3"), trainingDimension="true");
+ 			dimension Sigmoid_1_size=Dimension(name="Sigmoid_1_size", parentValueIndex="0", values=("2"), trainingDimension="true");
+ 			dimension targetFnNode=Dimension(name="targetFnNode", parentValueIndex="0", values=("Sigmoid_1"), trainingDimension="true");
+ 		}; 			
+ 	};
+ 	
+	dimension stepSize=Dimension(name="stepSize", values=(".01", ".1"), trainingDimension="true");
+	dimension numEpochs=Dimension(name="numEpochs", values=("1","5","10"), trainingDimension="true");
+	
+	model model=${yadll};
+	evaluation evaluation=${accuracy};
+};
