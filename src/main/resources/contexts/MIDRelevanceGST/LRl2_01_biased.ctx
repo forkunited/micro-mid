@@ -4,7 +4,7 @@ value trainOnDev="false";
 value errorExampleExtractor="FirstTokenSpan";
 array validLabels=("true", "false");
 value positiveRate = ".01";
-value biasedTrainingSample = "false";
+value biasedTrainingSample = "true";
 
 evaluation accuracy=Accuracy();
 evaluation accuracyBase=Accuracy(computeBaseline="true");

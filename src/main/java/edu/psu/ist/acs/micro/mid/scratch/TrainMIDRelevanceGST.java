@@ -42,7 +42,7 @@ public class TrainMIDRelevanceGST {
 		if (!parseArgs(args))
 			return;
 		
-		List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> data = constructData();
+		List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> data = (context.getBooleanValue("biasedTrainingSample")) ? constructDataBiased() : constructData();
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> trainData = data.get(0);
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> devData = data.get(1);
@@ -69,16 +69,22 @@ public class TrainMIDRelevanceGST {
 		DocumentSet<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
-		for (DocumentNLP document : goldDocuments) {
-			TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
-			if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
-				data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
-				context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
-				datumId++;
-			} else {
-				context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
+		
+		goldDocuments.map(new Fn<DocumentNLP, Boolean>() {
+			@Override
+			public Boolean apply(DocumentNLP document) {
+				TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
+				if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
+					data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
+					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
+					datumId++;
+				} else {
+					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
+				}
+				
+				return true;
 			}
-		}
+		}, context.getIntValue("maxThreads"), dataTools.getGlobalRandom());
 		
 		int positiveCount = datumId;
 		
@@ -105,6 +111,71 @@ public class TrainMIDRelevanceGST {
 		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Finished loading documents");
 		
 		return data.makePartition(new double[] { .8,  .1, .1 }, dataTools.getGlobalRandom());
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> constructDataBiased() {
+		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Constructing data...");
+		
+		DocumentSet<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
+		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
+		
+		goldDocuments.map(new Fn<DocumentNLP, Boolean>() {
+			@Override
+			public Boolean apply(DocumentNLP document) {
+				TernaryRelevanceClass relevanceClass = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
+				if (relevanceClass == TernaryRelevanceClass.CIGAR || relevanceClass == TernaryRelevanceClass.TRUE) {
+					data.add(new DocumentNLPDatum<Boolean>(datumId, document, true));
+					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded positive document " + document.getName() + " (" + datumId + ")... ");
+					datumId++;
+				} else {
+					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Skipped negative document " + document.getName() + "... ");
+				}
+				
+				return true;
+			}
+		}, context.getIntValue("maxThreads"), dataTools.getGlobalRandom());
+		
+		
+		List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> positiveDataParts = data.makePartition(new double[] { .8,  .1, .1 }, dataTools.getGlobalRandom());
+		int trainingPositiveCount = positiveDataParts.get(0).size();
+		int devPositiveCount = positiveDataParts.get(1).size();
+		int testPositiveCount = positiveDataParts.get(1).size();
+		
+		double nonTrainingPositiveRate = context.getDoubleValue("positiveRate");
+		
+		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
+				(StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 
+				(int)Math.floor(trainingPositiveCount + devPositiveCount / nonTrainingPositiveRate - devPositiveCount + testPositiveCount / nonTrainingPositiveRate - testPositiveCount));		
+		DataSet<DocumentNLPDatum<Boolean>, Boolean> unlabeledData = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
+		
+		unlabeledDocuments.map(new Fn<DocumentNLP, Boolean>() {
+			@Override
+			public Boolean apply(DocumentNLP document) {
+				// Note that this is useful because "map" function deserializes documents in parallel internally
+				synchronized (this) {
+					unlabeledData.add(new DocumentNLPDatum<Boolean>(datumId, document, false));
+					context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Loaded negative document " + document.getName() + " (" + datumId + ")... ");
+					datumId++;
+				}
+				
+				return true;
+			}
+			
+		}, context.getIntValue("maxThreads"), dataTools.getGlobalRandom());
+
+		double trainProportion = trainingPositiveCount / unlabeledData.size();
+		double devProportion = (devPositiveCount / nonTrainingPositiveRate - devPositiveCount)/ unlabeledData.size();
+		double testProportion = 1.0 - devProportion - trainProportion;
+		
+		List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> negativeDataParts = unlabeledData.makePartition(new double[] { trainProportion, devProportion, testProportion }, dataTools.getGlobalRandom());
+		positiveDataParts.get(0).addAll(negativeDataParts.get(0));
+		positiveDataParts.get(1).addAll(negativeDataParts.get(1));
+		positiveDataParts.get(2).addAll(negativeDataParts.get(2));
+		
+		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Finished loading documents");
+		
+		return positiveDataParts; 
 	}
 	
 	private static boolean parseArgs(String[] args) {
