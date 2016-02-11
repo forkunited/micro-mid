@@ -28,8 +28,6 @@ import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID.Ternar
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
 public class TrainMIDRelevanceGST {
-	private static final double POSITIVE_RATE = .01;
-	
 	private static String experimentName;
 	private static int randomSeed;
 	
@@ -84,9 +82,10 @@ public class TrainMIDRelevanceGST {
 		
 		int positiveCount = datumId;
 		
+		double positiveRate = context.getDoubleValue("positiveRate");
 		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
 				(StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 
-				(int)Math.floor(positiveCount / POSITIVE_RATE - positiveCount));
+				(int)Math.floor(positiveCount / positiveRate - positiveCount));
 		
 		unlabeledDocuments.map(new Fn<DocumentNLP, Boolean>() {
 			@Override

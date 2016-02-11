@@ -3,11 +3,13 @@ value maxThreads="33";
 value trainOnDev="false";
 value errorExampleExtractor="FirstTokenSpan";
 array validLabels=("true", "false");
+value positiveRate = ".01";
 
 evaluation accuracy=Accuracy();
 evaluation accuracyBase=Accuracy(computeBaseline="true");
-evaluation f.5=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="0.5");
+evaluation f2=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="2");
 evaluation f1=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="1");
+evaluation f.5=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="0.5");
 evaluation prec=Precision(weighted="false", filterLabel="true");
 evaluation recall=Recall(weighted="false", filterLabel="true");
 
@@ -45,12 +47,12 @@ gs g=GridSearch() {
  			dimension Sigmoid_1_input=Dimension(name="Sigmoid_1_input", parentValueIndex="0", values=("FanIn_2*Relu_0+Zeros_3"), trainingDimension="true");
  			dimension Sigmoid_1_size=Dimension(name="Sigmoid_1_size", parentValueIndex="0", values=("2"), trainingDimension="true");
  			dimension targetFnNode=Dimension(name="targetFnNode", parentValueIndex="0", values=("Sigmoid_1"), trainingDimension="true");
- 		}; 			
+ 		};	
  	};
  	
 	dimension stepSize=Dimension(name="stepSize", values=(".01", ".1"), trainingDimension="true");
 	dimension numEpochs=Dimension(name="numEpochs", values=("1","5","10"), trainingDimension="true");
 	
 	model model=${yadll};
-	evaluation evaluation=${accuracy};
+	evaluation evaluation=${f2};
 };
