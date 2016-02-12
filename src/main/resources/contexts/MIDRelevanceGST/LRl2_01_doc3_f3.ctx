@@ -23,6 +23,7 @@ ts_str_fn strBoW=String(cleanFn="CatBagOfWordsFeatureCleanFn");
 
 feature fdoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc1}));
 feature fdoc2=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc2}));
+feature fdoc3=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="5", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc3}));
 
 model lr=Areg(l1="0", l2="0", convergenceEpsilon=".00001", maxTrainingExamples="1000000", batchSize="100", evaluationIterations="400", maxEvaluationConstantIterations="500", weightedLabels="false", computeTestEvaluations="false")
 {

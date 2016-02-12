@@ -8,7 +8,6 @@ value biasedTrainingSample = "false";
 
 evaluation accuracy=Accuracy();
 evaluation accuracyBase=Accuracy(computeBaseline="true");
-
 evaluation f3=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="3");
 evaluation f2=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="2");
 evaluation f1=F(mode="MACRO_WEIGHTED", filterLabel="true", Beta="1");
@@ -23,6 +22,7 @@ ts_str_fn strBoW=String(cleanFn="CatBagOfWordsFeatureCleanFn");
 
 feature fdoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc1}));
 feature fdoc2=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc2}));
+feature fdoc3=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="5", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc3}));
 
 model lr=Areg(l1="0", l2="0", convergenceEpsilon=".00001", maxTrainingExamples="1000000", batchSize="100", evaluationIterations="400", maxEvaluationConstantIterations="500", weightedLabels="false", computeTestEvaluations="false")
 {
@@ -34,5 +34,5 @@ gs g=GridSearch() {
 	dimension ct=Dimension(name="classificationThreshold", values=(.2,.3,.4,.5,.6,.7,.8), trainingDimension="false");
 
 	model model=${lr};
-	evaluation evaluation=${f3};
+	evaluation evaluation=${f2};
 };
