@@ -3,7 +3,7 @@ value maxThreads="33";
 value trainOnDev="false";
 value errorExampleExtractor="FirstTokenSpan";
 array validLabels=("true", "false");
-value positiveRate = "0.50";
+value positiveRate = ".01";
 value biasedTrainingSample = "false";
 
 evaluation accuracy=Accuracy();
@@ -20,6 +20,7 @@ ts_fn doc3=NGramDocument(n="3", noSentence="true");
 ts_str_fn strBoW=String(cleanFn="CatBagOfWordsFeatureCleanFn");
 
 feature fdoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc1}));
+feature fdoc2=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc2}));
 
 model lr=Areg(l1="0", l2="0", convergenceEpsilon=".00001", maxTrainingExamples="1000000", batchSize="100", evaluationIterations="400", maxEvaluationConstantIterations="500", weightedLabels="false", computeTestEvaluations="false")
 {
@@ -31,5 +32,5 @@ gs g=GridSearch() {
 	dimension ct=Dimension(name="classificationThreshold", values=(.5,.6,.7,.8,.9), trainingDimension="false");
 
 	model model=${lr};
-	evaluation evaluation=${f2};
+	evaluation evaluation=${f3};
 };

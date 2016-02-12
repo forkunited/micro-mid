@@ -19,7 +19,7 @@ ts_fn doc2=NGramDocument(n="2", noSentence="true");
 ts_fn doc3=NGramDocument(n="3", noSentence="true");
 ts_str_fn strBoW=String(cleanFn="CatBagOfWordsFeatureCleanFn");
 
-feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc1}));
+feature fdoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strBoW} o ${doc1}));
 
 model yadll=YADLL()
 {
