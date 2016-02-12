@@ -151,7 +151,7 @@ public class TrainMIDRelevanceGST {
 		
 		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
 				(StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 
-				(int)Math.floor(trainingPositiveCount + devPositiveCount / nonTrainingPositiveRate - devPositiveCount + testPositiveCount / nonTrainingPositiveRate - testPositiveCount));		
+				(int)Math.floor(trainingPositiveCount + devPositiveCount / nonTrainingPositiveRate - devPositiveCount + testPositiveCount / nonTrainingPositiveRate - testPositiveCount), dataTools.getGlobalRandom(), false);		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> unlabeledData = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
 		
 		unlabeledDocuments.map(new Fn<DocumentNLP, Boolean>() {
