@@ -84,7 +84,7 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 			boolean documentLabel = false;
 			
 			if (this.label) {
-				if (document.hasAnnotationType(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS)
+				if (document.hasAnnotationType(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS)
 						&& document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS))
 					documentLabel = true;
 			}
