@@ -4,8 +4,11 @@ import java.util.Map.Entry;
 
 import edu.cmu.ml.rtw.generic.data.DataTools;
 import edu.cmu.ml.rtw.generic.data.Gazetteer;
+import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
+import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPDatum;
 import edu.cmu.ml.rtw.generic.util.OutputWriter;
 import edu.cmu.ml.rtw.micro.cat.data.CatDataTools;
+import edu.psu.ist.acs.micro.mid.data.annotation.DataSetBuilderMIDRelevance;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
@@ -39,6 +42,7 @@ public class MIDDataTools extends DataTools {
 			this.gazetteers.put(entry.getKey(), entry.getValue());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public MIDDataTools(OutputWriter outputWriter, MIDProperties properties) {
 		super(outputWriter);
 		
@@ -63,6 +67,9 @@ public class MIDDataTools extends DataTools {
 		
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_3);
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_4);	
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addGenericDataSetBuilder(new DataSetBuilderMIDRelevance());
 	}
 	
 	public MIDProperties getProperties() {
