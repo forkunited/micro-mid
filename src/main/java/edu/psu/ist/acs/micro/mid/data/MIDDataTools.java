@@ -21,8 +21,6 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
  *
  */
 public class MIDDataTools extends DataTools {
-	private MIDProperties properties;
-	
 	public MIDDataTools() {
 		this(new MIDProperties());
 		
@@ -34,7 +32,7 @@ public class MIDDataTools extends DataTools {
 	}
 	
 	public MIDDataTools(OutputWriter outputWriter, MIDDataTools dataTools) {
-		this(outputWriter, dataTools.properties);
+		this(outputWriter, (MIDProperties)dataTools.properties);
 		
 		this.timer = dataTools.timer;
 		
@@ -73,7 +71,7 @@ public class MIDDataTools extends DataTools {
 	}
 	
 	public MIDProperties getProperties() {
-		return this.properties;
+		return (MIDProperties)this.properties;
 	}
 	
 	@Override
