@@ -88,11 +88,11 @@ public class ConstructMID5SVMNewsDocumentSet {
 		
 		
 		constructDocumentsFromBulkText(svmTruePositiveFilePath, true, true);
-	/*	constructDocumentsFromBulkText(svmFalsePositiveFilePath, true, false);
+		constructDocumentsFromBulkText(svmFalsePositiveFilePath, true, false);
 		
 		if (!onlyLabeled)
 			constructDocumentsFromBulkText(svmNegativePath, false, null);
-		*/
+		
 		System.out.println("Finished writing documents.");
 	}
 	
