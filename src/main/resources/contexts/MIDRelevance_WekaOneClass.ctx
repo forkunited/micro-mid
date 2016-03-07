@@ -27,7 +27,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 		
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
 	ts_str_fn strDef=String(cleanFn="DefaultCleanFn");
-	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="TokenSpan", fn=(${strDef} o ${doc1}));
+	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
 	feature_set f = FeatureSet(features=(${fdoc1}), initData=(${trainData}));
 	
 	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
