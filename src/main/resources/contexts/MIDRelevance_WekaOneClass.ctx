@@ -4,12 +4,27 @@ value randomSeed=SetRandomSeed(seed="1");
 
 context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	data positiveData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_tokens", label="true");
+	data negativeData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_tokens", label="false");
 	
+	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
+	value negativeParition = PartitionData(data=${negativeData}, distribution=(".8", ".1", ".1"));
 	
-	data trainData = MIDRelevance(storage="MIDBson", mixedCollection="mid_news_rel_labeled_tokens", negativeCollection="mid_news_unlabeled_tokens");
-	data devData = MIDRelevance(storage="MIDBson", collection="FIXME");
-	data testData = MIDRelevance(storage="MIDBson", collection="FIXME");
+	data trainData = UnionData(data=(${positiveData_0}));
+	data devData = UnionData(data=(${positiveData_1}, ${negativeData_1}));
+	data testData = UnionData(data=(${positiveData_2}, ${negativeData_2}));
+
+	value countPositiveData = SizeData(data=${positiveData});
+	value countNegativeData = SizeData(data=${negativeData});
+	value countTrainData = SizeData(data=${trainData});
+	value countDevData = SizeData(data=${devData});
+	value countTestData = SizeData(data=${testData});
 	
+	value debugPositiveData = OutputDebug(refs=(${countPositiveData}));
+	value debugNegativeData = OutputDebug(refs=(${countNegativeData}));
+	value debugTrainData = OutputDebug(refs=(${countTrainData}));
+	value debugDevData = OutputDebug(refs=(${countDevData}));
+	value debugTestData = OutputDebug(refs=(${countTestData}));
+		
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
 	ts_str_fn strDef=String(cleanFn="DefaultCleanFn");
 	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="TokenSpan", fn=(${strDef} o ${doc1}));
