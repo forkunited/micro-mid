@@ -1,5 +1,5 @@
 value maxThreads="30";
-value debug=Debug(output="MIDRelevance_WekaOneClass.out");
+value debug=Debug(file="MIDRelevance_WekaOneClass.out");
 value randomSeed=SetRandomSeed(seed="1");
 
 context documentNLPBooleanCtx=DocumentNLPBoolean() {
