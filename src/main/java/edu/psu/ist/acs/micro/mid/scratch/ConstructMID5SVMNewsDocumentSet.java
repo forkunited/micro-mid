@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bson.Document;
 import org.joda.time.format.DateTimeFormat;
@@ -109,6 +111,9 @@ public class ConstructMID5SVMNewsDocumentSet {
 		List<DocumentNLPMutable> documents = new ArrayList<DocumentNLPMutable>();
 		int i = 0;
 		
+		Set<String> documentNames = new HashSet<String>();
+		int repeatDocuments = 0;
+		
 		while ((line = reader.readLine()) != null) {
 			line = line.trim();
 			if (line.length() == 0 
@@ -118,7 +123,7 @@ public class ConstructMID5SVMNewsDocumentSet {
 	
 			if (!documentContentLine) {
 				/* Parse meta-data */
-				System.out.println("Parsing document at: " + line);
+				//System.out.println("Parsing document at: " + line);
 				String firstLine = line;
 				String otherLine = null;
 				String newsSource = null;
@@ -316,6 +321,13 @@ public class ConstructMID5SVMNewsDocumentSet {
 					
 				}
 				
+				if (documentNames.contains(document.getName())) {
+					System.out.println("Repeat name " + document.getName());
+				} else {
+					documentNames.add(document.getName());
+					repeatDocuments++;
+				}
+				
 				documentContentLine = false;
 			} else if (documentContentLine) {
 				documentContent.append(line).append(" ");
@@ -328,5 +340,7 @@ public class ConstructMID5SVMNewsDocumentSet {
 			else
 				unlabeledDocuments.addItems(documents);
 		}
+		
+		System.out.println("Repeat docs: " + repeatDocuments);
 	}
 }
