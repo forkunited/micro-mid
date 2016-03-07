@@ -323,9 +323,9 @@ public class ConstructMID5SVMNewsDocumentSet {
 				
 				if (documentNames.contains(document.getName())) {
 					System.out.println("Repeat name " + document.getName());
+					repeatDocuments++;
 				} else {
 					documentNames.add(document.getName());
-					repeatDocuments++;
 				}
 				
 				documentContentLine = false;
