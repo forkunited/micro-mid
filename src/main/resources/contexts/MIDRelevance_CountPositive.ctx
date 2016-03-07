@@ -1,7 +1,6 @@
 value maxThreads="30";
 value debug=Debug();
 value randomSeed=SetRandomSeed(seed="1");
-
 context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	data positiveData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_tokens", label="true");
 	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
