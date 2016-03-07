@@ -16,10 +16,12 @@ public class Scratch {
 		DateTimeFormatter dateOutputFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 		DateTime date = dateParser.parseDateTime("january 27, 2016 wednesday");
 		System.out.println(date.toString(dateOutputFormat));*/
-		
+		/*
 		String s = "DATELINE: Cairo";
 		System.out.println(ConstructMID4NewsDocumentSet.isText(s) + " " + ConstructMID4NewsDocumentSet.isGarbageMetaData(s));
+		*/
 		
+		System.out.println(">>>>>>".matches(">+"));
 		/*
 		String s = "asdf\nalskdjf";
 		System.out.println(s.contains("df a"));

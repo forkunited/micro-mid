@@ -10,9 +10,9 @@ import org.bson.Document;
 
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import edu.cmu.ml.rtw.generic.data.Context;
 import edu.cmu.ml.rtw.generic.data.annotation.DataSet;
 import edu.cmu.ml.rtw.generic.data.annotation.Datum.Tools.LabelIndicator;
+import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
 import edu.cmu.ml.rtw.generic.data.annotation.DocumentSet;
 import edu.cmu.ml.rtw.generic.data.annotation.DocumentSetInMemoryLazy;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLP;
@@ -40,7 +40,7 @@ public class TrainMIDGSTBinary {
 	private static int randomSeed;
 	private static PredictionType predictionType;
 	
-	private static Context<DocumentNLPDatum<WeightedStringList>, WeightedStringList> context;
+	private static DatumContext<DocumentNLPDatum<WeightedStringList>, WeightedStringList> context;
 	private static DocumentNLPDatum.Tools<WeightedStringList> datumTools;
 	private static MIDProperties properties;
 	private static MIDDataTools dataTools;
@@ -172,7 +172,7 @@ public class TrainMIDGSTBinary {
 		dataTools.setRandomSeed(randomSeed);
 		datumTools = DocumentNLPDatum.getWeightedStringListTools(dataTools);
 		
-		context = Context.deserialize(datumTools, FileUtil.getFileReader(experimentInputPath));
+		context = DatumContext.run(datumTools, FileUtil.getFileReader(experimentInputPath));
 		
 		if (context == null) {
 			dataTools.getOutputWriter().debugWriteln("ERROR: Failed to deserialize context.");

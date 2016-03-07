@@ -21,6 +21,9 @@ public class AnnotationTypeNLPMID {
 	public static final AnnotationTypeNLP<Double> MID_SVM_RELEVANCE_SCORE = new AnnotationTypeNLP<Double>("mid-svm-rel-score", Double.class, Target.DOCUMENT);
 	public static final AnnotationTypeNLP<Boolean> MID_SVM_RELEVANCE_CLASS = new AnnotationTypeNLP<Boolean>("mid-svm-rel-class", Boolean.class, Target.DOCUMENT);
 	public static final AnnotationTypeNLP<Boolean> MID_GOLD_RELEVANCE_CLASS = new AnnotationTypeNLP<Boolean>("mid-gold-rel-class", Boolean.class, Target.DOCUMENT);
+	public static final AnnotationTypeNLP<Boolean> MID_CLASSIFIER_RELEVANCE_CLASS = new AnnotationTypeNLP<Boolean>("mid-classifier-rel-class", Boolean.class, Target.DOCUMENT);
+	public static final AnnotationTypeNLP<Double> MID_CLASSIFIER_RELEVANCE_SCORE = new AnnotationTypeNLP<Double>("mid-classifier-rel-score", Double.class, Target.DOCUMENT);
+
 	
 	public static final AnnotationTypeNLP<TernaryRelevanceClass> MID_GOLD_TERNARY_RELEVANCE_CLASS = new AnnotationTypeNLP<TernaryRelevanceClass>("mid-gold-ternary-rel-class", TernaryRelevanceClass.class, Target.DOCUMENT);
 	

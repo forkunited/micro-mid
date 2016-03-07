@@ -9,8 +9,8 @@ import joptsimple.OptionSet;
 
 import org.bson.Document;
 
-import edu.cmu.ml.rtw.generic.data.Context;
 import edu.cmu.ml.rtw.generic.data.annotation.DataSet;
+import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
 import edu.cmu.ml.rtw.generic.data.annotation.DocumentSet;
 import edu.cmu.ml.rtw.generic.data.annotation.DocumentSetInMemoryLazy;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLP;
@@ -31,7 +31,7 @@ public class TrainMIDRelevanceGST {
 	private static String experimentName;
 	private static int randomSeed;
 	
-	private static Context<DocumentNLPDatum<Boolean>, Boolean> context;
+	private static DatumContext<DocumentNLPDatum<Boolean>, Boolean> context;
 	private static DocumentNLPDatum.Tools<Boolean> datumTools;
 	private static MIDProperties properties;
 	private static MIDDataTools dataTools;
@@ -225,7 +225,7 @@ public class TrainMIDRelevanceGST {
 		dataTools.setRandomSeed(randomSeed);
 		datumTools = DocumentNLPDatum.getBooleanTools(dataTools);
 		
-		context = Context.deserialize(datumTools, FileUtil.getFileReader(experimentInputPath));
+		context = DatumContext.run(datumTools, FileUtil.getFileReader(experimentInputPath));
 		
 		if (context == null) {
 			dataTools.getOutputWriter().debugWriteln("ERROR: Failed to deserialize context.");

@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.cmu.ml.rtw.generic.data.Serializer;
+import edu.cmu.ml.rtw.generic.data.store.StoreReference;
 
 public class SerializerMIDDisputeBSON extends Serializer<MIDDispute, Document>{
 	private List<Index<MIDDispute>> indices;
@@ -39,7 +40,7 @@ public class SerializerMIDDisputeBSON extends Serializer<MIDDispute, Document>{
 	}
 
 	@Override
-	public MIDDispute deserialize(Document object) {
+	public MIDDispute deserialize(Document object, StoreReference storeReference) {
 		MIDDispute dispute = new MIDDispute();
 		
 		try {
@@ -58,7 +59,7 @@ public class SerializerMIDDisputeBSON extends Serializer<MIDDispute, Document>{
 	}
 
 	@Override
-	public MIDDispute deserializeFromString(String str) {
+	public MIDDispute deserializeFromString(String str, StoreReference storeReference) {
 		return deserialize(Document.parse(str));
 	}
 

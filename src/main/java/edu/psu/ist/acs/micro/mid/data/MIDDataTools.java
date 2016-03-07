@@ -58,6 +58,8 @@ public class MIDDataTools extends DataTools {
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_SVM_RELEVANCE_CLASS);
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS);
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_GOLD_TERNARY_RELEVANCE_CLASS);
+		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
+		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_SCORE);
 		
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_3);
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_4);	

@@ -158,9 +158,11 @@ public class ConstructMID5NewsDocumentSet {
 					} else if (lowerLine.startsWith("byline:")) {
 						//BYLINE: VLADIMIR ISACHENKOV; Associated Press Writer
 						byline = line.substring("byline:".length()).trim();
-					} else if (line.startsWith("key: key:")) {
+					} else if (line.startsWith("key: key:")) { // FIXME Note that this should be lowerLine
 						// Key: Key: 20020401-56-0-AP_2002/April_2002/April01_2002_LN_NP1.TXT
 						key = line.substring("key: key:".length()).trim();
+					} else if (line.startsWith("key:")) { // FIXME Note that this should be lower line
+						key = line.substring("key:".length()).trim();
 					} else {
 						try {
 							date = verboseDateParser.parseDateTime(line).toString(dateOutputFormat);

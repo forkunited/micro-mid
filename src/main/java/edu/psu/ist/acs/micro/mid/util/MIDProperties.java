@@ -70,9 +70,9 @@ public class MIDProperties extends Properties {
 		SerializerMIDDisputeBSON s = new SerializerMIDDisputeBSON();
 		serializers.put(s.getName(), s); // FIXME Do soemthing different later
 		if (this.useMongoStorage) {
-			return new StorageMongo("localhost", this.storageMongoMicroEventDatabaseName, serializers);
+			return new StorageMongo("", "localhost", this.storageMongoMicroEventDatabaseName, serializers);
 		} else {
-			return new StorageFileSystem<Document>(this.storageFileSystemMicroEventDirPath, serializers);
+			return new StorageFileSystem<Document>("", this.storageFileSystemMicroEventDirPath, serializers);
 		}
 	}
 	
