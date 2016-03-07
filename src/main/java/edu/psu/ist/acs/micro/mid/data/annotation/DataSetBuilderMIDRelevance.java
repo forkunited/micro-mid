@@ -9,6 +9,7 @@ import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPDatum;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPMutable;
 import edu.cmu.ml.rtw.generic.parse.AssignmentList;
 import edu.cmu.ml.rtw.generic.parse.Obj;
+import edu.cmu.ml.rtw.generic.util.ThreadMapper.Fn;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 
 public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<Boolean>, Boolean> {
@@ -80,20 +81,28 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(this.context.getDatumTools());
 		
-		for (DocumentNLP document : documentSet) {
-			boolean documentLabel = false;
-			
-			if (this.label) {
-				if (document.hasAnnotationType(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS)
-						&& document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS))
-					documentLabel = true;
+		documentSet.map(new Fn<DocumentNLP, Boolean>() {
+			@Override
+			public Boolean apply(DocumentNLP document) {
+				boolean documentLabel = false;
+				
+				if (DataSetBuilderMIDRelevance.this.label) {
+					if (document.hasAnnotationType(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS)
+							&& document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS))
+						documentLabel = true;
+				}
+				
+				if (DataSetBuilderMIDRelevance.this.label == documentLabel) {
+					synchronized (data) {
+						data.add(new DocumentNLPDatum<Boolean>(
+							getNextDatumId(), document, documentLabel));
+					}
+				}
+				
+				return true;
 			}
 			
-			if (this.label == documentLabel) {
-				data.add(new DocumentNLPDatum<Boolean>(
-					getNextDatumId(), document, documentLabel));
-			}
-		}
+		}, this.context.getMaxThreads(), this.context.getDataTools().getGlobalRandom());
 		
 		return data;
 	}
