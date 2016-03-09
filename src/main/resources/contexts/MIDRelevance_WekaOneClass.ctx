@@ -34,7 +34,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	data_features devMatrix = DataFeatureMatrix(data=${devData}, features=${f});
 	data_features testMatrix = DataFeatureMatrix(data=${testData}, features=${f});
 	
-	model weka=WekaOneClass(targetRejectionRate=".1", targetLabel="true", defaultOutlierLabel="false")
+	model weka=WekaOneClass(targetRejectionRate=".1", targetLabel="true", defaultOutlierLabel="false", densityOnly="true")
 	{
 		array validLabels=("true", "false");
 	};
