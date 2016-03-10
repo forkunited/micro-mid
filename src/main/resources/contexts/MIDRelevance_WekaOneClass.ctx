@@ -42,7 +42,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	classify_method wekaMethod = SupervisedModel(model=${weka}, data=${trainMatrix}, trainEvaluation=${modelF1});
 	
 	search trr=Grid() {
-		dimension targetRejectionRate=Enumerated(values=(".1"), stageIndex="0");
+		dimension targetRejectionRate=Enumerated(values=(".1", ".3", ".5", ".7", ".9"), stageIndex="0");
 	};
 	
 	classify_task devTask = Classification(data=${devMatrix});
