@@ -27,7 +27,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 		
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
 	ts_str_fn strDef=String(cleanFn="DefaultCleanFn");
-	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
+	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="20", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
 	feature_set f = FeatureSet(features=(${fdoc1}), initData=(${trainData}));
 	
 	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
@@ -57,8 +57,8 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	classify_eval testConfusionMatrix = ConfusionMatrix(task=${testTask}, method=${bestMethod});
 	classify_eval testConfusionData = ConfusionData(task=${testTask}, method=${bestMethod});
 	
-	value strEvals = OutputStrings(id="MIDRelevance_WekaOneClass_Evals", storage="MIDString", collection="ExperimentEvaluationOutput", fns=(${testAccuracy}, ${testF}, ${testPrecision}, ${testRecall}, ${testConfusionMatrix}, ${trr}));
-	value strData = OutputStrings(id="MIDRelevance_WekaOneClass_EvalData", storage="MIDString", collection="ExperimentEvaluationOutput", fns=(${testConfusionData}));
+	value strEvals = OutputStrings(id="MIDRelevance_WekaOneClass_Evals", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testAccuracy}, ${testF}, ${testPrecision}, ${testRecall}, ${testConfusionMatrix}, ${trr}));
+	value strData = OutputStrings(id="MIDRelevance_WekaOneClass_EvalData", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testConfusionData}));
 	
 	value parseFeatures = OutputParses(id="MIDRelevance_WekaOneClass_Features", storage="MIDString", collection="ExperimentParseOutput", types=("features"), fns=(${f}));
 	value parseModel = OutputParses(id="MIDRelevance_WekaOneClass_Model", storage="MIDString", collection="ExperimentParseOutput", types=("model"), fns=(${bestMethod}), params=("modelInternal"));

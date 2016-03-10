@@ -76,7 +76,8 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 
 	@Override
 	public DataSet<DocumentNLPDatum<Boolean>, Boolean> build() {
-		DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable> documentSet = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
+		DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable> documentSet = 
+			new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
 				this.context.getDataTools().getStoredItemSetManager().getItemSet(this.storage, this.collection));
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(this.context.getDatumTools());
