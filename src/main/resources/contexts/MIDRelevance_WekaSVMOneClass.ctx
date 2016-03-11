@@ -1,0 +1,65 @@
+value maxThreads="30";
+value debug=Debug(file="MIDRelevance_WekaSVMOneClass.out");
+value randomSeed=SetRandomSeed(seed="1");
+
+context documentNLPBooleanCtx=DocumentNLPBoolean() {
+	data positiveData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_tokens", label="true");
+	data negativeData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_tokens", label="false");
+	
+	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
+	value negativeParition = PartitionData(data=${negativeData}, distribution=(".8", ".1", ".1"));
+	
+	data trainData = UnionData(data=(${positiveData_0}));
+	data devData = UnionData(data=(${positiveData_1}, ${negativeData_1}));
+	data testData = UnionData(data=(${positiveData_2}, ${negativeData_2}));
+
+	value countPositiveData = SizeData(data=${positiveData});
+	value countNegativeData = SizeData(data=${negativeData});
+	value countTrainData = SizeData(data=${trainData});
+	value countDevData = SizeData(data=${devData});
+	value countTestData = SizeData(data=${testData});
+	
+	value debugPositiveData = OutputDebug(refs=(${countPositiveData}));
+	value debugNegativeData = OutputDebug(refs=(${countNegativeData}));
+	value debugTrainData = OutputDebug(refs=(${countTrainData}));
+	value debugDevData = OutputDebug(refs=(${countDevData}));
+	value debugTestData = OutputDebug(refs=(${countTestData}));
+		
+	ts_fn doc1=NGramDocument(n="1", noSentence="false");
+	ts_str_fn strDef=String(cleanFn="DefaultCleanFn");
+	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="20", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
+	feature_set f = FeatureSet(features=(${fdoc1}), initData=(${trainData}));
+	
+	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
+	data_features devMatrix = DataFeatureMatrix(data=${devData}, features=${f});
+	data_features testMatrix = DataFeatureMatrix(data=${testData}, features=${f});
+	
+	model weka=WekaSVMOneClass(targetLabel="true", defaultOutlierLabel="false")
+	{
+		array validLabels=("true", "false");
+	};
+	evaluation modelF1=F(filterLabel="true", Beta="1");
+	classify_method wekaMethod = SupervisedModel(model=${weka}, data=${trainMatrix}, trainEvaluation=${modelF1});
+	
+	search trr=Grid() {
+		dimension targetLabel=Enumerated(values=("true"), stageIndex="0");
+	};
+	
+	classify_task devTask = Classification(data=${devMatrix});
+	classify_eval devEval = F(task=${devTask}, method=${wekaMethod}, Beta="1", filterLabel="true");
+	classify_method bestMethod = RunClassifyMethodSearch(fn=${devEval}, search=${trr});
+	
+	classify_task testTask = Classification(data=${testMatrix});
+	classify_eval testAccuracy = Accuracy(task=${testTask}, method=${bestMethod});       
+	classify_eval testF = F(task=${testTask}, method=${bestMethod}, Beta="1", filterLabel="true");
+	classify_eval testPrecision = Precision(task=${testTask}, method=${bestMethod}, filterLabel="true");
+	classify_eval testRecall = Recall(task=${testTask}, method=${bestMethod}, filterLabel="true");
+	classify_eval testConfusionMatrix = ConfusionMatrix(task=${testTask}, method=${bestMethod});
+	classify_eval testConfusionData = ConfusionData(task=${testTask}, method=${bestMethod});
+	
+	value strEvals = OutputStrings(id="MIDRelevance_WekaSVMOneClass_Evals", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testAccuracy}, ${testF}, ${testPrecision}, ${testRecall}, ${testConfusionMatrix}, ${trr}));
+	value strData = OutputStrings(id="MIDRelevance_WekaSVMOneClass_EvalData", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testConfusionData}));
+	
+	value parseFeatures = OutputParses(id="MIDRelevance_WekaSVMOneClass_Features", storage="MIDString", collection="ExperimentParseOutput", types=("features"), fns=(${f}));
+	value parseModel = OutputParses(id="MIDRelevance_WekaSVMOneClass_Model", storage="MIDString", collection="ExperimentParseOutput", types=("model"), fns=(${bestMethod}), params=("modelInternal"));
+};
