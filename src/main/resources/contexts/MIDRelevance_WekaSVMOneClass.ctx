@@ -18,8 +18,18 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
 	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
-	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
+	feature fdoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="3", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
 	feature_set f = FeatureSet(features=(${fdoc1}), initData=(${trainData}));
+	
+	value countTrainData = SizeData(data=${trainData});
+	value countDevData = SizeData(data=${devData});
+	value countTestData = SizeData(data=${testData});
+	value countFeatures = SizeFeatures(data=${f});
+	
+	value debugTrainData = OutputDebug(refs=(${countTrainData}));
+	value debugDevData = OutputDebug(refs=(${countDevData}));
+	value debugTestData = OutputDebug(refs=(${countTestData}));
+	value debugFeaturs = OutputDebug(refs=(${countFeatures}));
 	
 	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
 	data_features devMatrix = DataFeatureMatrix(data=${devData}, features=${f});
