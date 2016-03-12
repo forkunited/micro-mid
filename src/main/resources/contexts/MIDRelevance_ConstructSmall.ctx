@@ -1,4 +1,4 @@
-value maxThreads="18";
+value maxThreads="30";
 value debug=Debug();
 value randomSeed=SetRandomSeed(seed="1");
 context documentNLPBooleanCtx=DocumentNLPBoolean() {
