@@ -24,7 +24,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value countTrainData = SizeData(data=${trainData});
 	value countDevData = SizeData(data=${devData});
 	value countTestData = SizeData(data=${testData});
-	value countFeatures = SizeFeatures(data=${f});
+	value countFeatures = SizeFeatures(features=${f});
 	
 	value debugTrainData = OutputDebug(refs=(${countTrainData}));
 	value debugDevData = OutputDebug(refs=(${countDevData}));
