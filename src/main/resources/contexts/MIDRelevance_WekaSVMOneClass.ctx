@@ -6,7 +6,7 @@ value cleanFn=BuildCleanFn(name="BagOfWordsCleanFn", fns=("Trim", "RemoveSymbols
 context documentNLPBooleanCtx=DocumentNLPBoolean() {	
 	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_small");
 	data devData = UnionData(storage="MIDBson", collection="mid_news_rel_dev_data_full");
-	data testData = UnionData(storage="MIDBson", collection="mid_news_rel_test_data_full"));
+	data testData = UnionData(storage="MIDBson", collection="mid_news_rel_test_data_full");
 	
 	value countTrainData = SizeData(data=${trainData});
 	value countDevData = SizeData(data=${devData});
