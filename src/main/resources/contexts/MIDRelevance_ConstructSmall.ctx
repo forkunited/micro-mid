@@ -26,7 +26,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value debugDevData = OutputDebug(refs=(${countDevData}));
 	value debugTestData = OutputDebug(refs=(${countTestData}));
 	
-	value storeTrain = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_small", data=${smallTrainData});
+	value storeTrain = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_small", data=${trainData_0});
 	value storeDev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_full", data=${devData});
 	value storeTest = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_full", data=${testData});
 };
