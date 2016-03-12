@@ -1,9 +1,10 @@
 value maxThreads="30";
 value debug=Debug(file="MIDRelevance_WekaSVMOneClass.out");
 value randomSeed=SetRandomSeed(seed="1");
+value cleanFn=BuildCleanFn(name="BagOfWordsCleanFn", fns=("Trim", "RemoveSymbols", "ReplaceNumbers", "UnderscoreToSpace", "Trim", "RemoveLongTokens", "Stem", "SpaceToUnderscore"));
 
 context documentNLPBooleanCtx=DocumentNLPBoolean() {	
-	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_full");
+	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_small");
 	data devData = UnionData(storage="MIDBson", collection="mid_news_rel_dev_data_full");
 	data testData = UnionData(storage="MIDBson", collection="mid_news_rel_test_data_full"));
 	
@@ -14,9 +15,9 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value debugTrainData = OutputDebug(refs=(${countTrainData}));
 	value debugDevData = OutputDebug(refs=(${countDevData}));
 	value debugTestData = OutputDebug(refs=(${countTestData}));
-		
+
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
-	ts_str_fn strDef=String(cleanFn="DefaultCleanFn");
+	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
 	feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
 	feature_set f = FeatureSet(features=(${fdoc1}), initData=(${trainData}));
 	
