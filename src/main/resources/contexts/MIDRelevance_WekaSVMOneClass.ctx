@@ -4,28 +4,21 @@ value randomSeed=SetRandomSeed(seed="1");
 value cleanFn=BuildCleanFn(name="BagOfWordsCleanFn", fns=("Trim", "RemoveSymbols", "ReplaceNumbers", "UnderscoreToSpace", "Trim", "RemoveLongTokens", "Stem", "SpaceToUnderscore"));
 
 context documentNLPBooleanCtx=DocumentNLPBoolean() {	
-	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_small");
+	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_full");
 	data devData = Stored(storage="MIDBson", collection="mid_news_rel_dev_data_full");
 	data testData = Stored(storage="MIDBson", collection="mid_news_rel_test_data_full");
-	
-	value countTrainData = SizeData(data=${trainData});
-	value countDevData = SizeData(data=${devData});
-	value countTestData = SizeData(data=${testData});
-	
-	value debugTrainData = OutputDebug(refs=(${countTrainData}));
-	value debugDevData = OutputDebug(refs=(${countDevData}));
-	value debugTestData = OutputDebug(refs=(${countTestData}));
 
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
+	ts_fn doc2=NGramDocument(n="2", noSentence="false");
 	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
 	feature fdoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="3", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
+	feature fdoc2=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="8", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc2}));
 	feature_set f = FeatureSet(features=(${fdoc1}), initData=(${trainData}));
 	
 	value countTrainData = SizeData(data=${trainData});
 	value countDevData = SizeData(data=${devData});
 	value countTestData = SizeData(data=${testData});
 	value countFeatures = SizeFeatures(features=${f});
-	
 	value debugTrainData = OutputDebug(refs=(${countTrainData}));
 	value debugDevData = OutputDebug(refs=(${countDevData}));
 	value debugTestData = OutputDebug(refs=(${countTestData}));
