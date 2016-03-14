@@ -28,7 +28,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	data_features devMatrix = DataFeatureMatrix(data=${devData}, features=${f});
 	data_features testMatrix = DataFeatureMatrix(data=${testData}, features=${f});
 	
-	model weka=WekaSVMOneClass(targetLabel="true", defaultOutlierLabel="false")
+	model weka=WekaSVMOneClass(targetLabel="true", defaultOutlierLabel="false", kernelType="RBF")
 	{
 		array validLabels=("true", "false");
 	};
@@ -36,7 +36,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	classify_method wekaMethod = SupervisedModel(model=${weka}, data=${trainMatrix}, trainEvaluation=${modelF1});
 	
 	search trr=Grid() {
-		dimension targetLabel=Enumerated(values=("true"), stageIndex="0");
+		dimension kernelType=Enumerated(values=("LINEAR", "POLYNOMIAL", "RBF", "SIGMOID"), stageIndex="0");
 	};
 	
 	classify_task devTask = Classification(data=${devMatrix});
