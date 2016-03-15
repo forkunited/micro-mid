@@ -34,6 +34,12 @@ import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
 public class ConstructMID5SVMNewsDocumentSet {
+	private static enum Mode {
+		TOKENS,
+		POS,
+		ALL
+	}
+	
 	private static MIDProperties properties;
 	private static MIDDataTools dataTools;
 	private static PipelineNLP nlpPipeline;
@@ -47,7 +53,7 @@ public class ConstructMID5SVMNewsDocumentSet {
 		String svmTruePositiveFilePath = args[0];
 		String svmFalsePositiveFilePath = args[1];
 		String svmNegativePath = args[2];
-		boolean onlyTokens = Boolean.valueOf(args[3]);
+		Mode mode = Mode.valueOf(args[3]);
 		boolean onlyLabeled = Boolean.valueOf(args[4]);
 		
 		dataTools = new MIDDataTools();
@@ -55,8 +61,8 @@ public class ConstructMID5SVMNewsDocumentSet {
 		annotationTypes.addAll(dataTools.getAnnotationTypesNLP());
 		annotationTypes.remove(AnnotationTypeNLP.SENTENCE);
 		
-		String unlabeledCollectionName = properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
-		String labeledCollectionName = properties.getMIDNewsSvmRelevanceLabeledDocumentCollectionName() + ((onlyTokens) ? "_tokens" : "");
+		String unlabeledCollectionName = properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_" + mode;
+		String labeledCollectionName = properties.getMIDNewsSvmRelevanceLabeledDocumentCollectionName() + "_" + mode;
 		
 		Storage<?, Document> storage = properties.getStorage(dataTools, annotationTypes);
 		if (!onlyLabeled && storage.hasCollection(unlabeledCollectionName)) {
@@ -72,8 +78,11 @@ public class ConstructMID5SVMNewsDocumentSet {
 		
 		PipelineNLPStanford pipelineStanford = new PipelineNLPStanford();
 		
-		if (onlyTokens) {
+		if (mode == Mode.TOKENS) {
 			pipelineStanford.initialize(AnnotationTypeNLP.POS);
+			nlpPipeline = pipelineStanford;
+		} else if (mode == Mode.POS) {
+			pipelineStanford.initialize(AnnotationTypeNLP.CONSTITUENCY_PARSE);
 			nlpPipeline = pipelineStanford;
 		} else {
 			NELLMentionCategorizer mentionCategorizer = new NELLMentionCategorizer(
