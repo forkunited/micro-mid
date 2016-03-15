@@ -11,9 +11,12 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
 	ts_fn doc2=NGramDocument(n="2", noSentence="false");
 	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
-	feature fdoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="8", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
-	feature fdoc2=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="8", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc2}));
-	feature_set f = FeatureSet(features=(${fdoc1}, ${fdoc2}), initData=(${trainData}));
+	ts_str_fn pos = PoS();
+	ts_str_fn strDefPos=RelationStr(f1=${pos}, f2=${strDef}, relationSymbol="--");
+	str_fn vFilter=Filter(filter="V", type="PREFIX");
+	
+	feature fvbDoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="8", tokenExtractor="FirstTokenSpan", fn=(${vFilter} o ${strDefPos} o ${doc1}));
+	feature_set f = FeatureSet(features=(${fvbDoc1}), initData=(${trainData}));
 	
 	value countTrainData = SizeData(data=${trainData});
 	value countDevData = SizeData(data=${devData});
