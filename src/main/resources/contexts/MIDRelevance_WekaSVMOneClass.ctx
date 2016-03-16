@@ -11,11 +11,9 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
 	ts_fn doc2=NGramDocument(n="2", noSentence="false");
 	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
-	ts_str_fn pos = PoS();
-	ts_str_fn strDefPos=RelationStr(f1=${pos}, f2=${strDef}, relationSymbol="--");
-	str_fn vFilter=Filter(filter="V", type="PREFIX");
+	ts_fn posFilter = FilterPoSTagClass(tagClass="VB");
 	
-	feature fvbDoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="8", tokenExtractor="FirstTokenSpan", fn=(${vFilter} o ${strDefPos} o ${doc1}));
+	feature fvbDoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="8", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posFilter} o ${doc1}));
 	feature_set f = FeatureSet(features=(${fvbDoc1}), initData=(${trainData}));
 	
 	value countTrainData = SizeData(data=${trainData});
@@ -25,7 +23,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value debugTrainData = OutputDebug(refs=(${countTrainData}));
 	value debugDevData = OutputDebug(refs=(${countDevData}));
 	value debugTestData = OutputDebug(refs=(${countTestData}));
-	value debugFeaturs = OutputDebug(refs=(${countFeatures}));
+	value debugFeatures = OutputDebug(refs=(${countFeatures}));
 	
 	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
 	data_features devMatrix = DataFeatureMatrix(data=${devData}, features=${f});
