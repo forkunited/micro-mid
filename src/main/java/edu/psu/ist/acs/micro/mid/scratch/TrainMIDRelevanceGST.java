@@ -11,7 +11,6 @@ import org.bson.Document;
 
 import edu.cmu.ml.rtw.generic.data.annotation.DataSet;
 import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
-import edu.cmu.ml.rtw.generic.data.annotation.DocumentSet;
 import edu.cmu.ml.rtw.generic.data.annotation.DocumentSetInMemoryLazy;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLP;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPDatum;
@@ -66,7 +65,7 @@ public class TrainMIDRelevanceGST {
 	private static List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> constructData() {
 		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Constructing data...");
 		
-		DocumentSet<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
+		DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
 		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
 		
@@ -91,7 +90,7 @@ public class TrainMIDRelevanceGST {
 		int positiveCount = datumId;
 		
 		double positiveRate = context.getDoubleValue("positiveRate");
-		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
+		DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
 				(StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 
 				(int)Math.floor(positiveCount / positiveRate - positiveCount));
 		
@@ -119,7 +118,7 @@ public class TrainMIDRelevanceGST {
 	private static List<DataSet<DocumentNLPDatum<Boolean>, Boolean>> constructDataBiased() {
 		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Constructing data...");
 		
-		DocumentSet<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
+		DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable> goldDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsGoldRelevanceLabeledDocumentCollectionName() + "_tokens"));
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> data = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
 		
 		goldDocuments.map(new Fn<DocumentNLP, Boolean>() {
@@ -149,7 +148,7 @@ public class TrainMIDRelevanceGST {
 		
 		double nonTrainingPositiveRate = context.getDoubleValue("positiveRate");
 		
-		DocumentSet<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
+		DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable> unlabeledDocuments = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
 				(StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMIDNewsSvmUnlabeledDocumentCollectionName() + "_tokens"), 
 				(int)Math.floor(trainingPositiveCount + devPositiveCount / nonTrainingPositiveRate - devPositiveCount + testPositiveCount / nonTrainingPositiveRate - testPositiveCount), dataTools.getGlobalRandom(), false);		
 		DataSet<DocumentNLPDatum<Boolean>, Boolean> unlabeledData = new DataSet<DocumentNLPDatum<Boolean>, Boolean>(datumTools, null);
