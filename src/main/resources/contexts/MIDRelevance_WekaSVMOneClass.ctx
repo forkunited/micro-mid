@@ -26,8 +26,6 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value debugFeatures = OutputDebug(refs=(${countFeatures}));
 	
 	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
-	data_features devMatrix = DataFeatureMatrix(data=${devData}, features=${f});
-	data_features testMatrix = DataFeatureMatrix(data=${testData}, features=${f});
 	
 	model weka=WekaSVMOneClass(targetLabel="true", defaultOutlierLabel="false", kernelType="RBF")
 	{
@@ -40,11 +38,11 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 		dimension kernelType=Enumerated(values=("LINEAR", "POLYNOMIAL", "RBF", "SIGMOID"), stageIndex="0");
 	};
 	
-	classify_task devTask = Classification(data=${devMatrix});
+	classify_task devTask = Classification(data=${devData});
 	classify_eval devEval = F(task=${devTask}, method=${wekaMethod}, Beta="1", filterLabel="true");
 	classify_method bestMethod = RunClassifyMethodSearch(fn=${devEval}, search=${trr});
 	
-	classify_task testTask = Classification(data=${testMatrix});
+	classify_task testTask = Classification(data=${testData});
 	classify_eval testAccuracy = Accuracy(task=${testTask}, method=${bestMethod});       
 	classify_eval testF = F(task=${testTask}, method=${bestMethod}, Beta="1", filterLabel="true");
 	classify_eval testPrecision = Precision(task=${testTask}, method=${bestMethod}, filterLabel="true");
