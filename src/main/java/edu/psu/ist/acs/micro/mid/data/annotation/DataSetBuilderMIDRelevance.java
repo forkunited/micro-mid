@@ -122,5 +122,4 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 	public String getGenericName() {
 		return "MIDRelevance";
 	}
-
 }

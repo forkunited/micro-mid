@@ -83,7 +83,7 @@ public class MIDRelevanceClassifier {
 		}
 	
 		PipelineNLPStanford pipelineStanford = new PipelineNLPStanford();
-		pipelineStanford.initialize(AnnotationTypeNLP.POS);
+		pipelineStanford.initialize(AnnotationTypeNLP.CONSTITUENCY_PARSE);
 		
 		List<MID5FileReader> readers = getInputReaders();
 		ThreadMapper<MID5FileReader, Boolean> threadMapper = new ThreadMapper<MID5FileReader, Boolean>(
