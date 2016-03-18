@@ -13,7 +13,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
 	ts_fn posFilter = FilterPoSTagClass(tagClass="VB");
 	
-	feature fvbDoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="8", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posFilter} o ${doc1}));
+	feature fvbDoc1=TokenSpanFnDataVocab(scale="NORMALIZED_TFIDF", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posFilter} o ${doc1}));
 	feature_set f = FeatureSet(features=(${fvbDoc1}), initData=(${trainData}));
 	
 	value countTrainData = SizeData(data=${trainData});
@@ -55,6 +55,6 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value strEvals = OutputStrings(id="MIDRelevance_WekaSVMOneClass_Evals", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testAccuracy}, ${testF}, ${testPrecision}, ${testRecall}, ${testConfusionMatrix}, ${trr}));
 	value strData = OutputStrings(id="MIDRelevance_WekaSVMOneClass_EvalData", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testConfusionData}));
 	
-	value parseFeatures = OutputParses(id="MIDRelevance_WekaSVMOneClass_Features", storage="MIDString", collection="ExperimentParseOutput", types=("features"), fns=(${f}));
+	value parseFeatures = OutputParses(id="MIDRelevance_WekaSVMOneClass_Features", storage="MIDString", collection="ExperimentParseOutput", types=("feature_set"), fns=(${f}));
 	value parseModel = OutputParses(id="MIDRelevance_WekaSVMOneClass_Model", storage="MIDString", collection="ExperimentParseOutput", types=("model"), fns=(${bestMethod}), params=("modelInternal"));
 };
