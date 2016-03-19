@@ -13,7 +13,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
 	ts_fn posFilter = FilterPoSTagClass(tagClass="VB");
 	
-	feature fvbDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="6", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posFilter} o ${doc1}));
+	feature fvbDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="20", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posFilter} o ${doc1}));
 	feature_set f = FeatureSet(features=(${fvbDoc1}), initData=(${trainData}));
 	
 	value countTrainData = SizeData(data=${trainData});
