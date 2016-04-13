@@ -1,0 +1,59 @@
+value maxThreads="30";
+value debug=Debug(file="MIDRelevance_LibSVMOneClass.out");
+value randomSeed=SetRandomSeed(seed="1");
+value cleanFn=BuildCleanFn(name="BagOfWordsCleanFn", fns=("Trim", "RemoveSymbols", "ReplaceNumbers", "UnderscoreToSpace", "Trim", "RemoveLongTokens", "Stem", "SpaceToUnderscore"));
+
+context documentNLPBooleanCtx=DocumentNLPBoolean() {	
+	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_full");
+	data devData = Stored(storage="MIDBson", collection="mid_news_rel_dev_data_full");
+	data testData = Stored(storage="MIDBson", collection="mid_news_rel_test_data_full");
+
+	ts_fn doc1=NGramDocument(n="1", noSentence="false");
+	ts_fn doc2=NGramDocument(n="2", noSentence="false");
+	ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
+	ts_fn posFilter = FilterPoSTagClass(tagClass="VB");
+	
+	feature fvbDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="20", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posFilter} o ${doc1}));
+	feature_set f = FeatureSet(features=(${fvbDoc1}), initData=(${trainData}));
+	
+	value countTrainData = SizeData(data=${trainData});
+	value countDevData = SizeData(data=${devData});
+	value countTestData = SizeData(data=${testData});
+	value countFeatures = SizeFeatures(features=${f});
+	value debugTrainData = OutputDebug(refs=(${countTrainData}));
+	value debugDevData = OutputDebug(refs=(${countDevData}));
+	value debugTestData = OutputDebug(refs=(${countTestData}));
+	value debugFeatures = OutputDebug(refs=(${countFeatures}));
+	
+	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
+	
+	model svm=LibSVM(targetLabel="true", outlierLabel="false", svmType="ONE_CLASS", kernelType="LINEAR", nu="0.5")
+	{
+		array validLabels=("true", "false");
+	};
+	evaluation modelF1=F(filterLabel="true", Beta="1");
+	classify_method svmMethod = SupervisedModel(model=${svm}, data=${trainMatrix}, trainEvaluation=${modelF1});
+	
+	search trr=Grid() {
+		dimension nu=Enumerated(values=(".3", ".5", ".7"), stageIndex="0");
+		dimension kernelType=Enumerated(values=("LINEAR", "RBF", "SIGMOID", "POLYNOMIAL"), stageIndex="0");
+	};
+	
+	classify_task devTask = Classification(data=${devData});
+	classify_eval devEval = F(task=${devTask}, method=${svmMethod}, Beta="1", filterLabel="true");
+	classify_method bestMethod = RunClassifyMethodSearch(fn=${devEval}, search=${trr});
+	
+	classify_task testTask = Classification(data=${testData});
+	classify_eval testAccuracy = Accuracy(task=${testTask}, method=${bestMethod});       
+	classify_eval testF = F(task=${testTask}, method=${bestMethod}, Beta="1", filterLabel="true");
+	classify_eval testPrecision = Precision(task=${testTask}, method=${bestMethod}, filterLabel="true");
+	classify_eval testRecall = Recall(task=${testTask}, method=${bestMethod}, filterLabel="true");
+	classify_eval testConfusionMatrix = ConfusionMatrix(task=${testTask}, method=${bestMethod});
+	classify_eval testConfusionData = ConfusionData(task=${testTask}, method=${bestMethod});
+	
+	value strEvals = OutputStrings(id="MIDRelevance_LibSVMOneClass_Evals", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testAccuracy}, ${testF}, ${testPrecision}, ${testRecall}, ${testConfusionMatrix}, ${trr}));
+	value strData = OutputStrings(id="MIDRelevance_LibSVMOneClass_EvalData", storage="MIDString", collection="ExperimentEvaluationOutput", refs=(${testConfusionData}));
+	
+	value parseFeatures = OutputParses(id="MIDRelevance_LibSVMOneClass_Features", storage="MIDString", collection="ExperimentParseOutput", types=("feature_set"), fns=(${f}));
+	value parseModel = OutputParses(id="MIDRelevance_LibSVMOneClass_Model", storage="MIDString", collection="ExperimentParseOutput", types=("model"), fns=(${bestMethod}), params=("modelInternal"));
+};
