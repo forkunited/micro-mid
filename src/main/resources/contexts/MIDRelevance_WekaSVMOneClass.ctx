@@ -36,6 +36,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	
 	search trr=Grid() {
 		dimension gamma=Enumerated(values=(".0001", ".001", ".01", ".1", "1"), stageIndex="0");
+		dimension kernelType=Enumerated(values=("LINEAR", "RBF", "SIGMOID", "POLYNOMIAL"), stageIndex="0");
 	};
 	
 	classify_task devTask = Classification(data=${devData});
