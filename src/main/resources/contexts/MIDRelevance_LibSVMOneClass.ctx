@@ -35,8 +35,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	classify_method svmMethod = SupervisedModel(model=${svm}, data=${trainMatrix}, trainEvaluation=${modelF1});
 	
 	search trr=Grid() {
-		dimension nu=Enumerated(values=(".3", ".5", ".7"), stageIndex="0");
-		dimension kernelType=Enumerated(values=("LINEAR", "RBF", "SIGMOID", "POLYNOMIAL"), stageIndex="0");
+		dimension nu=Enumerated(values=(".01", ".05", ".1", ".2", ".3", ".5", ".7"), stageIndex="0");
 	};
 	
 	classify_task devTask = Classification(data=${devData});
