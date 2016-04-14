@@ -27,7 +27,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	
 	data_features trainMatrix = DataFeatureMatrix(data=${trainData}, features=${f});
 	
-	model svm=LibSVM(positiveLabel="true", negativeLabel="false", svmType="ONE_CLASS", kernelType="LINEAR", nu="0.5")
+	model svm=LibSVM(positiveLabel="true", negativeLabel="false", svmType="C_SVC", kernelType="LINEAR", nu="0.5")
 	{
 		array validLabels=("true", "false");
 	};
