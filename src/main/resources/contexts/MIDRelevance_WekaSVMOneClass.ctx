@@ -4,8 +4,8 @@ value randomSeed=SetRandomSeed(seed="1");
 value cleanFn=BuildCleanFn(name="BagOfWordsCleanFn", fns=("Trim", "RemoveSymbols", "ReplaceNumbers", "UnderscoreToSpace", "Trim", "RemoveLongTokens", "Stem", "SpaceToUnderscore"));
 
 context documentNLPBooleanCtx=DocumentNLPBoolean() {	
-	data devData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_full");
-	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_dev_data_full");
+	data trainData = Stored(storage="MIDBson", collection="mid_news_rel_train_data_full");
+	data devData = Stored(storage="MIDBson", collection="mid_news_rel_dev_data_full");
 	data testData = Stored(storage="MIDBson", collection="mid_news_rel_test_data_full");
 
 	ts_fn doc1=NGramDocument(n="1", noSentence="false");
