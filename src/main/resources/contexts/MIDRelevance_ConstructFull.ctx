@@ -8,7 +8,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value countPositiveData = SizeData(data=${positiveData});
 	value countNegativeDataSkewed = SizeData(data=${negativeDataSkewed});
 
-	data unlabeledDataSkewed = MIDRelevance(storage="MIDBson", collection="mid_news_rel_unlabeled_POS", label="false", limit=${countNegativeDataSkewed});
+	data unlabeledDataSkewed = MIDRelevance(storage="MIDBson", collection="mid_news_unlabeled_POS", label="false", limit=${countNegativeDataSkewed});
 
 	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
 	value negativeSkewedParition = PartitionData(data=${negativeDataSkewed}, distribution=(".8", ".1", ".1"));
