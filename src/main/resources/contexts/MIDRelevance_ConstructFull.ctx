@@ -3,28 +3,77 @@ value debug=Debug();
 value randomSeed=SetRandomSeed(seed="1");
 context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	data positiveData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_POS", label="true");
-	data negativeData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_POS", label="false");
+	data negativeDataSkewed = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_POS", label="false");
 	
-	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
-	value negativeParition = PartitionData(data=${negativeData}, distribution=(".8", ".1", ".1"));
-	
-	data trainData = UnionData(data=(${positiveData_0}));
-	data devData = UnionData(data=(${positiveData_1}, ${negativeData_1}));
-	data testData = UnionData(data=(${positiveData_2}, ${negativeData_2}));
-
 	value countPositiveData = SizeData(data=${positiveData});
-	value countNegativeData = SizeData(data=${negativeData});
-	value countTrainData = SizeData(data=${trainData});
-	value countDevData = SizeData(data=${devData});
-	value countTestData = SizeData(data=${testData});
+	value countNegativeDataSkewed = SizeData(data=${negativeDataSkewed});
+
+	data unlabeledDataSkewed = MIDRelevance(storage="MIDBson", collection="mid_news_rel_unlabeled_POS", label="false", limit=${countNegativeDataSkewed});
+
+	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
+	value negativeSkewedParition = PartitionData(data=${negativeDataSkewed}, distribution=(".8", ".1", ".1"));
+	value unlabeledSkewedParition = PartitionData(data=${unlabeledDataSkewed}, distribution=(".8", ".1", ".1"));
 	
-	value debugPositiveData = OutputDebug(refs=(${countPositiveData}));
-	value debugNegativeData = OutputDebug(refs=(${countNegativeData}));
-	value debugTrainData = OutputDebug(refs=(${countTrainData}));
-	value debugDevData = OutputDebug(refs=(${countDevData}));
-	value debugTestData = OutputDebug(refs=(${countTestData}));
+	value countPositiveDataTrain = SizeData(data=${positiveData_0});
+	value countPositiveDataDev = SizeData(data=${positiveData_1});
+	value countPositiveDataTest = SizeData(data=${positiveData_2});
 	
-	value storeTrain = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_full", data=${trainData});
-	value storeDev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_full", data=${devData});
-	value storeTest = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_full", data=${testData});
+	data negativeTrain = SubsetData(data=${negativeDataSkewed_0}, size=${countPositiveDataTrain});
+	data negativeDev = SubsetData(data=${negativeDataSkewed_1}, size=${countPositiveDataDev});
+	data negativeTest = SubsetData(data=${negativeDataSkewed_2}, size=${countPositiveDataTest});
+	
+	data unlabeledTrain = SubsetData(data=${unlabeledDataSkewed_0}, size=${countPositiveDataTrain});
+	data unlabeledDev = SubsetData(data=${unlabeledDataSkewed_1}, size=${countPositiveDataDev});
+	data unlabeledTest = SubsetData(data=${unlabeledDataSkewed_2}, size=${countPositiveDataTest});
+	
+	value negativeTrainPartition = PartitionData(data=${negativeTrain}, distribution=(".5", ".5"));
+	value negativeDevPartition = PartitionData(data=${negativeDev}, distribution=(".5", ".5"));
+	value negativeTestPartition = PartitionData(data=${negativeTest}, distribution=(".5", ".5"));
+	value unlabeledTrainPartition = PartitionData(data=${unlabeledTrain}, distribution=(".5", ".5"));
+	value unlabeledDevPartition = PartitionData(data=${unlabeledDev}, distribution=(".5", ".5"));
+	value unlabeledTestPartition = PartitionData(data=${unlabeledTest}, distribution=(".5", ".5"));
+	
+	data pnTrainData = UnionData(data=(${positiveData_0}, ${negativeTrain}));
+	data pnDevData = UnionData(data=(${positiveData_1}, ${negativeDev}));
+	data pnTestData = UnionData(data=(${positiveData_2}, ${negativeTest}));
+	
+	data puTrainData = UnionData(data=(${positiveData_0}, ${unlabeledTrain}));
+	data puDevData = UnionData(data=(${positiveData_1}, ${unlabeledDev}));
+	data puTestData = UnionData(data=(${positiveData_2}, ${unlabeledTest}));
+	
+	data pmTrainData = UnionData(data=(${positiveData_0}, ${unlabeledTrain_0}, ${negativeTrain_0}));
+	data pmDevData = UnionData(data=(${positiveData_1}, ${unlabeledDev_0}, ${negativeDev_0}));
+	data pmTestData = UnionData(data=(${positiveData_2}, ${unlabeledTest_0}, ${negativeTest_0}));
+	
+	value negativeDevSkewedPartition = PartitionData(data=${negativeDataSkewed_1}, distribution=(".5", ".5"));
+	value negativeTestSkewedPartition = PartitionData(data=${negativeDataSkewed_2}, distribution=(".5", ".5"));
+	value unlabeledDevSkewedPartition = PartitionData(data=${unlabeledDataSkewed_1}, distribution=(".5", ".5"));
+	value unlabeledTestSkewedPartition = PartitionData(data=${unlabeledDataSkewed_2}, distribution=(".5", ".5"));
+	
+	data pnDevDataSkewed = UnionData(data=(${positiveData_1}, ${negativeDataSkewed_1}));
+	data pnTestDataSkewed = UnionData(data=(${positiveData_2}, ${negativeDataSkewed_2}));
+	
+	data puDevDataSkewed = UnionData(data=(${positiveData_1}, ${unlabeledDataSkewed_1}));
+	data puTestDataSkewed = UnionData(data=(${positiveData_2}, ${unlabeledDataSkewed_2}));
+	
+	data pmDevDataSkewed = UnionData(data=(${positiveData_1}, ${unlabeledDataSkewed_1_0}, ${negativeDataSkewed_1_0}));
+	data pmTestDataSkewed = UnionData(data=(${positiveData_2}, ${unlabeledDataSkewed_2_0}, ${negativeDataSkewed_2_0}));
+
+	value storePnTrain = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_pn", data=${pnTrainData});
+	value storePnDev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pn", data=${pnDevData});
+	value storePnTest = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pn", data=${pnTestData});
+	value storePnDevSkewed = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pn_sk", data=${pnDevDataSkewed});
+	value storePnTestSkewed = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pn_sk", data=${pnTestDataSkewed});
+	
+	value storePuTrain = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_pu", data=${puTrainData});
+	value storePuDev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pu", data=${puDevData});
+	value storePuTest = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pu", data=${puTestData});
+	value storePuDevSkewed = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pu_sk", data=${puDevDataSkewed});
+	value storePuTestSkewed = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pu_sk", data=${puTestDataSkewed});
+
+	value storePmTrain = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_pm", data=${pmTrainData});
+	value storePmDev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pm", data=${pmDevData});
+	value storePmTest = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pm", data=${pmTestData});
+	value storePmDevSkewed = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pm_sk", data=${pmDevDataSkewed});
+	value storePmTestSkewed = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pm_sk", data=${pmTestDataSkewed});
 };
