@@ -1,0 +1,14 @@
+context trainDevTestDataRelevance = DocumentNLPBoolean(initScript="/relevance/data/LoadTrainDevTest.ctx", initOnce="true", initOverrideByName="true");
+context methodRelevance = DocumentNLPBoolean(initScript="/relevance/methods/LibSVMLinearOneClass.ctx", initOnce="true", initOverrideByName="true");
+
+classify_eval devAccuracy = Accuracy(task=${trainDevTestDataRelevance.devTask}, method=${methodRelevance.methodFinal});       
+classify_eval devF = F(task=${trainDevTestDataRelevance.devTask}, method=${methodRelevance.methodFinal}, Beta="1", filterLabel="true");
+classify_eval devPrecision = Precision(task=${trainDevTestDataRelevance.devTask}, method=${methodRelevance.methodFinal}, filterLabel="true");
+classify_eval devRecall = Recall(task=${trainDevTestDataRelevance.devTask}, method=${methodRelevance.methodFinal}, filterLabel="true");
+classify_eval devConfusionMatrix = ConfusionMatrix(task=${trainDevTestDataRelevance.devTask}, method=${methodRelevance.methodFinal});
+
+classify_eval testAccuracy = Accuracy(task=${trainDevTestDataRelevance.testTask}, method=${methodRelevance.methodFinal});       
+classify_eval testF = F(task=${trainDevTestDataRelevance.testTask}, method=${methodRelevance.methodFinal}, Beta="1", filterLabel="true");
+classify_eval testPrecision = Precision(task=${trainDevTestDataRelevance.testTask}, method=${methodRelevance.methodFinal}, filterLabel="true");
+classify_eval testRecall = Recall(task=${trainDevTestDataRelevance.testTask}, method=${methodRelevance.methodFinal}, filterLabel="true");
+classify_eval testConfusionMatrix = ConfusionMatrix(task=${trainDevTestDataRelevance.testTask}, method=${methodRelevance.methodFinal});

@@ -1,0 +1,10 @@
+context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
+
+ts_fn doc1=NGramDocument(n="1", noSentence="false");
+ts_fn doc2=NGramDocument(n="2", noSentence="false");
+ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
+ts_fn posFilter = FilterPoSTagClass(tagClass="VB");
+
+feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc1}));
+feature fdoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${doc2}));
+feature fvbDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posFilter} o ${doc1}));

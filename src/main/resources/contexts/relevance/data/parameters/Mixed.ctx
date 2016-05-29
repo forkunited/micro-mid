@@ -1,0 +1,3 @@
+value trainDocs="mid_news_rel_train_data_pm";
+value devDocs="mid_news_rel_dev_data_pm";
+value testDocs="mid_news_rel_test_data_pm";

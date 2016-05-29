@@ -1,0 +1,16 @@
+context dataParamsRelevance = DocumentNLPBoolean(initScript="/relevance/data/parameters/Negative.ctx", initOnce="true", initOverrideByName="true");
+
+data trainData = Stored(storage="MIDBson", collection=${dataParamsRelevance.trainDocs});
+data devData = Stored(storage="MIDBson", collection=${dataParamsRelevance.devDocs});
+data testData = Stored(storage="MIDBson", collection=${dataParamsRelevance.testDocs});
+
+classify_task devTask = Classification(data=${devData});
+classify_task testTask = Classification(data=${testData});
+
+value countRelevanceTrainData = SizeData(data=${trainData});
+value countRelevanceDevData = SizeData(data=${devData});
+value countRelevanceTestData = SizeData(data=${testData});
+value debugTrainData = OutputDebug(refs=(${countRelevanceTrainData}));
+value debugDevData = OutputDebug(refs=(${countRelevanceDevData}));
+value debugTestData = OutputDebug(refs=(${countRelevanceTestData}));
+
