@@ -11,5 +11,5 @@ value strEvals = OutputStrings(id=${resultsId}, storage="MIDString", collection=
                   ${eval.testPrecision}, 
                   ${eval.testRecall}, 
                   ${eval.testF},
-                  ${eval.testConfusionMatrix},  
+                  ${eval.testConfusionMatrix}
                  )); 
