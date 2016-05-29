@@ -1,0 +1,9 @@
+value maxThreads="30";
+value resultsId = "Relevance_Test_LibSVMLinear_VerbSmall_Negative";
+value debug=Debug(file=${resultsId});
+
+context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
+context featureSetsRelevance = DocumentNLPBoolean(initScript="/relevance/featureSets/VerbSmall.ctx", initOnce="true");
+context methodRelevance = DocumentNLPBoolean(initScript="/relevance/methods/LibSVMLinear.ctx", initOnce="true");
+context eval = DocumentNLPBoolean(initScript="/relevance/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/relevance/experiment/output/Test_Default.ctx", initOnce="false");
