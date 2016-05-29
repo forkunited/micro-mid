@@ -1,0 +1,16 @@
+value strEvals = OutputStrings(id=${resultsId}, storage="MIDString", collection="ExperimentEvaluationOutput", 
+                 refs=
+                 (
+                  ${eval.devAccuracy}, 
+                  ${eval.devPrecision}, 
+                  ${eval.devRecall}, 
+                  ${eval.devF},
+                  ${eval.devConfusionMatrix},  
+                  ${eval.methodRelevance.trr},
+                  
+                  ${eval.testAccuracy}, 
+                  ${eval.testPrecision}, 
+                  ${eval.testRecall}, 
+                  ${eval.testF},
+                  ${eval.testConfusionMatrix}
+                 )); 
