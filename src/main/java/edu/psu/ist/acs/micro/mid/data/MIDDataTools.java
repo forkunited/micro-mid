@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 
 import edu.cmu.ml.rtw.generic.data.DataTools;
 import edu.cmu.ml.rtw.generic.data.Gazetteer;
+import edu.cmu.ml.rtw.generic.data.annotation.Datum.Tools.DatumIndicator;
 import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPDatum;
 import edu.cmu.ml.rtw.generic.util.OutputWriter;
@@ -68,6 +69,28 @@ public class MIDDataTools extends DataTools {
 		
 		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
 		.getDatumTools().addGenericDataSetBuilder(new DataSetBuilderMIDRelevance());
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "EarlyYears"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2002_")
+						|| datum.getDocument().getName().contains("_2003_")
+						|| datum.getDocument().getName().contains("_2004_");
+			}
+		});
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "LateYears"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2008_")
+						|| datum.getDocument().getName().contains("_2009_")
+						|| datum.getDocument().getName().contains("_2010_");
+			}
+		});
+		
+		
 	}
 	
 	public MIDProperties getProperties() {

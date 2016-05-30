@@ -10,7 +10,7 @@ classify_task testTask = Classification(data=${testData});
 value countRelevanceTrainData = SizeData(data=${trainData});
 value countRelevanceDevData = SizeData(data=${devData});
 value countRelevanceTestData = SizeData(data=${testData});
+
 value debugTrainData = OutputDebug(refs=(${countRelevanceTrainData}));
 value debugDevData = OutputDebug(refs=(${countRelevanceDevData}));
 value debugTestData = OutputDebug(refs=(${countRelevanceTestData}));
-
