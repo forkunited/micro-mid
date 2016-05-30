@@ -12,7 +12,7 @@ evaluation modelF1=F(filterLabel="true", Beta="1");
 classify_method modelMethod = SupervisedModel(model=${m}, data=${trainMatrix}, trainEvaluation=${modelF1});
 
 search trr=Grid() {
-	dimension nu=Enumerated(values=(".01", ".1", ".3", ".5", ".7", ".9", ".99"), stageIndex="0");
+	dimension nu=Enumerated(values=(".5", ".7", ".9", ".99"), stageIndex="0");
 };
 
 classify_eval devEval = F(task=${trainDevTestDataRelevance.devTask}, method=${modelMethod}, Beta="1", filterLabel="true");
