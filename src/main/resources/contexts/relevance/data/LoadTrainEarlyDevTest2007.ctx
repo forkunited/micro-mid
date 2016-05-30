@@ -1,0 +1,28 @@
+context dataParamsRelevance = DocumentNLPBoolean(initScript="/relevance/data/parameters/Negative.ctx", initOnce="true", initOverrideByName="true");
+
+data trainDataFull = Stored(storage="MIDBson", collection=${dataParamsRelevance.trainDocs});
+data devDataFull = Stored(storage="MIDBson", collection=${dataParamsRelevance.devDocs});
+data testDataFull = Stored(storage="MIDBson", collection=${dataParamsRelevance.testDocs});
+
+value countRelevanceTrainDataFull = SizeData(data=${trainDataFull});
+value countRelevanceDevDataFull = SizeData(data=${devDataFull});
+value countRelevanceTestDataFull = SizeData(data=${testDataFull});
+
+value debugTrainDataFull = OutputDebug(refs=(${countRelevanceTrainDataFull}));
+value debugDevDataFull = OutputDebug(refs=(${countRelevanceDevDataFull}));
+value debugTestDataFull = OutputDebug(refs=(${countRelevanceTestDataFull}));
+
+data trainData = FilterData(data=${trainDataFull}, datumIndicator="EarlyYears");
+data devData = FilterData(data=${trainDataFull}, datumIndicator="2007");
+data testData = FilterData(data=${trainDataFull}, datumIndicator="2007");
+
+value countRelevanceEarlyTrainData = SizeData(data=${trainData});
+value countRelevanceLateDevData = SizeData(data=${devData});
+value countRelevanceLateTestData = SizeData(data=${testData});
+
+value debugEarlyTrainData = OutputDebug(refs=(${countRelevanceEarlyTrainData}));
+value debugLateDevData = OutputDebug(refs=(${countRelevanceLateDevData}));
+value debugLateTestData = OutputDebug(refs=(${countRelevanceLateTestData}));
+
+classify_task devTask = Classification(data=${devData});
+classify_task testTask = Classification(data=${testData});

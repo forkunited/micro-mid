@@ -90,7 +90,53 @@ public class MIDDataTools extends DataTools {
 			}
 		});
 		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "2005"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2005_");
+			}
+		});
 		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "2006"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2006_");
+			}
+		});
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "2007"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2007_");
+			}
+		});
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "2008"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2008_");
+			}
+		});
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "2009"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2009_");
+			}
+		});
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
+			public String toString() { return "2010"; }
+			public boolean indicator(DocumentNLPDatum<Boolean> datum) {
+				return datum.getDocument().getName().contains("_2010_");
+			}
+		});
 	}
 	
 	public MIDProperties getProperties() {
