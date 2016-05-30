@@ -3,6 +3,6 @@ value resultsId = "Relevance_Test_StanfordLinear_Unigram_Negative";
 value debug=Debug(file=${resultsId});
 
 context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
-context methodRelevance = DocumentNLPBoolean(initScript="/relevance/methods/StanfordLinear.ctx", initOnce="false");
+context methodRelevance = DocumentNLPBoolean(initScript="/relevance/methods/StanfordLinear.ctx", initOnce="true");
 context eval = DocumentNLPBoolean(initScript="/relevance/evaluations/Default.ctx", initOnce="false");
 context results = DocumentNLPBoolean(initScript="/relevance/experiment/output/Test_Default.ctx", initOnce="false");
