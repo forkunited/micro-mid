@@ -13,8 +13,8 @@ value debugDevDataFull = OutputDebug(refs=(${countRelevanceDevDataFull}));
 value debugTestDataFull = OutputDebug(refs=(${countRelevanceTestDataFull}));
 
 data trainData = FilterData(data=${trainDataFull}, datumIndicator="EarlyYears");
-data devData = FilterData(data=${devDataFull}, datumIndicator="2007");
-data testData = FilterData(data=${testDataFull}, datumIndicator="2007");
+data devData = FilterData(data=${devDataFull}, datumIndicator="EarlyYears");
+data testData = FilterData(data=${trainDataFull}, datumIndicator="2007");
 
 value countRelevanceEarlyTrainData = SizeData(data=${trainData});
 value countRelevanceLateDevData = SizeData(data=${devData});
