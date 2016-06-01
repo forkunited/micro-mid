@@ -1,5 +1,5 @@
 value maxThreads="30";
-value resultsId = "Relevance_Test_StanfordLinear_Unigram_MixedUnlabeled;
+value resultsId = "Relevance_Test_StanfordLinear_Unigram_MixedUnlabeled";
 value debug=Debug(file=${resultsId});
 
 context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
