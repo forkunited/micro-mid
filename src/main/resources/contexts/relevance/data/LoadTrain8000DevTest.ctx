@@ -4,7 +4,7 @@ data trainDataFull = Stored(storage="MIDBson", collection=${dataParamsRelevance.
 data devData = Stored(storage="MIDBson", collection=${dataParamsRelevance.devDocs});
 data testData = Stored(storage="MIDBson", collection=${dataParamsRelevance.testDocs});
 
-data trainData = SubsetData(data=${trainDataFull}, size="8000");
+data trainData = SubsetData(data=${trainDataFull}, size="8000", shuffle="true");
 
 classify_task devTask = Classification(data=${devData});
 classify_task testTask = Classification(data=${testData});
