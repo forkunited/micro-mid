@@ -13,3 +13,10 @@ value strEvals = OutputStrings(id=${resultsId}, storage="MIDString", collection=
                   ${eval.testF},
                   ${eval.testConfusionMatrix}
                  )); 
+                
+value strModels = OutputStrings(id=${resultsId}, storage="MIDString", collection="ExperimentModelOutput", 
+                 refs=
+                 (
+                  ${eval.methodRelevance.methodFinal}, 
+                  ${eval.methodRelevance.featureSetsRelevance.fs}
+                 )); 
