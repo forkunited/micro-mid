@@ -1,0 +1,11 @@
+value maxThreads="30";
+value resultsId = "Relevance_Test_StanfordLinear_NoProperNoun_Unlabeled_Train8000";
+value debug=Debug(file=${resultsId});
+
+context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
+context dataParamsRelevance = DocumentNLPBoolean(initScript="/relevance/data/parameters/Unlabeled.ctx", initOnce="true");
+context trainDevTestDataRelevance = DocumentNLPBoolean(initScript="/relevance/data/LoadTrain8000DevTest.ctx", initOnce="true");
+context featureSetsRelevance = DocumentNLPBoolean(initScript="/relevance/featureSets/NoProperNoun.ctx", initOnce="true");
+context methodRelevance = DocumentNLPBoolean(initScript="/relevance/methods/StanfordLinear.ctx", initOnce="true");
+context eval = DocumentNLPBoolean(initScript="/relevance/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/relevance/experiment/output/Test_Default.ctx", initOnce="false");
