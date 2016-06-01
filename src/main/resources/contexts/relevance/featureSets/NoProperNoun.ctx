@@ -1,0 +1,4 @@
+context features = DocumentNLPBoolean(initScript="/relevance/Features.ctx", initOnce="true");
+context trainDevTestDataRelevance = DocumentNLPBoolean(initScript="/relevance/data/LoadTrainDevTest.ctx", initOnce="true", initOverrideByName="true");
+
+feature_set fs = FeatureSet(features=(${features.fnoNnpDoc1}), initData=(${trainDevTestDataRelevance.trainData}));
