@@ -5,7 +5,8 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	data positiveData = MIDRelevance(storage="MIDBson", collection="mid_news_rel_labeled_POS", label="true");
 	
 	value countPositiveData = SizeData(data=${positiveData});
-	value sizeUnlabeled1000 = MultiplyValues(value1=${countPositiveData}, value2="999");
+	value debugPositiveData = OutputDebug(refs=(${countPositiveData}));
+	value sizeUnlabeled1000 = MultiplyValues(value1=${countPositiveData}, value2="999", round="true");
 	data unlabeledData1000 = MIDRelevance(storage="MIDBson", collection="mid_news_unlabeled_POS", label="false", limit=${sizeUnlabeled1000});
 
 	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
@@ -18,7 +19,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	data unlabeled100Dev = SubsetData(data=${unlabeledData1000_1}, size=${sizeUnlabeled100Dev});
 	data unlabeled100Test = SubsetData(data=${unlabeledData1000_2}, size=${sizeUnlabeled100Test});
 	
-	value sizeUnlabeled1rain = MultiplyValues(value1=${positiveData_0}, value2="1", round="true");
+	value sizeUnlabeled1Train = MultiplyValues(value1=${positiveData_0}, value2="1", round="true");
 	value sizeUnlabeled1Dev = MultiplyValues(value1=${positiveData_1}, value2="1", round="true");
 	value sizeUnlabeled1Test = MultiplyValues(value1=${positiveData_2}, value2="1", round="true");
 	data unlabeled1Train = SubsetData(data=${unlabeledData1000_0}, size=${sizeUnlabeled1Train});
