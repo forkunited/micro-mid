@@ -1,5 +1,7 @@
 context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
 
+ts_str_fn str=String();
+
 str_fn trim = Trim();
 str_fn lwr = StringCase(type="LOWER");
 str_fn rmvSym = StringReplace(mode="REGEX", target="[\\W&&[^\\s]]+", replace=" ");
@@ -8,20 +10,20 @@ str_fn usToSpc = StringReplace(mode="LITERAL", target="_", replace=" ");
 str_fn rmvLong = RemoveLongStringParts(maxLength="30", partSplit="\\s+", partGlue=" "); 
 str_fn stem = StemStringParts(partSplit="\\s+", partGlue=" ");
 str_fn spcToUs = StringReplace(mode="LITERAL", target=" ", replace="_");
-str_fn clean = (${spcToUs} o ${stem} o ${rmvLong} o ${trim} o ${usToSpc} o ${rplNum} o ${rmvSym} o ${lwr} o ${trim});
+
+ts_str_fn strClean = Composite(f=(${spcToUs} o ${stem} o ${rmvLong} o ${trim} o ${usToSpc} o ${rplNum} o ${rmvSym} o ${lwr} o ${trim}), 
+                               g=${str});
 
 ts_fn doc1=NGramDocument(n="1", noSentence="false");
 ts_fn doc2=NGramDocument(n="2", noSentence="false");
 ts_fn doc2=NGramDocument(n="3", noSentence="false");
-ts_str_fn str=String();
-
 ts_fn posVbFilter = FilterPoSTagClass(tagClass="VB", mode="ONLY");
 ts_fn posNoNnpFilter = FilterPoSTagClass(tagClass="NNP", mode="NONE");
 
-feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${clean} o ${str} o ${doc1}));
-feature fdoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${clean} o ${str} o ${doc2}));
-feature fvbDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${clean} o ${str} o ${posVbFilter} o ${doc1}));
-feature fvbDoc1Small=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="20", tokenExtractor="FirstTokenSpan", fn=(${clean} o ${str} o ${posVbFilter} o ${doc1}));
-feature fnoNnpDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${clean} o ${str} o ${posNoNnpFilter} o ${doc1}));
-feature fnoNnpDoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${clean} o ${str} o ${posNoNnpFilter} o ${doc2}));
-feature fnoNnpDoc3=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${clean} o ${str} o ${posNoNnpFilter} o ${doc3}));
+feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${doc1}));
+feature fdoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${doc2}));
+feature fvbDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${posVbFilter} o ${doc1}));
+feature fvbDoc1Small=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="20", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${posVbFilter} o ${doc1}));
+feature fnoNnpDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${posNoNnpFilter} o ${doc1}));
+feature fnoNnpDoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${posNoNnpFilter} o ${doc2}));
+feature fnoNnpDoc3=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${posNoNnpFilter} o ${doc3}));
