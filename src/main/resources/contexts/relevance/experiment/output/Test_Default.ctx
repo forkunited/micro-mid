@@ -14,7 +14,7 @@ value strEvals = OutputStrings(id=${resultsId}, storage="MIDString", collection=
                   ${eval.testConfusionMatrix}
                  )); 
                 
-value strModels = OutputStrings(id=${resultsId}, storage="MIDString", collection="ExperimentModelOutput", 
+value strModels = OutputParses(id=${resultsId}, storage="MIDString", collection="ExperimentModelOutput", 
                  types=
                  (
                  "model",
