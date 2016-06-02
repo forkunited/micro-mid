@@ -15,8 +15,21 @@ value strEvals = OutputStrings(id=${resultsId}, storage="MIDString", collection=
                  )); 
                 
 value strModels = OutputStrings(id=${resultsId}, storage="MIDString", collection="ExperimentModelOutput", 
-                 refs=
+                 types=
                  (
+                 "model",
+                 "classify_method",
+                 "feature_set"
+                 ),
+                 fns=
+                 (
+                  ${eval.methodRelevance.methodFinal},
                   ${eval.methodRelevance.methodFinal}, 
                   ${eval.methodRelevance.featureSetsRelevance.fs}
-                 )); 
+                 ),
+                 params=
+                 (
+                 "modelInternal",
+                 "",
+                 ""
+                 ));                  
