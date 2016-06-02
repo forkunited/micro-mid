@@ -2,6 +2,7 @@ context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
 
 ts_fn doc1=NGramDocument(n="1", noSentence="false");
 ts_fn doc2=NGramDocument(n="2", noSentence="false");
+ts_fn doc2=NGramDocument(n="3", noSentence="false");
 ts_str_fn strDef=String(cleanFn="BagOfWordsCleanFn");
 ts_fn posVbFilter = FilterPoSTagClass(tagClass="VB", mode="ONLY");
 ts_fn posNoNnpFilter = FilterPoSTagClass(tagClass="NNP", mode="NONE");
@@ -11,3 +12,5 @@ feature fdoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", 
 feature fvbDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posVbFilter} o ${doc1}));
 feature fvbDoc1Small=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="20", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posVbFilter} o ${doc1}));
 feature fnoNnpDoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posNoNnpFilter} o ${doc1}));
+feature fnoNnpDoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posNoNnpFilter} o ${doc2}));
+feature fnoNnpDoc3=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strDef} o ${posNoNnpFilter} o ${doc3}));
