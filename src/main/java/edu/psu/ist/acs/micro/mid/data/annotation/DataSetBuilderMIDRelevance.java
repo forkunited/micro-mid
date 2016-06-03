@@ -85,9 +85,8 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 		for (String documentName : documentNames) {
 			if (this.limit > 0 && count >= this.limit)
 				break;
-			if (count % 1000 == 1)
-				this.context.getDataTools().getOutputWriter().debugWriteln(this.referenceName + " loaded " + count + " documents...");
-			
+			if (count % 10000 == 1)
+				this.context.getDataTools().getOutputWriter().debugWriteln("MIDRelevance loaded " + count + " documents...");
 			
 			DocumentNLP document = documentSet.getDocumentByName(documentName, false);
 			boolean documentLabel = false;
