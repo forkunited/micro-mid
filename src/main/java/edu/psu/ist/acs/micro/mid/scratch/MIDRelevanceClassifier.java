@@ -178,7 +178,7 @@ public class MIDRelevanceClassifier {
 			return false;
 		}
 		
-		features = new FeatureSet<>(context, context.getFeatures());
+		features = context.getFeatureSets().get(0);
 		model = context.getModels().get(0);
 		
 		return true;
