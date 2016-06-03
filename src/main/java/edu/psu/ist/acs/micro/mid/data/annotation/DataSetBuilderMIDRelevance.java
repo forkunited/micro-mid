@@ -2,6 +2,8 @@ package edu.psu.ist.acs.micro.mid.data.annotation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import edu.cmu.ml.rtw.generic.data.annotation.DataSet;
 import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
@@ -13,6 +15,8 @@ import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPMutable;
 import edu.cmu.ml.rtw.generic.parse.AssignmentList;
 import edu.cmu.ml.rtw.generic.parse.Obj;
 import edu.cmu.ml.rtw.generic.util.MathUtil;
+import edu.cmu.ml.rtw.generic.util.ThreadMapper;
+import edu.cmu.ml.rtw.generic.util.ThreadMapper.Fn;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 
 public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<Boolean>, Boolean> {
@@ -81,15 +85,29 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 		List<String> documentNames = new ArrayList<>(documentSet.getDocumentNames());
 		documentNames = MathUtil.randomPermutation(this.context.getDataTools().getGlobalRandom(), documentNames);
 		
-		int count = 0;
+		if (this.limit > 0)
+			documentNames = documentNames.subList(0, this.limit);
+		
+		Map<String, DocumentNLP> documentMap = new TreeMap<String, DocumentNLP>();
+		ThreadMapper<String, Boolean> mapper = new ThreadMapper<String, Boolean>(new Fn<String, Boolean>() {
+			@Override
+			public Boolean apply(String documentName) {
+				DocumentNLP document = documentSet.getDocumentByName(documentName, false);
+				
+				synchronized (documentMap) {
+					documentMap.put(documentName, document);
+					if (documentMap.size() % 10000 == 0)
+						context.getDataTools().getOutputWriter().debugWriteln("MIDRelevance loaded " + documentMap.size() + " documents...");
+				}
+				
+				return true;
+			} 
+		});
+		mapper.run(documentNames, this.context.getMaxThreads());
+		
 		for (String documentName : documentNames) {
-			if (this.limit > 0 && count >= this.limit)
-				break;
-			if (count % 10000 == 1)
-				this.context.getDataTools().getOutputWriter().debugWriteln("MIDRelevance loaded " + count + " documents...");
-			
-			DocumentNLP document = documentSet.getDocumentByName(documentName, false);
 			boolean documentLabel = false;
+			DocumentNLP document = documentMap.get(documentName);
 			
 			if (DataSetBuilderMIDRelevance.this.label) {
 				if (document.hasAnnotationType(AnnotationTypeNLPMID.MID_GOLD_RELEVANCE_CLASS)
@@ -100,8 +118,6 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 			if (DataSetBuilderMIDRelevance.this.label == documentLabel) {
 				data.add(new DocumentNLPDatum<Boolean>(this.context.getDataTools().getIncrementId(), document, documentLabel));
 			}
-			
-			count++;
 		}
 		
 		return data;

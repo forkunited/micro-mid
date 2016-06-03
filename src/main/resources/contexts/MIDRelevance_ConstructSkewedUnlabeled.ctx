@@ -25,7 +25,7 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	
 	value sizeUnlabeled1Train = MultiplyValues(value1=${countPositiveDataTrain}, value2="1", round="true");
 	value sizeUnlabeled1Dev = MultiplyValues(value1=${countPositiveDataDev}, value2="1", round="true");
-	value sizeUnlabeled1Test = MultiplyValues(value1=$${countPositiveDataTest}, value2="1", round="true");
+	value sizeUnlabeled1Test = MultiplyValues(value1=${countPositiveDataTest}, value2="1", round="true");
 	data unlabeled1Train = SubsetData(data=${unlabeledData100_0}, size=${sizeUnlabeled1Train});
 	data unlabeled1Dev = SubsetData(data=${unlabeledData100_1}, size=${sizeUnlabeled1Dev});
 	data unlabeled1Test = SubsetData(data=${unlabeledData100_2}, size=${sizeUnlabeled1Test});
