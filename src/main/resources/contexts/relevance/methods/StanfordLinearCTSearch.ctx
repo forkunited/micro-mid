@@ -3,7 +3,7 @@ context trainDevTestDataRelevance = DocumentNLPBoolean(initScript="/relevance/da
 
 data_features trainMatrix = DataFeatureMatrix(data=${trainDevTestDataRelevance.trainData}, features=${featureSetsRelevance.fs});
 	
-model m=StanfordLinear() {
+model m=StanfordLinear(defaultLabel="true") {
 	array validLabels=("true", "false");
 };
 
