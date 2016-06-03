@@ -12,16 +12,20 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
 	value unlabeled100Partition = PartitionData(data=${unlabeledData100}, distribution=(".8", ".1", ".1"));
 	
-	value sizeUnlabeled10Train = MultiplyValues(value1=${positiveData_0}, value2="9", round="true");
-	value sizeUnlabeled10Dev = MultiplyValues(value1=${positiveData_1}, value2="9", round="true");
-	value sizeUnlabeled10Test = MultiplyValues(value1=${positiveData_2}, value2="9", round="true");
+	value countPositiveDataTrain = SizeData(data=${positiveData_0});
+	value countPositiveDataDev = SizeData(data=${positiveData_1});
+	value countPositiveDataTest = SizeData(data=${positiveData_2});
+	
+	value sizeUnlabeled10Train = MultiplyValues(value1=${countPositiveDataTrain}, value2="9", round="true");
+	value sizeUnlabeled10Dev = MultiplyValues(value1=${countPositiveDataDev}, value2="9", round="true");
+	value sizeUnlabeled10Test = MultiplyValues(value1=${countPositiveDataTest}, value2="9", round="true");
 	data unlabeled10Train = SubsetData(data=${unlabeledData100_0}, size=${sizeUnlabeled10Train});
 	data unlabeled10Dev = SubsetData(data=${unlabeledData100_1}, size=${sizeUnlabeled10Dev});
 	data unlabeled10Test = SubsetData(data=${unlabeledData100_2}, size=${sizeUnlabeled10Test});
 	
-	value sizeUnlabeled1Train = MultiplyValues(value1=${positiveData_0}, value2="1", round="true");
-	value sizeUnlabeled1Dev = MultiplyValues(value1=${positiveData_1}, value2="1", round="true");
-	value sizeUnlabeled1Test = MultiplyValues(value1=${positiveData_2}, value2="1", round="true");
+	value sizeUnlabeled1Train = MultiplyValues(value1=${countPositiveDataTrain}, value2="1", round="true");
+	value sizeUnlabeled1Dev = MultiplyValues(value1=${countPositiveDataDev}, value2="1", round="true");
+	value sizeUnlabeled1Test = MultiplyValues(value1=$${countPositiveDataTest}, value2="1", round="true");
 	data unlabeled1Train = SubsetData(data=${unlabeledData100_0}, size=${sizeUnlabeled1Train});
 	data unlabeled1Dev = SubsetData(data=${unlabeledData100_1}, size=${sizeUnlabeled1Dev});
 	data unlabeled1Test = SubsetData(data=${unlabeledData100_2}, size=${sizeUnlabeled1Test});
