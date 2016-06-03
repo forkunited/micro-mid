@@ -1,0 +1,3 @@
+value trainDocs="mid_news_rel_train_data_pu10";
+value devDocs="mid_news_rel_dev_data_pu100";
+value testDocs="mid_news_rel_test_data_pu100";

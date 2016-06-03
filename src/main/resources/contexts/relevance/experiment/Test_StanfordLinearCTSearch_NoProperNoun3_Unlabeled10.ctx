@@ -7,4 +7,4 @@ context dataParamsRelevance = DocumentNLPBoolean(initScript="/relevance/data/par
 context featureSetsRelevance = DocumentNLPBoolean(initScript="/relevance/featureSets/NoProperNoun3.ctx", initOnce="true");
 context methodRelevance = DocumentNLPBoolean(initScript="/relevance/methods/StanfordLinearCTSearch.ctx", initOnce="true");
 context eval = DocumentNLPBoolean(initScript="/relevance/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/relevance/experiment/output/Test_Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/relevance/experiment/output/Test_Default_WithSearch.ctx", initOnce="false");

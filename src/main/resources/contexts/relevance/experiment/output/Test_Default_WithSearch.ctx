@@ -5,12 +5,36 @@ value strEvals = OutputStrings(id=${resultsId}, storage="MIDString", collection=
                   ${eval.devPrecision}, 
                   ${eval.devRecall}, 
                   ${eval.devF},
-                  ${eval.devConfusionMatrix},  
-                  ${eval.methodRelevance.trr},
                   
                   ${eval.testAccuracy}, 
                   ${eval.testPrecision}, 
                   ${eval.testRecall}, 
                   ${eval.testF},
-                  ${eval.testConfusionMatrix}
+                  
+                  ${eval.devConfusionMatrix},  
+                  ${eval.testConfusionMatrix},
+                  ${eval.methodRelevance.trr}
                  )); 
+               
+    
+value strModels = OutputParses(id=${resultsId}, storage="MIDString", collection="ExperimentModelOutput", 
+                 types=
+                 (
+                 "model",
+                 "feature_set"
+                 ),
+                 names=
+                 (
+                 "m",
+                 "fs"
+                 ),
+                 fns=
+                 (
+                  ${eval.methodRelevance.methodFinal},
+                  ${eval.methodRelevance.featureSetsRelevance.fs}
+                 ),
+                 params=
+                 (
+                 "modelInternal",
+                 ""
+                 ));                  
