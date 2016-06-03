@@ -83,7 +83,9 @@ public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<
 		
 		int count = 0;
 		for (String documentName : documentNames) {
-			if (this.limit > 0 && count == this.limit)
+			if (this.limit > 0)
+				System.out.println(this.limit);
+			if (this.limit > 0 && count >= this.limit)
 				break;
 			
 			DocumentNLP document = documentSet.getDocumentByName(documentName, false);
