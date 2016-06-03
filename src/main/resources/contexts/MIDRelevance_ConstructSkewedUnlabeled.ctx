@@ -6,47 +6,47 @@ context documentNLPBooleanCtx=DocumentNLPBoolean() {
 	
 	value countPositiveData = SizeData(data=${positiveData});
 	value debugPositiveData = OutputDebug(refs=(${countPositiveData}));
-	value sizeUnlabeled1000 = MultiplyValues(value1=${countPositiveData}, value2="999", round="true");
-	data unlabeledData1000 = MIDRelevance(storage="MIDBson", collection="mid_news_unlabeled_POS", label="false", limit=${sizeUnlabeled1000});
+	value sizeUnlabeled100 = MultiplyValues(value1=${countPositiveData}, value2="99", round="true");
+	data unlabeledData100 = MIDRelevance(storage="MIDBson", collection="mid_news_unlabeled_POS", label="false", limit=${sizeUnlabeled100});
 
 	value positiveParition = PartitionData(data=${positiveData}, distribution=(".8", ".1", ".1"));
-	value unlabeled1000Partition = PartitionData(data=${unlabeledData1000}, distribution=(".8", ".1", ".1"));
+	value unlabeled100Partition = PartitionData(data=${unlabeledData100}, distribution=(".8", ".1", ".1"));
 	
-	value sizeUnlabeled100Train = MultiplyValues(value1=${positiveData_0}, value2="99", round="true");
-	value sizeUnlabeled100Dev = MultiplyValues(value1=${positiveData_1}, value2="99", round="true");
-	value sizeUnlabeled100Test = MultiplyValues(value1=${positiveData_2}, value2="99", round="true");
-	data unlabeled100Train = SubsetData(data=${unlabeledData1000_0}, size=${sizeUnlabeled100Train});
-	data unlabeled100Dev = SubsetData(data=${unlabeledData1000_1}, size=${sizeUnlabeled100Dev});
-	data unlabeled100Test = SubsetData(data=${unlabeledData1000_2}, size=${sizeUnlabeled100Test});
+	value sizeUnlabeled10Train = MultiplyValues(value1=${positiveData_0}, value2="9", round="true");
+	value sizeUnlabeled10Dev = MultiplyValues(value1=${positiveData_1}, value2="9", round="true");
+	value sizeUnlabeled10Test = MultiplyValues(value1=${positiveData_2}, value2="9", round="true");
+	data unlabeled10Train = SubsetData(data=${unlabeledData100_0}, size=${sizeUnlabeled10Train});
+	data unlabeled10Dev = SubsetData(data=${unlabeledData100_1}, size=${sizeUnlabeled10Dev});
+	data unlabeled10Test = SubsetData(data=${unlabeledData100_2}, size=${sizeUnlabeled10Test});
 	
 	value sizeUnlabeled1Train = MultiplyValues(value1=${positiveData_0}, value2="1", round="true");
 	value sizeUnlabeled1Dev = MultiplyValues(value1=${positiveData_1}, value2="1", round="true");
 	value sizeUnlabeled1Test = MultiplyValues(value1=${positiveData_2}, value2="1", round="true");
-	data unlabeled1Train = SubsetData(data=${unlabeledData1000_0}, size=${sizeUnlabeled1Train});
-	data unlabeled1Dev = SubsetData(data=${unlabeledData1000_1}, size=${sizeUnlabeled1Dev});
-	data unlabeled1Test = SubsetData(data=${unlabeledData1000_2}, size=${sizeUnlabeled1Test});
+	data unlabeled1Train = SubsetData(data=${unlabeledData100_0}, size=${sizeUnlabeled1Train});
+	data unlabeled1Dev = SubsetData(data=${unlabeledData100_1}, size=${sizeUnlabeled1Dev});
+	data unlabeled1Test = SubsetData(data=${unlabeledData100_2}, size=${sizeUnlabeled1Test});
 	
-	data pu1000TrainData = UnionData(data=(${positiveData_0}, ${unlabeledData1000_0}));
-	data pu1000DevData = UnionData(data=(${positiveData_1}, ${unlabeledData1000_1}));
-	data pu1000TestData = UnionData(data=(${positiveData_2}, ${unlabeledData1000_2}));
+	data pu100TrainData = UnionData(data=(${positiveData_0}, ${unlabeledData100_0}));
+	data pu100DevData = UnionData(data=(${positiveData_1}, ${unlabeledData100_1}));
+	data pu100TestData = UnionData(data=(${positiveData_2}, ${unlabeledData100_2}));
 	
 	data pu1TrainData = UnionData(data=(${positiveData_0}, ${unlabeled1Train}));
 	data pu1DevData = UnionData(data=(${positiveData_1}, ${unlabeled1Dev}));
 	data pu1TestData = UnionData(data=(${positiveData_2}, ${unlabeled1Test}));
 	
-	data pu100TrainData = UnionData(data=(${positiveData_0}, ${unlabeled100Train}));
-	data pu100DevData = UnionData(data=(${positiveData_1}, ${unlabeled100Dev}));
-	data pu100TestData = UnionData(data=(${positiveData_2}, ${unlabeled100Test}));
+	data pu10TrainData = UnionData(data=(${positiveData_0}, ${unlabeled10Train}));
+	data pu10DevData = UnionData(data=(${positiveData_1}, ${unlabeled10Dev}));
+	data pu10TestData = UnionData(data=(${positiveData_2}, ${unlabeled10Test}));
 	
 	value storePu1Train = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_pu1", data=${pu1TrainData});
 	value storePu1Dev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pu1", data=${pu1DevData});
 	value storePu1Test = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pu1", data=${pu1TestData});
 
+	value storePu10Train = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_pu10", data=${pu10TrainData});
+	value storePu10Dev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pu10", data=${pu10DevData});
+	value storePu10Test = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pu10", data=${pu10TestData});
+	
 	value storePu100Train = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_pu100", data=${pu100TrainData});
 	value storePu100Dev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pu100", data=${pu100DevData});
 	value storePu100Test = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pu100", data=${pu100TestData});
-	
-	value storePu1000Train = StoreData(storage="MIDBson", collection="mid_news_rel_train_data_pu1000", data=${pu1000TrainData});
-	value storePu1000Dev = StoreData(storage="MIDBson", collection="mid_news_rel_dev_data_pu1000", data=${pu1000DevData});
-	value storePu1000Test = StoreData(storage="MIDBson", collection="mid_news_rel_test_data_pu1000", data=${pu1000TestData});
 };
