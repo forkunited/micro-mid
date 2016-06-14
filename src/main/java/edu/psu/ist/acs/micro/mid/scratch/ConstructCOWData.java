@@ -15,6 +15,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Partial;
 import org.joda.time.YearMonth;
 
+import edu.cmu.ml.rtw.generic.data.Serializer;
 import edu.cmu.ml.rtw.generic.data.annotation.AnnotationType;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLP;
@@ -22,6 +23,7 @@ import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPInMemory;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPMutable;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.SerializerDocumentNLPBSON;
 import edu.cmu.ml.rtw.generic.data.store.Storage;
+import edu.cmu.ml.rtw.generic.data.store.StoreReference;
 import edu.cmu.ml.rtw.generic.data.store.StoredCollection;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.AnnotatorDocument;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLP;
@@ -43,7 +45,6 @@ import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.FatalityLevel;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.HostilityLevel;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.Participant;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.RevisionType;
-import edu.psu.ist.acs.micro.mid.data.annotation.SerializerMIDDisputeBSON;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
@@ -72,15 +73,17 @@ public class ConstructCOWData {
 		annotationTypes.remove(AnnotationTypeNLP.SENTENCE);
 		storage = properties.getStorage(new MIDDataTools(), annotationTypes);
 		
+		Map<Integer, List<MIDIncident.Participant>> incidentParticipants = parseIncidentParticipants(args[2]);
+		Map<Integer, List<MIDIncident>> incidents = parseIncidents(args[3], incidentParticipants);
+		Map<Integer, MIDDispute> disputes = parseDisputes(args[4], incidents);
+		
 		if (!onlyDisputes) {
 			Map<Integer, Pair<Integer, String>> narratives = parseNarrativesOldFormat(args[0]);
 			narratives.putAll(parseNarrativesNewFormat(args[1]));
-			outputNarratives(narratives);
+			outputNarratives(narratives, disputes);
 		}
 		
-		Map<Integer, List<MIDIncident.Participant>> incidentParticipants = parseIncidentParticipants(args[2]);
-		Map<Integer, List<MIDIncident>> incidents = parseIncidents(args[3], incidentParticipants);
-		List<MIDDispute> disputes = parseDisputes(args[4], incidents);
+		
 		outputDisputes(disputes);
 	}
 	
@@ -244,10 +247,11 @@ public class ConstructCOWData {
 		return incidents;
 	}
 	
-	private static List<MIDDispute> parseDisputes(String path, Map<Integer, List<MIDIncident>> incidents) {
+	private static Map<Integer, MIDDispute> parseDisputes(String path, Map<Integer, List<MIDIncident>> incidents) {
 		List<Map<String, String>> disputeMaps = FileUtil.readSVFile(path, ",");
-		List<MIDDispute> disputes = new ArrayList<MIDDispute>();
+		Map<Integer, MIDDispute> disputes = new HashMap<>();
 		for (Map<String, String> map : disputeMaps) {
+			String id = map.get("DispNum3");
 			int dispNum3 = Integer.valueOf(map.get("DispNum3"));
 			Integer dispNum4 = (Integer.valueOf(map.get("DispNum4")) < 0) ? null : Integer.valueOf(map.get("DispNum4"));
 			int stDay = Integer.valueOf(map.get("StDay"));
@@ -276,7 +280,10 @@ public class ConstructCOWData {
 			boolean ongoing2010 = Boolean.valueOf(map.get("Ongo2010"));
 			String version = map.get("Version");
 		
-			disputes.add(new MIDDispute(dispNum3,
+			disputes.put(dispNum3, 
+					new MIDDispute(new StoreReference(storage.getName(), properties.getMID4CollectionName(), "id", id),
+										id,
+									    dispNum3,
 										dispNum4,
 										startDate,
 										endDate,
@@ -300,7 +307,7 @@ public class ConstructCOWData {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static void outputNarratives(Map<Integer, Pair<Integer, String>> narratives) {
+	private static void outputNarratives(Map<Integer, Pair<Integer, String>> narratives, Map<Integer, MIDDispute> disputes) {
 		PipelineNLPStanford pipelineStanford = new PipelineNLPStanford();
 		
 		NELLMentionCategorizer mentionCategorizer = new NELLMentionCategorizer(
@@ -319,34 +326,22 @@ public class ConstructCOWData {
 		StoredCollection<DocumentNLPMutable, Document> documents = (StoredCollection<DocumentNLPMutable, Document>)storage.createCollection(properties.getMID4NarrativeDocumentCollectionName(), new SerializerDocumentNLPBSON(dataTools));
 		
 		for (Entry<Integer, Pair<Integer, String>> entry : narratives.entrySet()) {
-			final int dispNum3 = entry.getKey();
-			final Integer dispNum4 = entry.getValue().getFirst();
+			int dispNum3 = entry.getKey();
+			final MIDDispute dispute = disputes.get(dispNum3);
 			String narrativeText = entry.getValue().getSecond();
 		
 			System.out.println("Constructing narrative document " + dispNum3 + "...");
 			
 			PipelineNLPExtendable metaDataPipeline = new PipelineNLPExtendable();
-			metaDataPipeline.extend(new AnnotatorDocument<Integer>() {
+			metaDataPipeline.extend(new AnnotatorDocument<MIDDispute>() {
 				public String getName() { return "MID4.01"; }
 				public boolean measuresConfidence() { return false; }
-				public AnnotationType<Integer> produces() { return AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_3; }
+				public AnnotationType<MIDDispute> produces() { return AnnotationTypeNLPMID.MID_DISPUTE; }
 				public AnnotationType<?>[] requires() { return new AnnotationType<?>[0]; }
-				public Pair<Integer, Double> annotate(DocumentNLP document) {
-					return new Pair<Integer, Double>(dispNum3, null);
+				public Pair<MIDDispute, Double> annotate(DocumentNLP document) {
+					return new Pair<MIDDispute, Double>(dispute, null);
 				}
 			});
-			
-			if (dispNum4 != null) {
-				metaDataPipeline.extend(new AnnotatorDocument<Integer>() {
-					public String getName() { return "MID4.01"; }
-					public boolean measuresConfidence() { return false; }
-					public AnnotationType<Integer> produces() { return AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_4; }
-					public AnnotationType<?>[] requires() { return new AnnotationType<?>[0]; }
-					public Pair<Integer, Double> annotate(DocumentNLP document) {
-						return new Pair<Integer, Double>(dispNum4, null);
-					}
-				});
-			}
 			
 			PipelineNLP pipeline = basePipeline.weld(metaDataPipeline);
 			DocumentNLPMutable document = new DocumentNLPInMemory(dataTools, String.valueOf(dispNum3), narrativeText);
@@ -356,16 +351,16 @@ public class ConstructCOWData {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static void outputDisputes(List<MIDDispute> disputes) throws IOException {
+	private static void outputDisputes(Map<Integer, MIDDispute> disputes) throws IOException {
 		System.out.println("Outputting disputes...");
 		
 		if (storage.hasCollection(properties.getMID4CollectionName())) {
 			storage.deleteCollection(properties.getMID4CollectionName());
 		}
 		
-		StoredCollection<MIDDispute, Document> mid4Collection = (StoredCollection<MIDDispute, Document>)storage.createCollection(properties.getMID4CollectionName(), new SerializerMIDDisputeBSON());
+		StoredCollection<MIDDispute, Document> mid4Collection = (StoredCollection<MIDDispute, Document>)storage.createCollection(properties.getMID4CollectionName(), (Serializer<MIDDispute, Document>)dataTools.getSerializers().get("JSONBSONMIDDispute"));
 
-		for (MIDDispute dispute : disputes) {
+		for (MIDDispute dispute : disputes.values()) {
 			mid4Collection.addItem(dispute);
 		}
 	}

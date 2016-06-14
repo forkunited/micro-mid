@@ -2,6 +2,7 @@ package edu.psu.ist.acs.micro.mid.data.annotation.nlp;
 
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP.Target;
+import edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute;
 
 /**
  * 
@@ -24,12 +25,10 @@ public class AnnotationTypeNLPMID {
 	public static final AnnotationTypeNLP<Boolean> MID_CLASSIFIER_RELEVANCE_CLASS = new AnnotationTypeNLP<Boolean>("mid-classifier-rel-class", Boolean.class, Target.DOCUMENT);
 	public static final AnnotationTypeNLP<Double> MID_CLASSIFIER_RELEVANCE_SCORE = new AnnotationTypeNLP<Double>("mid-classifier-rel-score", Double.class, Target.DOCUMENT);
 
-	
 	public static final AnnotationTypeNLP<TernaryRelevanceClass> MID_GOLD_TERNARY_RELEVANCE_CLASS = new AnnotationTypeNLP<TernaryRelevanceClass>("mid-gold-ternary-rel-class", TernaryRelevanceClass.class, Target.DOCUMENT);
 	
-	public static final AnnotationTypeNLP<Integer> MID_DISPUTE_NUMBER_3 = new AnnotationTypeNLP<Integer>("mid-disp-num-3", Integer.class, Target.DOCUMENT);
-	public static final AnnotationTypeNLP<Integer> MID_DISPUTE_NUMBER_4 = new AnnotationTypeNLP<Integer>("mid-disp-num-4", Integer.class, Target.DOCUMENT);
-	
+	public static final AnnotationTypeNLP<MIDDispute> MID_DISPUTE = new AnnotationTypeNLP<MIDDispute>("mid-disp", MIDDispute.class, Target.DOCUMENT);
+
 	public static final AnnotationTypeNLP<String> ARTICLE_TITLE = new AnnotationTypeNLP<String>("article-title", String.class, Target.DOCUMENT);
 	public static final AnnotationTypeNLP<String> ARTICLE_PUBLICATION_DATE = new AnnotationTypeNLP<String>("article-pub-date", String.class, Target.DOCUMENT);
 	public static final AnnotationTypeNLP<String> ARTICLE_SOURCE = new AnnotationTypeNLP<String>("article-source", String.class, Target.DOCUMENT);

@@ -1,19 +1,15 @@
 package edu.psu.ist.acs.micro.mid.util;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.bson.Document;
 
-import edu.cmu.ml.rtw.generic.data.Serializer;
 import edu.cmu.ml.rtw.generic.data.annotation.AnnotationType;
-import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPInMemory;
 import edu.cmu.ml.rtw.generic.data.store.Storage;
 import edu.cmu.ml.rtw.generic.data.store.StorageFileSystem;
 import edu.cmu.ml.rtw.generic.data.store.StorageMongo;
 import edu.cmu.ml.rtw.generic.util.Properties;
 import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
-import edu.psu.ist.acs.micro.mid.data.annotation.SerializerMIDDisputeBSON;
 
 /**
  * MIDProperties loads and represents a properties
@@ -66,13 +62,10 @@ public class MIDProperties extends Properties {
 	}
 	
 	public Storage<?,Document> getStorage(MIDDataTools dataTools, Collection<AnnotationType<?>> annotationTypes) {
-		Map<String, Serializer<?, ?>> serializers = dataTools.getDocumentSerializers(new DocumentNLPInMemory(dataTools), annotationTypes);
-		SerializerMIDDisputeBSON s = new SerializerMIDDisputeBSON();
-		serializers.put(s.getName(), s); // FIXME Do soemthing different later
 		if (this.useMongoStorage) {
-			return new StorageMongo("", "localhost", this.storageMongoMicroEventDatabaseName, serializers);
+			return new StorageMongo("", "localhost", this.storageMongoMicroEventDatabaseName, dataTools.getSerializers());
 		} else {
-			return new StorageFileSystem<Document>("", this.storageFileSystemMicroEventDirPath, serializers);
+			return new StorageFileSystem<Document>("", this.storageFileSystemMicroEventDirPath, dataTools.getSerializers());
 		}
 	}
 	

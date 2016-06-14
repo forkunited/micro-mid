@@ -98,12 +98,11 @@ public class TrainMIDGSTBinary {
 		context.getDatumTools().getDataTools().getOutputWriter().debugWriteln("Constructing data...");
 		
 		DocumentSet<DocumentNLP, DocumentNLPMutable> documents = new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>((StoredCollection<DocumentNLPMutable, ?>)storage.getCollection(properties.getMID4NarrativeDocumentCollectionName()));
-		StoredCollection<MIDDispute, ?> disputes = (StoredCollection<MIDDispute, ?>)storage.getCollection(properties.getMID4CollectionName());
 		DataSet<DocumentNLPDatum<WeightedStringList>, WeightedStringList> data = new DataSet<DocumentNLPDatum<WeightedStringList>, WeightedStringList>(datumTools, null);
 		Set<String> documentNames = documents.getDocumentNames();
 		for (String documentName : documentNames) {
 			DocumentNLP document = documents.getDocumentByName(documentName);
-			MIDDispute dispute = disputes.getFirstItemByIndex("dispNum3", document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_3));
+			MIDDispute dispute = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_DISPUTE);
 			Set<String> labelSet = new HashSet<String>();
 			
 			if (predictionType == PredictionType.ACTION) {

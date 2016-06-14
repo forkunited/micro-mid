@@ -10,12 +10,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.cmu.ml.rtw.generic.util.JSONSerializable;
+import edu.cmu.ml.rtw.generic.data.store.StoreReference;
+import edu.cmu.ml.rtw.generic.util.Storable;
+import edu.cmu.ml.rtw.generic.util.StoredJSONSerializable;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.Action;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.FatalityLevel;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.HostilityLevel;
 
-public class MIDDispute implements JSONSerializable {
+public class MIDDispute implements StoredJSONSerializable {
 	private static final int NULL_ID = -9;
 	
 	public static enum Outcome {
@@ -75,6 +77,8 @@ public class MIDDispute implements JSONSerializable {
 		}
 	}
 	
+	private String id;
+	private StoreReference reference;
 	private Integer dispNum3;
 	private Integer dispNum4;
 	private Partial startDate;
@@ -99,7 +103,13 @@ public class MIDDispute implements JSONSerializable {
 		
 	}
 	
-	public MIDDispute(Integer dispNum3,
+	public MIDDispute(StoreReference reference) {
+		this.reference = reference;
+	}
+	
+	public MIDDispute(StoreReference reference,
+					  String id,
+					  Integer dispNum3,
 					  Integer dispNum4,
 					  Partial startDate,
 					  Partial endDate,
@@ -117,6 +127,8 @@ public class MIDDispute implements JSONSerializable {
 					  boolean ongoing2010,	
 					  String version,
 					  List<MIDIncident> incidents) {
+		this.reference = reference;
+		this.id = id;
 		this.dispNum3 = dispNum3;
 		this.dispNum4 = dispNum4;
 		this.startDate = startDate;
@@ -214,6 +226,7 @@ public class MIDDispute implements JSONSerializable {
 		JSONObject json = new JSONObject();
 		
 		try {
+			json.put("id", this.id);
 			json.put("dispNum3", this.dispNum3);
 			json.put("dispNum4", this.dispNum4);
 			json.put("startDate", this.startDate.toString());
@@ -255,6 +268,8 @@ public class MIDDispute implements JSONSerializable {
 	@Override
 	public boolean fromJSON(JSONObject json) {
 		try {
+			if (json.has("id"))
+				this.id = json.getString("id");
 			if (json.has("dispNum3"))
 				this.dispNum3 = json.getInt("dispNum3");
 			if (json.has("dispNum4"))
@@ -308,5 +323,20 @@ public class MIDDispute implements JSONSerializable {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public Storable makeInstance(StoreReference reference) {
+		return new MIDDispute(reference);
+	}
+
+	@Override
+	public StoreReference getStoreReference() {
+		return this.reference;
+	}
+
+	@Override
+	public String getId() {
+		return this.id;
 	}
 }

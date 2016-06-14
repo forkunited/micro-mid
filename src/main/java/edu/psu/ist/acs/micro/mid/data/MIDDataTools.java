@@ -1,15 +1,19 @@
 package edu.psu.ist.acs.micro.mid.data;
 
+import java.util.Map;
 import java.util.Map.Entry;
 
 import edu.cmu.ml.rtw.generic.data.DataTools;
 import edu.cmu.ml.rtw.generic.data.Gazetteer;
+import edu.cmu.ml.rtw.generic.data.Serializer;
+import edu.cmu.ml.rtw.generic.data.SerializerJSONBSON;
 import edu.cmu.ml.rtw.generic.data.annotation.Datum.Tools.DatumIndicator;
 import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPDatum;
 import edu.cmu.ml.rtw.generic.util.OutputWriter;
 import edu.cmu.ml.rtw.micro.cat.data.CatDataTools;
 import edu.psu.ist.acs.micro.mid.data.annotation.DataSetBuilderMIDRelevance;
+import edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
@@ -64,8 +68,7 @@ public class MIDDataTools extends DataTools {
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_SCORE);
 		
-		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_3);
-		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE_NUMBER_4);	
+		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE);	
 		
 		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
 		.getDatumTools().addGenericDataSetBuilder(new DataSetBuilderMIDRelevance());
@@ -146,5 +149,16 @@ public class MIDDataTools extends DataTools {
 	@Override
 	public DataTools makeInstance() {
 		return new MIDDataTools(this.outputWriter, this);
+	}
+	
+	@Override
+	public Map<String, Serializer<?, ?>> getSerializers() {
+		Map<String, Serializer<?, ?>> serializers = super.getSerializers();
+		
+		SerializerJSONBSON<MIDDispute> midDisputeSerializer = new SerializerJSONBSON<MIDDispute>("MIDDispute", new MIDDispute());
+		
+		serializers.put(midDisputeSerializer.getName(), midDisputeSerializer);
+		
+		return serializers;
 	}
 }
