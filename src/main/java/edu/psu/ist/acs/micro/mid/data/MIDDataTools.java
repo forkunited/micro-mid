@@ -160,6 +160,8 @@ public class MIDDataTools extends EventDataTools {
 		
 		serializers.put(midDisputeSerializer.getName(), midDisputeSerializer);
 		
+		System.out.println(midDisputeSerializer.getName());
+		
 		return serializers;
 	}
 }
