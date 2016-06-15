@@ -16,24 +16,30 @@ import org.joda.time.Partial;
 import org.joda.time.YearMonth;
 
 import edu.cmu.ml.rtw.generic.data.Serializer;
+import edu.cmu.ml.rtw.generic.data.StoredItemSet;
 import edu.cmu.ml.rtw.generic.data.annotation.AnnotationType;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLP;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPInMemory;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPMutable;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.SerializerDocumentNLPBSON;
+import edu.cmu.ml.rtw.generic.data.annotation.nlp.time.NormalizedTimeValue;
+import edu.cmu.ml.rtw.generic.data.annotation.nlp.time.TimeExpression;
 import edu.cmu.ml.rtw.generic.data.store.Storage;
 import edu.cmu.ml.rtw.generic.data.store.StoreReference;
 import edu.cmu.ml.rtw.generic.data.store.StoredCollection;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.AnnotatorDocument;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLP;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLPExtendable;
+import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLPMateTools;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLPStanford;
 import edu.cmu.ml.rtw.generic.util.FileUtil;
 import edu.cmu.ml.rtw.generic.util.Pair;
 import edu.cmu.ml.rtw.micro.cat.data.CatDataTools;
 import edu.cmu.ml.rtw.micro.cat.data.annotation.CategoryList;
 import edu.cmu.ml.rtw.micro.cat.data.annotation.nlp.NELLMentionCategorizer;
+import edu.psu.ist.acs.micro.event.data.annotation.nlp.event.EventMention;
+import edu.psu.ist.acs.micro.event.model.annotator.nlp.EventAnnotator;
 import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
 import edu.psu.ist.acs.micro.mid.data.annotation.COWCountry;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute;
@@ -308,16 +314,44 @@ public class ConstructCOWData {
 	
 	@SuppressWarnings("unchecked")
 	private static void outputNarratives(Map<Integer, Pair<Integer, String>> narratives, Map<Integer, MIDDispute> disputes) {
+		if (storage.hasCollection(properties.getMID4NarrativeEventMentionCollectionName()))
+			storage.deleteCollection(properties.getMID4NarrativeEventMentionCollectionName());
+		if (storage.hasCollection(properties.getMID4NarrativeTimexCollectionName()))
+			storage.deleteCollection(properties.getMID4NarrativeTimexCollectionName());
+		if (storage.hasCollection(properties.getMID4NarrativeTimeValueCollectionName()))
+			storage.deleteCollection(properties.getMID4NarrativeTimeValueCollectionName());
+		
+		StoredItemSet<NormalizedTimeValue, NormalizedTimeValue> timeValueCollection = dataTools.getStoredItemSetManager().getItemSet(storage.getName(), 
+				properties.getMID4NarrativeTimeValueCollectionName(), 
+				true, 
+				(Serializer<NormalizedTimeValue, Document>)dataTools.getSerializers().get("JSONBSONNormalizedTimeValue"));
+		
+		StoredItemSet<TimeExpression, TimeExpression> timexCollection = dataTools.getStoredItemSetManager().getItemSet(storage.getName(), 
+				properties.getMID4NarrativeTimexCollectionName(), 
+				true, 
+				(Serializer<TimeExpression, Document>)dataTools.getSerializers().get("JSONBSONTimeExpression"));
+	
+		StoredItemSet<EventMention, EventMention> eventMentionCollection = dataTools.getStoredItemSetManager().getItemSet(storage.getName(), 
+				properties.getMID4NarrativeEventMentionCollectionName(), 
+				true, 
+				(Serializer<EventMention, Document>)dataTools.getSerializers().get("JSONBSONEventMention"));
+
+		
 		PipelineNLPStanford pipelineStanford = new PipelineNLPStanford();
+		pipelineStanford.initialize(AnnotationTypeNLP.COREF, null, timexCollection, timeValueCollection);
 		
 		NELLMentionCategorizer mentionCategorizer = new NELLMentionCategorizer(
 				new CategoryList(CategoryList.Type.ALL_NELL_CATEGORIES, new CatDataTools()), 
 				NELLMentionCategorizer.DEFAULT_MENTION_MODEL_THRESHOLD, NELLMentionCategorizer.DEFAULT_LABEL_TYPE, 
 				1);
-		PipelineNLPExtendable pipelineMicroCat = new PipelineNLPExtendable();
-		pipelineMicroCat.extend(mentionCategorizer);
 		
-		PipelineNLP basePipeline = pipelineStanford.weld(pipelineMicroCat);
+		EventAnnotator eventAnnotator = new EventAnnotator(eventMentionCollection);
+		
+		PipelineNLPExtendable pipelineMicro = new PipelineNLPExtendable();
+		pipelineMicro.extend(mentionCategorizer);
+		pipelineMicro.extend(eventAnnotator);
+		
+		PipelineNLP basePipeline = pipelineStanford.weld(pipelineMicro).weld(new PipelineNLPMateTools(properties));
 		
 		if (storage.hasCollection(properties.getMID4NarrativeDocumentCollectionName())) {
 			storage.deleteCollection(properties.getMID4NarrativeDocumentCollectionName());

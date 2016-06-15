@@ -16,6 +16,7 @@ import edu.psu.ist.acs.micro.mid.data.annotation.DataSetBuilderMIDRelevance;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
+import edu.psu.ist.acs.micro.event.data.EventDataTools;
 
 /**
  * MIDDataTools contains definitions of cleaning 
@@ -25,7 +26,7 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
  * @author Bill McDowell
  *
  */
-public class MIDDataTools extends DataTools {
+public class MIDDataTools extends EventDataTools {
 	public MIDDataTools() {
 		this(new MIDProperties());
 		
@@ -47,7 +48,7 @@ public class MIDDataTools extends DataTools {
 	
 	@SuppressWarnings("unchecked")
 	public MIDDataTools(OutputWriter outputWriter, MIDProperties properties) {
-		super(outputWriter);
+		super();
 		
 		this.properties = properties;
 		

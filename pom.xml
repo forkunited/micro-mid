@@ -52,6 +52,11 @@
   </build>
   <dependencies>
     <dependency>
+		<groupId>edu.psu.ist.acs</groupId>
+		<artifactId>micro-event</artifactId> 
+		<version>0.0.4-SNAPSHOT</version>
+	</dependency>
+    <dependency>
  		<groupId>org.json</groupId>
  		<artifactId>json</artifactId>
  		<version>20120521</version>

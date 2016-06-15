@@ -34,6 +34,10 @@ public class MIDProperties extends Properties {
 	private String mid4CollectionName;
 	private String mid4NarrativeDocumentCollectionName;
 	
+	private String mid4NarrativeTimexCollectionName;
+	private String mid4NarrativeEventMentionCollectionName;
+	private String mid4NarrativeTimeValueCollectionName;
+	
 	public MIDProperties() {
 		this(null);
 	}
@@ -51,6 +55,9 @@ public class MIDProperties extends Properties {
 		this.midNewsGoldRelevanceLabeledDocumentCollectionName = loadProperty("midNewsGoldRelevanceLabeledDocumentCollectionName");
 		this.mid4CollectionName = loadProperty("mid4CollectionName");
 		this.mid4NarrativeDocumentCollectionName = loadProperty("mid4NarrativeDocumentCollectionName");
+		this.mid4NarrativeEventMentionCollectionName = loadProperty("mid4NarrativeEventMentionCollectionName");
+		this.mid4NarrativeTimexCollectionName = loadProperty("mid4NarrativeTimexCollectionName");
+		this.mid4NarrativeTimeValueCollectionName = loadProperty("mid4NarrativeTimeValueCollectionName");
 	}
 	
 	public String getContextInputDirPath() {
@@ -87,5 +94,17 @@ public class MIDProperties extends Properties {
 	
 	public String getMID4NarrativeDocumentCollectionName() {
 		return this.mid4NarrativeDocumentCollectionName;
+	}
+	
+	public String getMID4NarrativeTimexCollectionName() {
+		return this.mid4NarrativeTimexCollectionName;
+	}
+	
+	public String getMID4NarrativeTimeValueCollectionName() {
+		return this.mid4NarrativeTimeValueCollectionName;
+	}
+	
+	public String getMID4NarrativeEventMentionCollectionName() {
+		return this.mid4NarrativeEventMentionCollectionName;
 	}
 }
