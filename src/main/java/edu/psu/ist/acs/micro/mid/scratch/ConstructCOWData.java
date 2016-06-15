@@ -69,6 +69,7 @@ public class ConstructCOWData {
 	 *  5 => Only disputes?
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException {
 		dataTools = new MIDDataTools();
 		properties = new MIDProperties();
@@ -77,8 +78,7 @@ public class ConstructCOWData {
 		List<AnnotationType<?>> annotationTypes = new ArrayList<AnnotationType<?>>();
 		annotationTypes.addAll(dataTools.getAnnotationTypesNLP());
 		annotationTypes.remove(AnnotationTypeNLP.SENTENCE);
-		storage = properties.getStorage(new MIDDataTools(), annotationTypes);
-		
+		storage = (Storage<?, Document>)dataTools.getStoredItemSetManager().getStorage("MIDBson");
 		Map<Integer, List<MIDIncident.Participant>> incidentParticipants = parseIncidentParticipants(args[2]);
 		Map<Integer, List<MIDIncident>> incidents = parseIncidents(args[3], incidentParticipants);
 		Map<Integer, MIDDispute> disputes = parseDisputes(args[4], incidents);
