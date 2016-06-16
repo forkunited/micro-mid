@@ -391,8 +391,9 @@ public class ConstructCOWData {
 		if (storage.hasCollection(properties.getMID4CollectionName())) {
 			storage.deleteCollection(properties.getMID4CollectionName());
 		}
-		
-		StoredCollection<MIDDispute, Document> mid4Collection = (StoredCollection<MIDDispute, Document>)storage.createCollection(properties.getMID4CollectionName(), (Serializer<MIDDispute, Document>)dataTools.getSerializers().get("JSONBSONMIDDispute"));
+		Serializer<MIDDispute, Document> serializer = (Serializer<MIDDispute, Document>)dataTools.getSerializers().get("JSONBSONMIDDispute");
+		System.out.println(serializer.getName());
+		StoredCollection<MIDDispute, Document> mid4Collection = (StoredCollection<MIDDispute, Document>)storage.createCollection(properties.getMID4CollectionName(), serializer);
 
 		for (MIDDispute dispute : disputes.values()) {
 			mid4Collection.addItem(dispute);
