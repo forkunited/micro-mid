@@ -1,4 +1,4 @@
-context featureSetsAttribute = DocumentNLPBoolean(initScript="/attribute/featureSets/Unigram.ctx", initOnce="true", initOverrideByName="true");
+context featureSetsAttribute = DocumentNLPBoolean(initScript="/attribute/featureSets/Default.ctx", initOnce="true", initOverrideByName="true");
 context trainDevTestDataAttribute = DocumentNLPBoolean(initScript="/attribute/data/LoadTrainDevTest.ctx", initOnce="true", initOverrideByName="true");
 
 data_features trainMatrix = DataFeatureMatrix(data=${trainDevTestDataAttribute.trainData}, features=${featureSetsAttribute.fs});
