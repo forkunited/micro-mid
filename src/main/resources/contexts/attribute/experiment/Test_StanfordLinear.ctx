@@ -133,3 +133,5 @@ value attribute = "JOIN_INTERSTATE_WAR";
 value resultsId = "Attribute_Test_StanfordLinear_JOIN_INTERSTATE_WAR";
 context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
 context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value strCtx = OutputContext(id="Attribute_Test_StanfordLinear", storage="MIDString", collection="ExperimentModelOutput");

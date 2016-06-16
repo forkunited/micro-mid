@@ -14,5 +14,3 @@ value strEvals = OutputStrings(id=${resultsId}, storage="MIDString", collection=
                   ${eval.devConfusionMatrix},  
                   ${eval.testConfusionMatrix}
                  )); 
-                
-value strCtx = OutputContext(id=${resultsId}, storage="MIDString", collection="ExperimentModelOutput");
