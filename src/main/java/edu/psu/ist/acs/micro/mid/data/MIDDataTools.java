@@ -12,6 +12,7 @@ import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPDatum;
 import edu.cmu.ml.rtw.generic.util.OutputWriter;
 import edu.cmu.ml.rtw.micro.cat.data.CatDataTools;
+import edu.psu.ist.acs.micro.mid.data.annotation.DataSetBuilderMIDAttribute;
 import edu.psu.ist.acs.micro.mid.data.annotation.DataSetBuilderMIDRelevance;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
@@ -73,6 +74,9 @@ public class MIDDataTools extends EventDataTools {
 		
 		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
 		.getDatumTools().addGenericDataSetBuilder(new DataSetBuilderMIDRelevance());
+		
+		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
+		.getDatumTools().addGenericDataSetBuilder(new DataSetBuilderMIDAttribute());
 		
 		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
 		.getDatumTools().addDatumIndicator(new DatumIndicator<DocumentNLPDatum<Boolean>>() {
