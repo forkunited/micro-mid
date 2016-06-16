@@ -83,14 +83,13 @@ public class ConstructCOWData {
 		Map<Integer, List<MIDIncident>> incidents = parseIncidents(args[3], incidentParticipants);
 		Map<Integer, MIDDispute> disputes = parseDisputes(args[4], incidents);
 		
+		outputDisputes(disputes);
+		
 		if (!onlyDisputes) {
 			Map<Integer, Pair<Integer, String>> narratives = parseNarrativesOldFormat(args[0]);
 			narratives.putAll(parseNarrativesNewFormat(args[1]));
 			outputNarratives(narratives, disputes);
 		}
-		
-		
-		outputDisputes(disputes);
 	}
 	
 	/**
@@ -392,7 +391,6 @@ public class ConstructCOWData {
 			storage.deleteCollection(properties.getMID4CollectionName());
 		}
 		Serializer<MIDDispute, Document> serializer = (Serializer<MIDDispute, Document>)dataTools.getSerializers().get("JSONBSONMIDDispute");
-		System.out.println(serializer.getName());
 		StoredCollection<MIDDispute, Document> mid4Collection = (StoredCollection<MIDDispute, Document>)storage.createCollection(properties.getMID4CollectionName(), serializer);
 
 		for (MIDDispute dispute : disputes.values()) {
