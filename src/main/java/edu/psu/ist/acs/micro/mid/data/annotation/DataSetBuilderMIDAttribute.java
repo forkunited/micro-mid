@@ -73,6 +73,7 @@ public class DataSetBuilderMIDAttribute extends DataSetBuilder<DocumentNLPDatum<
 
 	@Override
 	public DataSet<DocumentNLPDatum<Boolean>, Boolean> build() {
+		System.out.println(this.storage + " " + this.collection);
 		DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable> documentSet = 
 			new DocumentSetInMemoryLazy<DocumentNLP, DocumentNLPMutable>(
 				this.context.getDataTools().getStoredItemSetManager().getItemSet(this.storage, this.collection));
