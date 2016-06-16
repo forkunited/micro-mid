@@ -1,0 +1,135 @@
+value maxThreads="30";
+value resultsId = "Attribute_Test_StanfordLinear";
+value debug=Debug(file=${resultsId});
+
+context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
+
+value attribute = "NO_MILITARIZED_ACTION";
+value resultsId = "Attribute_Test_StanfordLinear_NO_MILITARIZED_ACTION";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "THREAT_TO_USE_FORCE";
+value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_USE_FORCE";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "THREAT_TO_BLOCKADE";
+value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_BLOCKADE";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "THREAT_TO_OCCUPY_TERRITORY";
+value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_OCCUPY_TERRITORY";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "THREAT_TO_DECLARE_WAR";
+value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_DECLARE_WAR";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "THREAT_TO_USE_CBR_WEAPONS";
+value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_USE_CBR_WEAPONS";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "THREAT_TO_JOIN_WAR";
+value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_JOIN_WAR";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "DISPLAY_OF_FORCE";
+value resultsId = "Attribute_Test_StanfordLinear_DISPLAY_OF_FORCE";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "SHOW_OF_FORCE";
+value resultsId = "Attribute_Test_StanfordLinear_SHOW_OF_FORCE";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "ALERT";
+value resultsId = "Attribute_Test_StanfordLinear_ALERT";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "NUCLEAR_ALERT";
+value resultsId = "Attribute_Test_StanfordLinear_NUCLEAR_ALERT";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "MOBILIZATION";
+value resultsId = "Attribute_Test_StanfordLinear_MOBILIZATION";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "FORTIFY_BORDER";
+value resultsId = "Attribute_Test_StanfordLinear_FORTIFY_BORDER";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "THREAT_TO_JOIN_WAR";
+value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_JOIN_WAR";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "BORDER_VIOLATION";
+value resultsId = "Attribute_Test_StanfordLinear_BORDER_VIOLATION";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "USE_OF_FORCE";
+value resultsId = "Attribute_Test_StanfordLinear_USE_OF_FORCE";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "BLOCKADE";
+value resultsId = "Attribute_Test_StanfordLinear_BLOCKADE";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "OCCUPATION_OF_TERRITORY";
+value resultsId = "Attribute_Test_StanfordLinear_OCCUPATION_OF_TERRITORY";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "SEIZURE";
+value resultsId = "Attribute_Test_StanfordLinear_SEIZURE";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "ATTACK";
+value resultsId = "Attribute_Test_StanfordLinear_ATTACK";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "CLASH";
+value resultsId = "Attribute_Test_StanfordLinear_CLASH";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "DECLARATION_OF_WAR";
+value resultsId = "Attribute_Test_StanfordLinear_DECLARATION_OF_WAR";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "USE_OF_CBR_WEAPONS";
+value resultsId = "Attribute_Test_StanfordLinear_USE_OF_CBR_WEAPONS";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "WAR";
+value resultsId = "Attribute_Test_StanfordLinear_WAR";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "BEGIN_INTERSTATE_WAR";
+value resultsId = "Attribute_Test_StanfordLinear_BEGIN_INTERSTATE_WAR";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value attribute = "JOIN_INTERSTATE_WAR";
+value resultsId = "Attribute_Test_StanfordLinear_JOIN_INTERSTATE_WAR";
+context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
+context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");

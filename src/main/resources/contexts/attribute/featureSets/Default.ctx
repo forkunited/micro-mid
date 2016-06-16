@@ -1,0 +1,11 @@
+context features = DocumentNLPBoolean(initScript="/attribute/Features.ctx", initOnce="true");
+context trainDevTestDataAttribute = DocumentNLPBoolean(initScript="/attribute/data/LoadTrainDevTest.ctx", initOnce="true", initOverrideByName="true");
+
+feature_set fs = FeatureSet(features=(
+								${features.flemma1}, 
+								${features.flemma2},
+								${features.fpred},
+								${features.fsynset},
+								${features.fw2v}
+							), 
+							initData=(${trainDevTestDataAttribute.trainData}));

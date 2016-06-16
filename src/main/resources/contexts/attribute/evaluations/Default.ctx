@@ -1,0 +1,14 @@
+context trainDevTestDataAttribute = DocumentNLPBoolean(initScript="/attribute/data/LoadTrainDevTest.ctx", initOnce="true", initOverrideByName="true");
+context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinear.ctx", initOnce="true", initOverrideByName="true");
+
+classify_eval devAccuracy = Accuracy(task=${trainDevTestDataAttribute.devTask}, method=${methodAttribute.methodFinal});
+classify_eval devF = F(task=${trainDevTestDataAttribute.devTask}, method=${methodAttribute.methodFinal}, Beta="1", filterLabel="true");
+classify_eval devPrecision = Precision(task=${trainDevTestDataAttribute.devTask}, method=${methodAttribute.methodFinal}, filterLabel="true");
+classify_eval devRecall = Recall(task=${trainDevTestDataAttribute.devTask}, method=${methodAttribute.methodFinal}, filterLabel="true");
+classify_eval devConfusionMatrix = ConfusionMatrix(task=${trainDevTestDataAttribute.devTask}, method=${methodAttribute.methodFinal});
+
+classify_eval testAccuracy = Accuracy(task=${trainDevTestDataAttribute.testTask}, method=${methodAttribute.methodFinal});       
+classify_eval testF = F(task=${trainDevTestDataAttribute.testTask}, method=${methodAttribute.methodFinal}, Beta="1", filterLabel="true");
+classify_eval testPrecision = Precision(task=${trainDevTestDataAttribute.testTask}, method=${methodAttribute.methodFinal}, filterLabel="true");
+classify_eval testRecall = Recall(task=${trainDevTestDataAttribute.testTask}, method=${methodAttribute.methodFinal}, filterLabel="true");
+classify_eval testConfusionMatrix = ConfusionMatrix(task=${trainDevTestDataAttribute.testTask}, method=${methodAttribute.methodFinal});

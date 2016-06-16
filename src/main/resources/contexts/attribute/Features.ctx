@@ -1,0 +1,27 @@
+context util = DocumentNLPBoolean(initScript="/util/Util.ctx", initOnce="true");
+
+ts_str_fn str=String();
+
+str_fn trim = Trim();
+str_fn lwr = StringCase(type="LOWER");
+str_fn rmvSym = StringReplace(mode="REGEX", target="[\\W&&[^\\s]]+", replace=" ");
+str_fn rplNum = StringReplace(mode="REGEX", target="\\d+", replace="[D]");
+str_fn usToSpc = StringReplace(mode="LITERAL", target="_", replace=" ");
+str_fn rmvLong = RemoveLongStringParts(maxLength="30", partSplit="\\s+", partGlue=" "); 
+str_fn stem = StemStringParts(partSplit="\\s+", partGlue=" ");
+str_fn spcToUs = StringReplace(mode="LITERAL", target=" ", replace="_");
+
+ts_str_fn strClean = Composite(f=(${spcToUs} o ${stem} o ${rmvLong} o ${trim} o ${usToSpc} o ${rplNum} o ${rmvSym} o ${lwr} o ${trim}), 
+                               g=${str});
+
+ts_fn doc1=NGramDocument(n="1", noSentence="false");
+ts_fn doc2=NGramDocument(n="2", noSentence="false");
+ts_str_fn lemma = TokenAnnotation(annotationType="lemma");
+ts_str_fn synset = WordNetSynset();
+ts_str_fn pred = PredicateSense();
+
+feature flemma1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${lemma} o ${doc1}));
+feature flemma2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${lemma} o ${doc2}));
+feature fpred=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${pred} o ${doc1}));
+feature fsynset=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${synset} o ${doc1}));
+feature fw2v = Word2Vec(tokenExtractor="FirstTokenSpan", mode="VECTOR", fn=(${str} o ${doc1}));

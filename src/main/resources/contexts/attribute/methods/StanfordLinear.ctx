@@ -1,0 +1,12 @@
+context featureSetsAttribute = DocumentNLPBoolean(initScript="/attribute/featureSets/Unigram.ctx", initOnce="true", initOverrideByName="true");
+context trainDevTestDataAttribute = DocumentNLPBoolean(initScript="/attribute/data/LoadTrainDevTest.ctx", initOnce="true", initOverrideByName="true");
+
+data_features trainMatrix = DataFeatureMatrix(data=${trainDevTestDataAttribute.trainData}, features=${featureSetsAttribute.fs});
+	
+model m=StanfordLinear() {
+	array validLabels=("true", "false");
+};
+
+evaluation modelF1=F(filterLabel="true", Beta="1");
+classify_method modelMethod = SupervisedModel(model=${m}, data=${trainMatrix}, trainEvaluation=${modelF1});
+classify_method methodFinal = InitClassifyMethod(devData=${trainDevTestDataAttribute.devData}, method=${modelMethod});

@@ -1,0 +1,7 @@
+context dataParamsAttribute = DocumentNLPBoolean(initScript="/attribute/data/parameters/MID4Narrative.ctx", initOnce="true", initOverrideByName="true");
+
+data trainData = MIDAttribute(attribute=${attribute}, storage="MIDBson", collection=${dataParamsAttribute.trainDocs});
+data devData = MIDAttribute(attribute=${attribute}, storage="MIDBson", collection=${dataParamsAttirbute.devDocs});
+data testData = MIDAttribute(attribute=${attribute}, storage="MIDBson", collection=${dataParamsAttirbute.testDocs});
+classify_task devTask = Classification(data=${devData});
+classify_task testTask = Classification(data=${testData});
