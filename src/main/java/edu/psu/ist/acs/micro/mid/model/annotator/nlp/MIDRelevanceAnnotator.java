@@ -56,7 +56,7 @@ public class MIDRelevanceAnnotator implements AnnotatorDocument<Boolean> {
 
 	@Override
 	public String getName() {
-		return "psu_midrel-0.0.1";
+		return "psu_mid_rel-0.0.1";
 	}
 
 	@Override

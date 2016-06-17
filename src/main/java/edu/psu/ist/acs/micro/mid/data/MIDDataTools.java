@@ -70,7 +70,8 @@ public class MIDDataTools extends EventDataTools {
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
 		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_SCORE);
 		
-		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE);	
+		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_DISPUTE);
+		this.addAnnotationTypeNLP(AnnotationTypeNLPMID.MID_ATTRIBUTE);	
 		
 		((DatumContext<DocumentNLPDatum<Boolean>, Boolean>)this.genericContexts.get("DocumentNLPBoolean"))
 		.getDatumTools().addGenericDataSetBuilder(new DataSetBuilderMIDRelevance());

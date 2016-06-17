@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 
 
 
+
+
 import edu.cmu.ml.rtw.generic.data.StoredItemSet;
 import edu.cmu.ml.rtw.generic.data.annotation.AnnotationType;
 import edu.cmu.ml.rtw.generic.data.annotation.DataSet;
@@ -16,14 +18,18 @@ import edu.cmu.ml.rtw.generic.data.annotation.Datum.Tools;
 import edu.cmu.ml.rtw.generic.data.annotation.DatumContext;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLP;
+import edu.cmu.ml.rtw.generic.data.annotation.nlp.DocumentNLPDatum;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.TokenSpan;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.TokenSpansDatum;
 import edu.cmu.ml.rtw.generic.data.store.StoreReference;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.AnnotatorTokenSpan;
 import edu.cmu.ml.rtw.generic.parse.Obj;
 import edu.cmu.ml.rtw.generic.task.classify.MethodClassification;
+import edu.cmu.ml.rtw.generic.task.classify.MethodClassificationSupervisedModel;
 import edu.cmu.ml.rtw.generic.util.OutputWriter;
+import edu.cmu.ml.rtw.generic.util.Pair;
 import edu.cmu.ml.rtw.generic.util.Triple;
+import edu.cmu.ml.rtw.generic.util.WeightedStringList;
 import edu.psu.ist.acs.micro.event.data.EventDataTools;
 import edu.psu.ist.acs.micro.event.data.annotation.nlp.AnnotationTypeNLPEvent;
 import edu.psu.ist.acs.micro.event.data.annotation.nlp.event.EventMention;
@@ -33,137 +39,60 @@ import edu.psu.ist.acs.micro.event.data.annotation.nlp.event.EventMention.TimeML
 import edu.psu.ist.acs.micro.event.data.annotation.nlp.event.EventMention.TimeMLTense;
 import edu.psu.ist.acs.micro.event.data.annotation.nlp.event.EventMentionDatum;
 import edu.psu.ist.acs.micro.event.util.EventProperties;
+import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
+import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
+import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
 
-public class MIDAttributeAnnotator implements AnnotatorTokenSpan<EventMention> {
+public class MIDAttributeAnnotator { /*implements AnnotatorTokenSpan<WeightedStringList> {
 	private static final AnnotationType<?>[] REQUIRED_ANNOTATIONS = new AnnotationType<?>[] {
 		AnnotationTypeNLP.TOKEN,
 		AnnotationTypeNLP.POS,
 		AnnotationTypeNLP.CONSTITUENCY_PARSE,
 		AnnotationTypeNLP.DEPENDENCY_PARSE,
 		AnnotationTypeNLP.NER,
-		AnnotationTypeNLP.TIME_EXPRESSION
+		AnnotationTypeNLP.PREDICATE
 	};
 	
-	public static final File DEFAULT_EVENT_DETECTOR_MODEL_FILE = new File("models/BinaryEvent_Test_StanfordLinear");
-	public static final File DEFAULT_EVENT_ATTRIBUTE_MODEL_FILE = new File("models/AttributeEvent_Test_StanfordLinear");
-	public static final String DEFAULT_EVENT_DETECTOR_MODEL_PARSE_PATH = "eval.methodEventBinary.method";
-	public static final String DEFAULT_EVENT_ATTRIBUTE_TENSE_MODEL_PARSE_PATH = "eval.methodEventAttribute.methodTense";
-	public static final String DEFAULT_EVENT_ATTRIBUTE_ASPECT_MODEL_PARSE_PATH = "eval.methodEventAttribute.methodAspect";
-	public static final String DEFAULT_EVENT_ATTRIBUTE_CLASS_MODEL_PARSE_PATH = "eval.methodEventAttribute.methodClass";
-	public static final String DEFAULT_EVENT_ATTRIBUTE_POLARITY_MODEL_PARSE_PATH = "eval.methodEventAttribute.methodPolarity";
-	public static final String DEFAULT_EVENT_ATTRIBUTE_MODALITY_MODEL_PARSE_PATH = "eval.methodEventAttribute.methodModality";
+	public static final File DEFAULT_MID_ATTRIBUTE_MODEL_FILE = new File("");
+	public static final String DEFAULT_MID_RELEVANCE_MODEL_PARSE_PATH = "";
 	
-	private EventDataTools dataTools;
-	private Tools<TokenSpansDatum<Boolean>, Boolean> eventDetectionDatumTools;
-	private Tools<EventMentionDatum<String>, String> eventAttributeDatumTools;
+	private MIDDataTools dataTools;
+	private Tools<DocumentNLPDatum<Boolean>, Boolean> midRelevanceDatumTools;
 	
-	private StoredItemSet<EventMention, EventMention> storedEventMentions;
-	
-	private MethodClassification<TokenSpansDatum<Boolean>, Boolean> eventDetector;
-	private MethodClassification<EventMentionDatum<String>, String> eventTenseClassifier;
-	private MethodClassification<EventMentionDatum<String>, String> eventAspectClassifier;
-	private MethodClassification<EventMentionDatum<String>, String> eventClassClassifier;
-	private MethodClassification<EventMentionDatum<String>, String> eventPolarityClassifier;
-	private MethodClassification<EventMentionDatum<String>, String> eventModalityClassifier;
+	private MethodClassificationSupervisedModel<DocumentNLPDatum<Boolean>, Boolean> midRelevanceClassifier;
 
-	public MIDAttributeAnnotator(StoredItemSet<EventMention, EventMention> storedEventMentions) {
-		this(storedEventMentions, DEFAULT_EVENT_DETECTOR_MODEL_FILE, DEFAULT_EVENT_ATTRIBUTE_MODEL_FILE);
+	public MIDRelevanceAnnotator() {
+		this(DEFAULT_MID_RELEVANCE_MODEL_FILE);
 	}
 
-	public MIDAttributeAnnotator(StoredItemSet<EventMention, EventMention> storedEventMentions, 
-						  File eventDetectorModelFile, 
-						  File eventAttributeModelFile) {
-		this(storedEventMentions,
-			 eventDetectorModelFile, 
-			 eventAttributeModelFile,
-			 DEFAULT_EVENT_DETECTOR_MODEL_PARSE_PATH,
-			 DEFAULT_EVENT_ATTRIBUTE_TENSE_MODEL_PARSE_PATH,
-			 DEFAULT_EVENT_ATTRIBUTE_ASPECT_MODEL_PARSE_PATH,
-			 DEFAULT_EVENT_ATTRIBUTE_CLASS_MODEL_PARSE_PATH,
-			 DEFAULT_EVENT_ATTRIBUTE_POLARITY_MODEL_PARSE_PATH,
-			 DEFAULT_EVENT_ATTRIBUTE_MODALITY_MODEL_PARSE_PATH
-		);
+	public MIDRelevanceAnnotator(File midRelevanceModelFile) {
+		this(midRelevanceModelFile, DEFAULT_MID_RELEVANCE_MODEL_PARSE_PATH);
 	}
 	
-	public MIDAttributeAnnotator(StoredItemSet<EventMention, EventMention> storedEventMentions,
-			  File eventDetectorModelFile, 
-			  File eventAttributeModelFile, 
-			  String eventDetectorParsePath, 
-			  String eventAttributeTenseParsePath, 
-			  String eventAttributeAspectParsePath, 
-			  String eventAttributeClassParsePath, 
-			  String eventAttributePolarityParsePath, 
-			  String eventAttributeModalityParsePath) {
-		this(storedEventMentions,
-			 eventDetectorModelFile,
-			 eventAttributeModelFile, 
-			 eventDetectorParsePath, 
-			 eventAttributeTenseParsePath, 
-			 eventAttributeAspectParsePath, 
-			 eventAttributeClassParsePath, 
-			 eventAttributePolarityParsePath, 
-			 eventAttributeModalityParsePath,
-			 0);
-	}
-	
-	public MIDAttributeAnnotator(StoredItemSet<EventMention, EventMention> storedEventMentions,
-						  File eventDetectorModelFile, 
-						  File eventAttributeModelFile, 
-						  String eventDetectorParsePath, 
-						  String eventAttributeTenseParsePath, 
-						  String eventAttributeAspectParsePath, 
-						  String eventAttributeClassParsePath, 
-						  String eventAttributePolarityParsePath, 
-						  String eventAttributeModalityParsePath,
-						  int initIncrementId) {
-		this.dataTools = new EventDataTools(new OutputWriter(), new EventProperties(), initIncrementId);
-		this.eventDetectionDatumTools = TokenSpansDatum.getBooleanTools(this.dataTools);
-		this.eventAttributeDatumTools = EventMentionDatum.getStringTools(this.dataTools);
+	public MIDRelevanceAnnotator(File midRelevanceModelFile, String midRelevanceModelParsePath) {
+		this.dataTools = new MIDDataTools(new OutputWriter(), new MIDProperties());
+		this.midRelevanceDatumTools = DocumentNLPDatum.getBooleanTools(this.dataTools);
 		
-		this.storedEventMentions = storedEventMentions;
-		
-		if (!deserialize(eventDetectorModelFile, 
-						 eventAttributeModelFile, 
-						 eventDetectorParsePath,
-						 eventAttributeTenseParsePath,
-						 eventAttributeAspectParsePath,
-						 eventAttributeClassParsePath,
-						 eventAttributePolarityParsePath,
-						 eventAttributeModalityParsePath
-						))
+		if (!deserialize(midRelevanceModelFile,
+						 midRelevanceModelParsePath))
 			throw new IllegalArgumentException();
 	}
 	
-	public boolean deserialize(File eventDetectorModelFile, 
-							  File eventAttributeModelFile, 
-							  String eventDetectorParsePath, 
-							  String eventAttributeTenseParsePath, 
-							  String eventAttributeAspectParsePath, 
-							  String eventAttributeClassParsePath, 
-							  String eventAttributePolarityParsePath, 
-							  String eventAttributeModalityParsePath) {
-		
-		this.eventDetector = DatumContext.run(this.eventDetectionDatumTools, eventDetectorModelFile).getMatchClassifyMethod(Obj.curlyBracedValue(eventDetectorParsePath));
-		DatumContext<EventMentionDatum<String>, String> attrCtx = DatumContext.run(this.eventAttributeDatumTools, eventAttributeModelFile);
-		
-		this.eventTenseClassifier = attrCtx.getMatchClassifyMethod(Obj.curlyBracedValue(eventAttributeTenseParsePath));
-		this.eventAspectClassifier = attrCtx.getMatchClassifyMethod(Obj.curlyBracedValue(eventAttributeAspectParsePath));
-		this.eventClassClassifier = attrCtx.getMatchClassifyMethod(Obj.curlyBracedValue(eventAttributeClassParsePath));
-		this.eventPolarityClassifier = attrCtx.getMatchClassifyMethod(Obj.curlyBracedValue(eventAttributePolarityParsePath));
-		this.eventModalityClassifier = attrCtx.getMatchClassifyMethod(Obj.curlyBracedValue(eventAttributeModalityParsePath));
-		
+	public boolean deserialize(File midRelevanceModelFile, String midRelevanceModelParsePath) {		
+		this.midRelevanceClassifier = (MethodClassificationSupervisedModel<DocumentNLPDatum<Boolean>, Boolean>)
+				DatumContext.run(this.midRelevanceDatumTools, midRelevanceModelFile).getMatchClassifyMethod(Obj.curlyBracedValue(midRelevanceModelParsePath));
 		return true;
 	}
 
 	@Override
 	public String getName() {
-		return "psu_event-0.0.1";
+		return "psu_mid_rel-0.0.1";
 	}
 
 	@Override
-	public AnnotationType<EventMention> produces() {
-		return AnnotationTypeNLPEvent.EVENT_MENTION;
+	public AnnotationType<Boolean> produces() {
+		return AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS;
 	}
 
 	@Override
@@ -173,107 +102,15 @@ public class MIDAttributeAnnotator implements AnnotatorTokenSpan<EventMention> {
 
 	@Override
 	public boolean measuresConfidence() {
-		return false;
+		return true;
 	}
 
-	private DataSet<TokenSpansDatum<Boolean>, Boolean> constructEventDetectionData(DocumentNLP document) {
-		DataSet<TokenSpansDatum<Boolean>, Boolean> data = new DataSet<TokenSpansDatum<Boolean>, Boolean>(this.eventDetectionDatumTools, null);
-		
-		for (int i = 0; i < document.getSentenceCount(); i++) {
-			for (int j = 0; j < document.getSentenceTokenCount(i); j++) {
-				TokenSpan span = new TokenSpan(document, i, j, j+1);
-				data.add(new TokenSpansDatum<Boolean>(this.dataTools.getIncrementId(), new TokenSpan[] { span }, null));
-			}
-		}
-		
-		return data;
-	}
-	
-	private DataSet<EventMentionDatum<String>, String> constructEventAttributeData(Map<TokenSpansDatum<Boolean>, Boolean> eventDetectionOutput) {
-		DataSet<EventMentionDatum<String>, String> data = new DataSet<EventMentionDatum<String>, String>(this.eventAttributeDatumTools, null);
-		
-		for (Entry<TokenSpansDatum<Boolean>, Boolean> entry : eventDetectionOutput.entrySet()) {
-			if (!entry.getValue())
-				continue;
-			EventMention eventMention = new EventMention(dataTools,
-					null, 
-					String.valueOf(entry.getKey().getId()), 
-					null,
-					null,
-					entry.getKey().getTokenSpans()[0],
-					null,
-					null, 
-					null, 
-					null, 
-					null, 
-					null, 
-					null, 
-					null, 
-					null,
-					null,
-					null,
-					null,
-					null);
-			
-			EventMentionDatum<String> datum = new EventMentionDatum<String>(entry.getKey().getId(), eventMention, null);
-			data.add(datum);
-		}
-		
-		return data;
+	private DocumentNLPDatum<Boolean> constructMIDRelevanceDatum(DocumentNLP document) {
+		return new DocumentNLPDatum<Boolean>(this.dataTools.getIncrementId(), document, null);
 	}
 	
 	@Override
-	public List<Triple<TokenSpan, EventMention, Double>> annotate(DocumentNLP document) {
-		DataSet<EventMentionDatum<String>, String> mentionData = 
-				constructEventAttributeData(
-					this.eventDetector.classify(
-						constructEventDetectionData(document)));
-		
-		Map<EventMentionDatum<String>, String> tenses = this.eventTenseClassifier.classify(mentionData);
-		Map<EventMentionDatum<String>, String> aspects = this.eventAspectClassifier.classify(mentionData);
-		Map<EventMentionDatum<String>, String> classes = this.eventClassClassifier.classify(mentionData);
-		Map<EventMentionDatum<String>, String> polarities = this.eventPolarityClassifier.classify(mentionData);
-		Map<EventMentionDatum<String>, String> modalities = this.eventModalityClassifier.classify(mentionData);
-		
-		List<Triple<TokenSpan, EventMention, Double>> mentions = new ArrayList<Triple<TokenSpan, EventMention, Double>>();
-
-		String storageName = this.storedEventMentions.getStoredItems().getStorageName();
-		String collectionName = this.storedEventMentions.getStoredItems().getName();
-		
-		for (EventMentionDatum<String> datum : mentionData) {
-			TimeMLTense tense = TimeMLTense.valueOf(tenses.get(datum));
-			TimeMLAspect aspect = TimeMLAspect.valueOf(aspects.get(datum));
-			TimeMLClass clazz = TimeMLClass.valueOf(classes.get(datum));
-			TimeMLPolarity polarity = TimeMLPolarity.valueOf(polarities.get(datum));
-			String modality = modalities.get(datum);
-			
-			
-			EventMention eventMention = 
-				new EventMention(dataTools,
-					new StoreReference(storageName, collectionName, "id", datum.getMention().getId()), 
-					datum.getMention().getId(), 
-					null,
-					null,
-					datum.getMention().getTokenSpan(),
-					null,
-					tense, 
-					aspect, 
-					clazz, 
-					polarity, 
-					null, 
-					null, 
-					null, 
-					modality,
-					null,
-					null,
-					null,
-					null);
-		
-			this.storedEventMentions.addItem(eventMention);
-			
-			mentions.add(new Triple<TokenSpan, EventMention, Double>(eventMention.getTokenSpan(), eventMention, null));	
-		}
-		
-		return mentions;
-	}
+	public Pair<Boolean, Double> annotate(DocumentNLP document) {
+		return this.midRelevanceClassifier.classifyWithScore(constructMIDRelevanceDatum(document));
+	}*/
 }
