@@ -8,156 +8,389 @@ value attribute = "NO_MILITARIZED_ACTION";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_NO_MILITARIZED_ACTION";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalNO_MILITARIZED_ACTION = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "THREAT_TO_USE_FORCE";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_THREAT_TO_USE_FORCE";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalTHREAT_TO_USE_FORCE = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "THREAT_TO_BLOCKADE";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_THREAT_TO_BLOCKADE";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalTHREAT_TO_BLOCKADE = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "THREAT_TO_OCCUPY_TERRITORY";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_THREAT_TO_OCCUPY_TERRITORY";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalTHREAT_TO_OCCUPY_TERRITORY = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "THREAT_TO_DECLARE_WAR";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_THREAT_TO_DECLARE_WAR";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalTHREAT_TO_DECLARE_WAR = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "THREAT_TO_USE_CBR_WEAPONS";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_THREAT_TO_USE_CBR_WEAPONS";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalTHREAT_TO_USE_CBR_WEAPONS = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "THREAT_TO_JOIN_WAR";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_THREAT_TO_JOIN_WAR";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalTHREAT_TO_JOIN_WAR = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "DISPLAY_OF_FORCE";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_DISPLAY_OF_FORCE";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalDISPLAY_OF_FORCE = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "SHOW_OF_FORCE";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_SHOW_OF_FORCE";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalSHOW_OF_FORCE = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "ALERT";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_ALERT";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalALERT = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "NUCLEAR_ALERT";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_NUCLEAR_ALERT";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalNUCLEAR_ALERT = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "MOBILIZATION";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_MOBILIZATION";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalMOBILIZATION = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "FORTIFY_BORDER";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_FORTIFY_BORDER";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalFORTIFY_BORDER = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
-
-value attribute = "THREAT_TO_JOIN_WAR";
-value resultsId = "Attribute_Test_StanfordLinearCTOpt_THREAT_TO_JOIN_WAR";
-context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
-context evalTHREAT_TO_JOIN_WAR = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "BORDER_VIOLATION";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_BORDER_VIOLATION";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalBORDER_VIOLATION = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "USE_OF_FORCE";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_USE_OF_FORCE";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalUSE_OF_FORCE = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "BLOCKADE";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_BLOCKADE";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalBLOCKADE = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "OCCUPATION_OF_TERRITORY";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_OCCUPATION_OF_TERRITORY";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalOCCUPATION_OF_TERRITORY = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "SEIZURE";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_SEIZURE";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalSEIZURE = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "ATTACK";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_ATTACK";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalATTACK = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "CLASH";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_CLASH";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalCLASH = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "DECLARATION_OF_WAR";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_DECLARATION_OF_WAR";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalDECLARATION_OF_WAR = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "USE_OF_CBR_WEAPONS";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_USE_OF_CBR_WEAPONS";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalUSE_OF_CBR_WEAPONS = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "WAR";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_WAR";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalWAR = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "BEGIN_INTERSTATE_WAR";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_BEGIN_INTERSTATE_WAR";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalBEGIN_INTERSTATE_WAR = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
 value attribute = "JOIN_INTERSTATE_WAR";
 value resultsId = "Attribute_Test_StanfordLinearCTOpt_JOIN_INTERSTATE_WAR";
 context methodAttribute = DocumentNLPBoolean(initScript="/attribute/methods/StanfordLinearCTOpt.ctx", initOnce="false");
 context evalJOIN_INTERSTATE_WAR = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
+
+value strEvals = OutputStrings(id="Attribute_Test_StanfordLinearCTOpt", storage="MIDString", collection="ExperimentEvaluationOutput", 
+                 refs=
+                 (
+                  ${evalNO_MILITARIZED_ACTION.devAccuracy}, 
+                  ${evalTHREAT_TO_USE_FORCE.devAccuracy}, 
+                  ${evalTHREAT_TO_BLOCKADE.devAccuracy}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.devAccuracy}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.devAccuracy}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.devAccuracy}, 
+                  ${evalTHREAT_TO_JOIN_WAR.devAccuracy}, 
+                  ${evalDISPLAY_OF_FORCE.devAccuracy}, 
+                  ${evalSHOW_OF_FORCE.devAccuracy}, 
+                  ${evalALERT.devAccuracy}, 
+                  ${evalNUCLEAR_ALERT.devAccuracy}, 
+                  ${evalMOBILIZATION.devAccuracy}, 
+                  ${evalFORTIFY_BORDER.devAccuracy}, 
+                  ${evalBORDER_VIOLATION.devAccuracy},
+                  ${evalUSE_OF_FORCE.devAccuracy},
+                  ${evalBLOCKADE.devAccuracy},
+                  ${evalOCCUPATION_OF_TERRITORY.devAccuracy},
+                  ${evalSEIZURE.devAccuracy},
+                  ${evalATTACK.devAccuracy},
+                  ${evalCLASH.devAccuracy},
+                  ${evalDECLARATION_OF_WAR.devAccuracy},
+                  ${evalUSE_OF_CBR_WEAPONS.devAccuracy},
+                  ${evalWAR.devAccuracy},
+                  ${evalJOIN_INTERSTATE_WAR.devAccuracy},
+                  ${evalBEGIN_INTERSTATE_WAR.devAccuracy},
+                  
+                  ${evalNO_MILITARIZED_ACTION.devPrecision}, 
+                  ${evalTHREAT_TO_USE_FORCE.devPrecision}, 
+                  ${evalTHREAT_TO_BLOCKADE.devPrecision}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.devPrecision}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.devPrecision}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.devPrecision}, 
+                  ${evalTHREAT_TO_JOIN_WAR.devPrecision}, 
+                  ${evalDISPLAY_OF_FORCE.devPrecision}, 
+                  ${evalSHOW_OF_FORCE.devPrecision}, 
+                  ${evalALERT.devPrecision}, 
+                  ${evalNUCLEAR_ALERT.devPrecision}, 
+                  ${evalMOBILIZATION.devPrecision}, 
+                  ${evalFORTIFY_BORDER.devPrecision}, 
+                  ${evalBORDER_VIOLATION.devPrecision},
+                  ${evalUSE_OF_FORCE.devPrecision},
+                  ${evalBLOCKADE.devPrecision},
+                  ${evalOCCUPATION_OF_TERRITORY.devPrecision},
+                  ${evalSEIZURE.devPrecision},
+                  ${evalATTACK.devPrecision},
+                  ${evalCLASH.devPrecision},
+                  ${evalDECLARATION_OF_WAR.devPrecision},
+                  ${evalUSE_OF_CBR_WEAPONS.devPrecision},
+                  ${evalWAR.devPrecision},
+                  ${evalJOIN_INTERSTATE_WAR.devPrecision},
+                  ${evalBEGIN_INTERSTATE_WAR.devPrecision},
+                  
+                  ${evalNO_MILITARIZED_ACTION.devRecall}, 
+                  ${evalTHREAT_TO_USE_FORCE.devRecall}, 
+                  ${evalTHREAT_TO_BLOCKADE.devRecall}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.devRecall}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.devRecall}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.devRecall}, 
+                  ${evalTHREAT_TO_JOIN_WAR.devRecall}, 
+                  ${evalDISPLAY_OF_FORCE.devRecall}, 
+                  ${evalSHOW_OF_FORCE.devRecall}, 
+                  ${evalALERT.devRecall}, 
+                  ${evalNUCLEAR_ALERT.devRecall}, 
+                  ${evalMOBILIZATION.devRecall}, 
+                  ${evalFORTIFY_BORDER.devRecall}, 
+                  ${evalBORDER_VIOLATION.devRecall},
+                  ${evalUSE_OF_FORCE.devRecall},
+                  ${evalBLOCKADE.devRecall},
+                  ${evalOCCUPATION_OF_TERRITORY.devRecall},
+                  ${evalSEIZURE.devRecall},
+                  ${evalATTACK.devRecall},
+                  ${evalCLASH.devRecall},
+                  ${evalDECLARATION_OF_WAR.devRecall},
+                  ${evalUSE_OF_CBR_WEAPONS.devRecall},
+                  ${evalWAR.devRecall},
+                  ${evalJOIN_INTERSTATE_WAR.devRecall},
+                  ${evalBEGIN_INTERSTATE_WAR.devRecall},
+                  
+                  ${evalNO_MILITARIZED_ACTION.devF}, 
+                  ${evalTHREAT_TO_USE_FORCE.devF}, 
+                  ${evalTHREAT_TO_BLOCKADE.devF}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.devF}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.devF}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.devF}, 
+                  ${evalTHREAT_TO_JOIN_WAR.devF}, 
+                  ${evalDISPLAY_OF_FORCE.devF}, 
+                  ${evalSHOW_OF_FORCE.devF}, 
+                  ${evalALERT.devF}, 
+                  ${evalNUCLEAR_ALERT.devF}, 
+                  ${evalMOBILIZATION.devF}, 
+                  ${evalFORTIFY_BORDER.devF}, 
+                  ${evalBORDER_VIOLATION.devF},
+                  ${evalUSE_OF_FORCE.devF},
+                  ${evalBLOCKADE.devF},
+                  ${evalOCCUPATION_OF_TERRITORY.devF},
+                  ${evalSEIZURE.devF},
+                  ${evalATTACK.devF},
+                  ${evalCLASH.devF},
+                  ${evalDECLARATION_OF_WAR.devF},
+                  ${evalUSE_OF_CBR_WEAPONS.devF},
+                  ${evalWAR.devF},
+                  ${evalJOIN_INTERSTATE_WAR.devF},
+                  ${evalBEGIN_INTERSTATE_WAR.devF},
+                  
+                  ${evalNO_MILITARIZED_ACTION.testAccuracy}, 
+                  ${evalTHREAT_TO_USE_FORCE.testAccuracy}, 
+                  ${evalTHREAT_TO_BLOCKADE.testAccuracy}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.testAccuracy}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.testAccuracy}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.testAccuracy}, 
+                  ${evalTHREAT_TO_JOIN_WAR.testAccuracy}, 
+                  ${evalDISPLAY_OF_FORCE.testAccuracy}, 
+                  ${evalSHOW_OF_FORCE.testAccuracy}, 
+                  ${evalALERT.testAccuracy}, 
+                  ${evalNUCLEAR_ALERT.testAccuracy}, 
+                  ${evalMOBILIZATION.testAccuracy}, 
+                  ${evalFORTIFY_BORDER.testAccuracy}, 
+                  ${evalBORDER_VIOLATION.testAccuracy},
+                  ${evalUSE_OF_FORCE.testAccuracy},
+                  ${evalBLOCKADE.testAccuracy},
+                  ${evalOCCUPATION_OF_TERRITORY.testAccuracy},
+                  ${evalSEIZURE.testAccuracy},
+                  ${evalATTACK.testAccuracy},
+                  ${evalCLASH.testAccuracy},
+                  ${evalDECLARATION_OF_WAR.testAccuracy},
+                  ${evalUSE_OF_CBR_WEAPONS.testAccuracy},
+                  ${evalWAR.testAccuracy},
+                  ${evalJOIN_INTERSTATE_WAR.testAccuracy},
+                  ${evalBEGIN_INTERSTATE_WAR.testAccuracy},
+                  
+                  ${evalNO_MILITARIZED_ACTION.testPrecision}, 
+                  ${evalTHREAT_TO_USE_FORCE.testPrecision}, 
+                  ${evalTHREAT_TO_BLOCKADE.testPrecision}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.testPrecision}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.testPrecision}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.testPrecision}, 
+                  ${evalTHREAT_TO_JOIN_WAR.testPrecision}, 
+                  ${evalDISPLAY_OF_FORCE.testPrecision}, 
+                  ${evalSHOW_OF_FORCE.testPrecision}, 
+                  ${evalALERT.testPrecision}, 
+                  ${evalNUCLEAR_ALERT.testPrecision}, 
+                  ${evalMOBILIZATION.testPrecision}, 
+                  ${evalFORTIFY_BORDER.testPrecision}, 
+                  ${evalBORDER_VIOLATION.testPrecision},
+                  ${evalUSE_OF_FORCE.testPrecision},
+                  ${evalBLOCKADE.testPrecision},
+                  ${evalOCCUPATION_OF_TERRITORY.testPrecision},
+                  ${evalSEIZURE.testPrecision},
+                  ${evalATTACK.testPrecision},
+                  ${evalCLASH.testPrecision},
+                  ${evalDECLARATION_OF_WAR.testPrecision},
+                  ${evalUSE_OF_CBR_WEAPONS.testPrecision},
+                  ${evalWAR.testPrecision},
+                  ${evalJOIN_INTERSTATE_WAR.testPrecision},
+                  ${evalBEGIN_INTERSTATE_WAR.testPrecision},
+                  
+                  ${evalNO_MILITARIZED_ACTION.testRecall}, 
+                  ${evalTHREAT_TO_USE_FORCE.testRecall}, 
+                  ${evalTHREAT_TO_BLOCKADE.testRecall}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.testRecall}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.testRecall}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.testRecall}, 
+                  ${evalTHREAT_TO_JOIN_WAR.testRecall}, 
+                  ${evalDISPLAY_OF_FORCE.testRecall}, 
+                  ${evalSHOW_OF_FORCE.testRecall}, 
+                  ${evalALERT.testRecall}, 
+                  ${evalNUCLEAR_ALERT.testRecall}, 
+                  ${evalMOBILIZATION.testRecall}, 
+                  ${evalFORTIFY_BORDER.testRecall}, 
+                  ${evalBORDER_VIOLATION.testRecall},
+                  ${evalUSE_OF_FORCE.testRecall},
+                  ${evalBLOCKADE.testRecall},
+                  ${evalOCCUPATION_OF_TERRITORY.testRecall},
+                  ${evalSEIZURE.testRecall},
+                  ${evalATTACK.testRecall},
+                  ${evalCLASH.testRecall},
+                  ${evalDECLARATION_OF_WAR.testRecall},
+                  ${evalUSE_OF_CBR_WEAPONS.testRecall},
+                  ${evalWAR.testRecall},
+                  ${evalJOIN_INTERSTATE_WAR.testRecall},
+                  ${evalBEGIN_INTERSTATE_WAR.testRecall},
+                  
+                  ${evalNO_MILITARIZED_ACTION.testF}, 
+                  ${evalTHREAT_TO_USE_FORCE.testF}, 
+                  ${evalTHREAT_TO_BLOCKADE.testF}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.testF}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.testF}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.testF}, 
+                  ${evalTHREAT_TO_JOIN_WAR.testF}, 
+                  ${evalDISPLAY_OF_FORCE.testF}, 
+                  ${evalSHOW_OF_FORCE.testF}, 
+                  ${evalALERT.testF}, 
+                  ${evalNUCLEAR_ALERT.testF}, 
+                  ${evalMOBILIZATION.testF}, 
+                  ${evalFORTIFY_BORDER.testF}, 
+                  ${evalBORDER_VIOLATION.testF},
+                  ${evalUSE_OF_FORCE.testF},
+                  ${evalBLOCKADE.testF},
+                  ${evalOCCUPATION_OF_TERRITORY.testF},
+                  ${evalSEIZURE.testF},
+                  ${evalATTACK.testF},
+                  ${evalCLASH.testF},
+                  ${evalDECLARATION_OF_WAR.testF},
+                  ${evalUSE_OF_CBR_WEAPONS.testF},
+                  ${evalWAR.testF},
+                  ${evalJOIN_INTERSTATE_WAR.testF},
+                  ${evalBEGIN_INTERSTATE_WAR.testF},
+                  
+                  ${evalNO_MILITARIZED_ACTION.devConfusionMatrix}, 
+                  ${evalTHREAT_TO_USE_FORCE.devConfusionMatrix}, 
+                  ${evalTHREAT_TO_BLOCKADE.devConfusionMatrix}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.devConfusionMatrix}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.devConfusionMatrix}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.devConfusionMatrix}, 
+                  ${evalTHREAT_TO_JOIN_WAR.devConfusionMatrix}, 
+                  ${evalDISPLAY_OF_FORCE.devConfusionMatrix}, 
+                  ${evalSHOW_OF_FORCE.devConfusionMatrix}, 
+                  ${evalALERT.devConfusionMatrix}, 
+                  ${evalNUCLEAR_ALERT.devConfusionMatrix}, 
+                  ${evalMOBILIZATION.devConfusionMatrix}, 
+                  ${evalFORTIFY_BORDER.devConfusionMatrix}, 
+                  ${evalBORDER_VIOLATION.devConfusionMatrix},
+                  ${evalUSE_OF_FORCE.devConfusionMatrix},
+                  ${evalBLOCKADE.devConfusionMatrix},
+                  ${evalOCCUPATION_OF_TERRITORY.devConfusionMatrix},
+                  ${evalSEIZURE.devConfusionMatrix},
+                  ${evalATTACK.devConfusionMatrix},
+                  ${evalCLASH.devConfusionMatrix},
+                  ${evalDECLARATION_OF_WAR.devConfusionMatrix},
+                  ${evalUSE_OF_CBR_WEAPONS.devConfusionMatrix},
+                  ${evalWAR.devConfusionMatrix},
+                  ${evalJOIN_INTERSTATE_WAR.devConfusionMatrix},
+                  ${evalBEGIN_INTERSTATE_WAR.devConfusionMatrix},
+                  
+                  ${evalNO_MILITARIZED_ACTION.testConfusionMatrix}, 
+                  ${evalTHREAT_TO_USE_FORCE.testConfusionMatrix}, 
+                  ${evalTHREAT_TO_BLOCKADE.testConfusionMatrix}, 
+                  ${evalTHREAT_TO_OCCUPY_TERRITORY.testConfusionMatrix}, 
+                  ${evalTHREAT_TO_DECLARE_WAR.testConfusionMatrix}, 
+                  ${evalTHREAT_TO_USE_CBR_WEAPONS.testConfusionMatrix}, 
+                  ${evalTHREAT_TO_JOIN_WAR.testConfusionMatrix}, 
+                  ${evalDISPLAY_OF_FORCE.testConfusionMatrix}, 
+                  ${evalSHOW_OF_FORCE.testConfusionMatrix}, 
+                  ${evalALERT.testConfusionMatrix}, 
+                  ${evalNUCLEAR_ALERT.testConfusionMatrix}, 
+                  ${evalMOBILIZATION.testConfusionMatrix}, 
+                  ${evalFORTIFY_BORDER.testConfusionMatrix}, 
+                  ${evalBORDER_VIOLATION.testConfusionMatrix},
+                  ${evalUSE_OF_FORCE.testConfusionMatrix},
+                  ${evalBLOCKADE.testConfusionMatrix},
+                  ${evalOCCUPATION_OF_TERRITORY.testConfusionMatrix},
+                  ${evalSEIZURE.testConfusionMatrix},
+                  ${evalATTACK.testConfusionMatrix},
+                  ${evalCLASH.testConfusionMatrix},
+                  ${evalDECLARATION_OF_WAR.testConfusionMatrix},
+                  ${evalUSE_OF_CBR_WEAPONS.testConfusionMatrix},
+                  ${evalWAR.testConfusionMatrix},
+                  ${evalJOIN_INTERSTATE_WAR.testConfusionMatrix},
+                  ${evalBEGIN_INTERSTATE_WAR.testConfusionMatrix}
+                 )); 
 
 value strCtx = OutputContext(id="Attribute_Test_StanfordLinearCTOpt", storage="MIDString", collection="ExperimentModelOutput");

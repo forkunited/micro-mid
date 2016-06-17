@@ -69,11 +69,6 @@ value resultsId = "Attribute_Test_StanfordLinear_FORTIFY_BORDER";
 context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
 context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
 
-value attribute = "THREAT_TO_JOIN_WAR";
-value resultsId = "Attribute_Test_StanfordLinear_THREAT_TO_JOIN_WAR";
-context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
-context results = DocumentNLPBoolean(initScript="/attribute/experiment/output/Test_Default.ctx", initOnce="false");
-
 value attribute = "BORDER_VIOLATION";
 value resultsId = "Attribute_Test_StanfordLinear_BORDER_VIOLATION";
 context eval = DocumentNLPBoolean(initScript="/attribute/evaluations/Default.ctx", initOnce="false");
