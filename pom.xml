@@ -52,11 +52,6 @@
   </build>
   <dependencies>
     <dependency>
- 		<groupId>edu.cmu.ml.rtw</groupId>
- 		<artifactId>micro-util-data-large</artifactId>
- 		<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
 		<groupId>edu.psu.ist.acs</groupId>
 		<artifactId>micro-mid-data</artifactId> 
 		<version>0.0.1-SNAPSHOT</version>
