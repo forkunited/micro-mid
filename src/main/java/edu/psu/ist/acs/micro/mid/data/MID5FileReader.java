@@ -111,6 +111,9 @@ public class MID5FileReader {
 					documentName = key;
 				}
 				
+				if (documentName.startsWith("Key:"))
+					documentName = documentName.substring(4).trim();
+				
 				if (documentName.length() > 512)
 					documentName = documentName.substring(0, 509) + "...";
 				
