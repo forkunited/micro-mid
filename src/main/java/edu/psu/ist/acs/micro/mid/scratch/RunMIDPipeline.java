@@ -332,6 +332,9 @@ public class RunMIDPipeline {
 		parser.accepts("outputRelevanceFile").withRequiredArg()
 			.describedAs("Path to output relevance classification file")
 			.ofType(File.class);
+		parser.accepts("propertiesFile").withRequiredArg()
+			.describedAs("Path to properties configuration")
+			.ofType(File.class);		
 		
 		parser.accepts("help").forHelp();
 		
@@ -346,8 +349,13 @@ public class RunMIDPipeline {
 			return false;
 		}
 		
+		if (!options.has("propertiesFile")) {
+			dataTools.getOutputWriter().debugWriteln("ERROR: Missing 'propertiesFile' argument.");
+			return false;
+		}
+		
 		output.debugWriteln("Loading data tools (gazetteers etc)...");
-		dataTools = new MIDDataTools(output, new MIDProperties());
+		dataTools = new MIDDataTools(output, new MIDProperties(((File)options.valueOf("propertiesFile")).getAbsolutePath()));
 		output.debugWriteln("Finished loading data tools.");
 		
 		if (options.has("input")) {
