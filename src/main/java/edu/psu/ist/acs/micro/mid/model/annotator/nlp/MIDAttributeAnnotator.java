@@ -35,9 +35,9 @@ public class MIDAttributeAnnotator implements AnnotatorDocument<WeightedStringLi
 		AnnotationTypeNLP.PREDICATE
 	};
 	
-	public static final File DEFAULT_MID_ATTRIBUTE_MODEL_FILE = new File("");
-	public static final String DEFAULT_MID_ATTRIBUTE_MODEL_PARSE_PATH_PREFIX = "";
-	public static final String DEFAULT_MID_ATTRIBUTE_MODEL_PARSE_PATH_SUFFIX = "";
+	public static final File DEFAULT_MID_ATTRIBUTE_MODEL_FILE = new File("models/Attribute_Test_StanfordLinearCTOpt");
+	public static final String DEFAULT_MID_ATTRIBUTE_MODEL_PARSE_PATH_PREFIX = "eval";
+	public static final String DEFAULT_MID_ATTRIBUTE_MODEL_PARSE_PATH_SUFFIX = ".methodAttribute.methodFinal";
 	
 	private MIDDataTools dataTools;
 	private Tools<DocumentNLPDatum<Boolean>, Boolean> midAttributeDatumTools;

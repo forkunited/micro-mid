@@ -23,8 +23,8 @@ public class MIDRelevanceAnnotator implements AnnotatorDocument<Boolean> {
 		AnnotationTypeNLP.POS
 	};
 	
-	public static final File DEFAULT_MID_RELEVANCE_MODEL_FILE = new File("");
-	public static final String DEFAULT_MID_RELEVANCE_MODEL_PARSE_PATH = "";
+	public static final File DEFAULT_MID_RELEVANCE_MODEL_FILE = new File("models/Relevance_Test_StanfordLinearCTOpt_NoProperNoun2_Unlabeled100");
+	public static final String DEFAULT_MID_RELEVANCE_MODEL_PARSE_PATH = "eval.methodRelevance.methodFinal";
 	
 	private MIDDataTools dataTools;
 	private Tools<DocumentNLPDatum<Boolean>, Boolean> midRelevanceDatumTools;

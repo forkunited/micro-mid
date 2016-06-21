@@ -4,7 +4,6 @@ import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP.Target;
 import edu.cmu.ml.rtw.generic.util.WeightedStringList;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute;
-import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.HostilityLevel;
 
 /**
  * 
