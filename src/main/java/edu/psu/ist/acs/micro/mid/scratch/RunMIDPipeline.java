@@ -31,6 +31,7 @@ import edu.cmu.ml.rtw.generic.data.store.StoreReference;
 import edu.cmu.ml.rtw.generic.data.store.StoredCollection;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLP;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLPExtendable;
+import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLPMateTools;
 import edu.cmu.ml.rtw.generic.model.annotator.nlp.PipelineNLPStanford;
 import edu.cmu.ml.rtw.generic.util.FileUtil;
 import edu.cmu.ml.rtw.generic.util.OutputWriter;
@@ -257,7 +258,7 @@ public class RunMIDPipeline {
 		
 		PipelineNLPStanford pipelineStanfordLong = new PipelineNLPStanford();
 		pipelineStanfordLong.initialize(AnnotationTypeNLP.COREF, null, storedTimexes, storedTimeValues);
-		
+		PipelineNLPMateTools pipelineMateTools = new PipelineNLPMateTools(dataTools.getProperties());
 		PipelineNLPExtendable pipelineOtherLong = new PipelineNLPExtendable();
 		pipelineOtherLong.extend(new MIDRelevanceAnnotator());
 		pipelineOtherLong.extend(new NELLMentionCategorizer(
@@ -266,7 +267,7 @@ public class RunMIDPipeline {
 				1));
 		pipelineOtherLong.extend(new EventAnnotator(storedEventMentions, dataTools));
 		pipelineOtherLong.extend(new MIDAttributeAnnotator());
-		pipelineLong = pipelineStanfordLong.weld(pipelineOtherLong);
+		pipelineLong = pipelineStanfordLong.weld(pipelineMateTools).weld(pipelineOtherLong);
 		
 		return true;
 	}
