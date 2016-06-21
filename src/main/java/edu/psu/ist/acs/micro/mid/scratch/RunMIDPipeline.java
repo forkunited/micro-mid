@@ -13,7 +13,6 @@ import joptsimple.OptionSet;
 
 import org.bson.Document;
 
-import edu.cmu.ml.rtw.generic.data.DataTools;
 import edu.cmu.ml.rtw.generic.data.Serializer;
 import edu.cmu.ml.rtw.generic.data.StoredItemSet;
 import edu.cmu.ml.rtw.generic.data.annotation.AnnotationType;
@@ -60,7 +59,7 @@ public class RunMIDPipeline {
 	private static File outputRelevanceFile;
 	private static boolean storeHtml = false;
 	
-	private static DataTools dataTools;
+	private static MIDDataTools dataTools;
 	private static BufferedWriter outputRelevanceWriter;
 	private static StoredCollection<DocumentNLPMutable, ?> outputDocuments;
 	
@@ -265,7 +264,7 @@ public class RunMIDPipeline {
 				new CategoryList(CategoryList.Type.ALL_NELL_CATEGORIES, new CatDataTools()), 
 				NELLMentionCategorizer.DEFAULT_MENTION_MODEL_THRESHOLD, NELLMentionCategorizer.DEFAULT_LABEL_TYPE, 
 				1));
-		pipelineOtherLong.extend(new EventAnnotator(storedEventMentions));
+		pipelineOtherLong.extend(new EventAnnotator(storedEventMentions, dataTools));
 		pipelineOtherLong.extend(new MIDAttributeAnnotator());
 		pipelineLong = pipelineStanfordLong.weld(pipelineOtherLong);
 		
