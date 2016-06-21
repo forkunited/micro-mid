@@ -9,7 +9,6 @@ import edu.cmu.ml.rtw.generic.data.store.Storage;
 import edu.cmu.ml.rtw.generic.data.store.StorageFileSystem;
 import edu.cmu.ml.rtw.generic.data.store.StorageMongo;
 import edu.cmu.ml.rtw.generic.util.Properties;
-import edu.psu.ist.acs.micro.event.util.EventProperties;
 import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
 
 /**
@@ -20,7 +19,7 @@ import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
  * @author Bill McDowell
  *
  */
-public class MIDProperties extends EventProperties {
+public class MIDProperties extends Properties {
 	private String contextInputDirPath;
 	private String experimentOutputDirPath;
 	
@@ -44,7 +43,7 @@ public class MIDProperties extends EventProperties {
 	}
 	
 	public MIDProperties(String path) {
-		super(path);
+		super( new String[] { (path == null) ? "mid.properties" : path } );
 		
 		this.contextInputDirPath = loadProperty("contextInputDirPath");
 		this.experimentOutputDirPath = loadProperty("experimentOutputDirPath");
