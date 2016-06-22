@@ -52,7 +52,7 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
 public class RunMIDPipeline {
 	private static final int MAX_SENTENCE_LENGTH = 30;
-	private static final int BATCH_SIZE = 100;
+	private static final int BATCH_SIZE = 10;
 	private static final String STORAGE_NAME = "PipelineStorage";
 	private static final String HTML_STORAGE_NAME = "PipelineHtmlStorage";
 	
@@ -83,6 +83,9 @@ public class RunMIDPipeline {
 		
 		if (dataTools.getStoredItemSetManager().getStorage(STORAGE_NAME).hasCollection("docs"))
 			dataTools.getStoredItemSetManager().getStorage(STORAGE_NAME).deleteCollection("docs");
+		
+		if (dataTools.getStoredItemSetManager().getStorage(HTML_STORAGE_NAME).hasCollection("docs"))
+			dataTools.getStoredItemSetManager().getStorage(HTML_STORAGE_NAME).deleteCollection("docs");
 		
 		outputDocuments = dataTools.getStoredItemSetManager().getItemSet(
 			STORAGE_NAME, 
@@ -117,7 +120,7 @@ public class RunMIDPipeline {
 					try {
 						while ((nameAndAnnotations = reader.readOne()) != null) {
 							synchronized (args) {
-								System.out.println("Processing document " + nameAndAnnotations.getFirst() + "...");
+								System.out.println("Processing document " + nameAndAnnotations.getFirst() + " (" + reader.getReadCount() + ")...");
 							}
 							
 							DocumentNLPMutable document = new DocumentNLPInMemory(dataTools,

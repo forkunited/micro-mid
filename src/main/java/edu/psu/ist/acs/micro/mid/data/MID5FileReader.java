@@ -12,6 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 import edu.cmu.ml.rtw.generic.data.annotation.nlp.AnnotationTypeNLP;
 import edu.cmu.ml.rtw.generic.util.FileUtil;
 import edu.cmu.ml.rtw.generic.util.Pair;
+import edu.cmu.ml.rtw.generic.util.Singleton;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 
 /**
@@ -55,17 +56,21 @@ import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
  */
 public class MID5FileReader {
 	private BufferedReader r;
+	private Singleton<Integer> readCount;
 	
 	public MID5FileReader(String bulkFilePath) {
 		this.r = FileUtil.getFileReader(bulkFilePath);
+		this.readCount = new Singleton<Integer>(0);
 	}
 	
 	public MID5FileReader(File bulkFile) {
 		this.r = FileUtil.getFileReader(bulkFile.getAbsolutePath());
+		this.readCount = new Singleton<Integer>(0);
 	}
 	
 	public MID5FileReader(MID5FileReader reader) {
 		this.r = reader.r;
+		this.readCount = reader.readCount;
 	}
 	
 	/**
@@ -202,11 +207,17 @@ public class MID5FileReader {
 			}
 		}
 	
+		this.readCount.set(this.readCount.get() + 1);
+		
 		if (documentContent.length() > 0 && annotations.size() > 0) {
 			annotations.put(AnnotationTypeNLP.ORIGINAL_TEXT, documentContent.toString());
 			return new Pair<String, Map<AnnotationTypeNLP<?>, Object>>(documentName, annotations);
 		} else
 			return null;
+	}
+	
+	public int getReadCount() {
+		return this.readCount.get();
 	}
 	
 	public boolean close() {

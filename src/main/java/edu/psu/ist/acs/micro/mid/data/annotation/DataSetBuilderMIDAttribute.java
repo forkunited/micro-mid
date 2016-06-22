@@ -22,7 +22,14 @@ import edu.cmu.ml.rtw.generic.util.ThreadMapper.Fn;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 
 /**
- * 
+ * DataSetBuilderMIDAttribute takes a collection of documents and a MID 
+ * attribute, and constructs a data set in which each datum consists of a 
+ * document mapped to a label indicating whether or not the document has the
+ * attribute.  Currently, valid attributes consist of all HostilityLevel and
+ * Action values from the enums defined in 
+ * edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.  So for example, one
+ * attribute indicates whether a given document describes a "DISPLAY_OF_FORCE"
+ * attribute from the Action enum.  
  * 
  * @author Bill McDowell
  *
