@@ -303,6 +303,7 @@ public class RunMIDPipeline {
 					outputDocuments.addItem(document);
 				
 				Boolean relevant = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
+				
 				if (outputRelevanceWriter != null) {
 					double confidence = document.getDocumentAnnotationConfidence(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
 					if (!relevant)

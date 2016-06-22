@@ -206,8 +206,9 @@ public class MID5FileReader {
 				documentContent.append(line).append("\n");
 			}
 		}
-	
+		System.out.println(this.readCount.get());
 		this.readCount.set(this.readCount.get() + 1);
+		System.out.println(this.readCount.get());
 		
 		if (documentContent.length() > 0 && annotations.size() > 0) {
 			annotations.put(AnnotationTypeNLP.ORIGINAL_TEXT, documentContent.toString());
