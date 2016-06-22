@@ -51,6 +51,7 @@ import edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDRelevanceAnnotator;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
 public class RunMIDPipeline {
+	private static final int MAX_SENTENCE_LENGTH = 30;
 	private static final int BATCH_SIZE = 100;
 	private static final String STORAGE_NAME = "PipelineStorage";
 	private static final String HTML_STORAGE_NAME = "PipelineHtmlStorage";
@@ -105,7 +106,7 @@ public class RunMIDPipeline {
 			System.out.println("ERROR: Failed to construct pipelines.");
 		}
 		
-		List<MID5FileReader> readers = getInputReaders();
+		List<MID5FileReader> readers = getInputReaders(maxThreads);
 		ThreadMapper<MID5FileReader, Boolean> threadMapper = new ThreadMapper<MID5FileReader, Boolean>(
 			new ThreadMapper.Fn<MID5FileReader, Boolean>() {
 				@Override
@@ -249,16 +250,16 @@ public class RunMIDPipeline {
 					true, 
 					(Serializer<EventMention, Document>)dataTools.getSerializers().get("JSONBSONEventMention"));
 		
-		PipelineNLPStanford pipelineStanfordShort = new PipelineNLPStanford();
+		PipelineNLPStanford pipelineStanfordShort = new PipelineNLPStanford(MAX_SENTENCE_LENGTH);
 		pipelineStanfordShort.initialize(AnnotationTypeNLP.CONSTITUENCY_PARSE);
 		PipelineNLPExtendable pipelineOtherShort = new PipelineNLPExtendable();
 		pipelineOtherShort.extend(new MIDRelevanceAnnotator());
 		pipelineShort = pipelineStanfordShort.weld(pipelineOtherShort);
 		
 		
-		PipelineNLPStanford pipelineStanfordLong = new PipelineNLPStanford();
+		PipelineNLPStanford pipelineStanfordLong = new PipelineNLPStanford(MAX_SENTENCE_LENGTH);
 		pipelineStanfordLong.initialize(AnnotationTypeNLP.COREF, null, storedTimexes, storedTimeValues);
-		PipelineNLPMateTools pipelineMateTools = new PipelineNLPMateTools(dataTools.getProperties());
+		PipelineNLPMateTools pipelineMateTools = new PipelineNLPMateTools(dataTools.getProperties(), MAX_SENTENCE_LENGTH);
 		PipelineNLPExtendable pipelineOtherLong = new PipelineNLPExtendable();
 		pipelineOtherLong.extend(new MIDRelevanceAnnotator());
 		pipelineOtherLong.extend(new NELLMentionCategorizer(
@@ -272,13 +273,19 @@ public class RunMIDPipeline {
 		return true;
 	}
 	
-	private static List<MID5FileReader> getInputReaders() {
+	private static List<MID5FileReader> getInputReaders(int minReaders) {
 		List<MID5FileReader> readers = new ArrayList<MID5FileReader>();
 		
 		if (input.isDirectory()) {
 			File[] files = input.listFiles();
 			for (File file : files)
 				readers.add(new MID5FileReader(file));
+			
+			int i = 0;
+			while (minReaders > 0 && readers.size() < minReaders) {
+				readers.add(new MID5FileReader(readers.get(i)));
+				i++;
+			}
 		} else {
 			readers.add(new MID5FileReader(input));
 		}

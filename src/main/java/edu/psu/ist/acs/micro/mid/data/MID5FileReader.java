@@ -25,7 +25,17 @@ public class MID5FileReader {
 		this.r = FileUtil.getFileReader(bulkFile.getAbsolutePath());
 	}
 	
+	public MID5FileReader(MID5FileReader reader) {
+		this.r = reader.r;
+	}
+	
 	public Pair<String, Map<AnnotationTypeNLP<?>, Object>> readOne() throws IOException {
+		synchronized (this.r) {
+			return readOne(this.r);
+		}
+	}
+	
+	private Pair<String, Map<AnnotationTypeNLP<?>, Object>> readOne(BufferedReader r) throws IOException {
 		Map<AnnotationTypeNLP<?>, Object> annotations = new HashMap<AnnotationTypeNLP<?>, Object>();
 		String documentName = null;
 		
@@ -37,7 +47,7 @@ public class MID5FileReader {
 		DateTimeFormatter shortDateParser = DateTimeFormat.forPattern("yyyyMMdd");
 		DateTimeFormatter dateOutputFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 		
-		while ((line = this.r.readLine()) != null) {
+		while ((line = r.readLine()) != null) {
 			line = line.trim();
 			if (line.length() == 0 
 					|| line.matches(">>>>+")
@@ -56,7 +66,7 @@ public class MID5FileReader {
 				String key = null;
 				String title = null;
 				boolean readOneLine = false;
-				while (!((line = this.r.readLine()).trim()).equals("") || !readOneLine) {
+				while (!((line = r.readLine()).trim()).equals("") || !readOneLine) {
 					line = line.trim();
 					readOneLine = true;
 					if (line.length() == 0)
