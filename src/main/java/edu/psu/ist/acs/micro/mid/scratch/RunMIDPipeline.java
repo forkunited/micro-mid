@@ -298,15 +298,16 @@ public class RunMIDPipeline {
 			for (DocumentNLPMutable document : documents) {
 				if (outputDocuments != null)
 					outputDocuments.addItem(document);
+				
+				Boolean relevant = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
 				if (outputRelevanceWriter != null) {
-					Boolean relevant = document.getDocumentAnnotation(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
 					double confidence = document.getDocumentAnnotationConfidence(AnnotationTypeNLPMID.MID_CLASSIFIER_RELEVANCE_CLASS);
 					if (!relevant)
 						confidence = 1.0 - confidence;
 					outputRelevanceWriter.write(document.getName() + "\t" + relevant + "\t" + confidence + "\n");
 				}
 				
-				if (storeHtml) {
+				if (storeHtml && relevant) {
 					dataTools.getStoredItemSetManager().getItemSet(
 							HTML_STORAGE_NAME, 
 							"docs").getStoredItems().addItem(document);

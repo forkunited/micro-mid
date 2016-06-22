@@ -21,6 +21,12 @@ import edu.cmu.ml.rtw.generic.util.ThreadMapper;
 import edu.cmu.ml.rtw.generic.util.ThreadMapper.Fn;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 
+/**
+ * 
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class DataSetBuilderMIDAttribute extends DataSetBuilder<DocumentNLPDatum<Boolean>, Boolean> {
 	private String storage;
 	private String collection;

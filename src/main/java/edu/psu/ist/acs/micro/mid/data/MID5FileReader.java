@@ -14,6 +14,45 @@ import edu.cmu.ml.rtw.generic.util.FileUtil;
 import edu.cmu.ml.rtw.generic.util.Pair;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 
+/**
+ * MID5FileReader reads documents from files in the following bulk
+ * format:
+ * 
+ * ----------------------------------
+ * 
+ * Key: [document-name-0]
+ * meta-data-0: [meta-data0-0]
+ * meta-data-1: [meta-data0-1]
+ * [...]
+ * meta-data-n: [meta-data0-n]
+ * 
+ * >>>>>>>>>>
+ * 
+ * [document-content0]
+ * 
+ * <<<<<<<<<<
+ * 
+ * ------------------------------------
+ * 
+ * Key: [document-name-1]
+ * meta-data-0: [meta-data1-0]
+ * meta-data-1: [meta-data1-1]
+ * [...]
+ * meta-data-n: [meta-data1-n]
+ * 
+ * >>>>>>>>>>
+ * 
+ * [document-content1]
+ * 
+ * <<<<<<<<<<
+ * 
+ * ------------------------------------
+ * 
+ * [...]
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class MID5FileReader {
 	private BufferedReader r;
 	
@@ -29,6 +68,16 @@ public class MID5FileReader {
 		this.r = reader.r;
 	}
 	
+	/**
+	 * 
+	 * @param r
+	 * @return a pair containing the next document name and the document's annotations read
+	 * next from the bulk file reader.  The text content of the document is contained in
+	 * the "ORIGINAL_TEXT" annotation in the annotation map.
+	 * 
+	 * @throws IOException
+	 *
+	 */
 	public Pair<String, Map<AnnotationTypeNLP<?>, Object>> readOne() throws IOException {
 		synchronized (this.r) {
 			return readOne(this.r);

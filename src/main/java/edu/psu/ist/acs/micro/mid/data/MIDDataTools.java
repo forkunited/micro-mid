@@ -20,9 +20,12 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 import edu.psu.ist.acs.micro.event.data.EventDataTools;
 
 /**
- * MIDDataTools contains definitions of cleaning 
- * functions, gazetteers, and other tools used by
- * features in the event models.
+ * MIDDataTools contains definitions of gazetteers,
+ * NLP annotations, serializers, and other tools that
+ * are particular to the MID project.  These tools
+ * are referenced by various objects in the MID
+ * project. MIDDataTools just provides a common 
+ * place from which to retrieve them.
  * 
  * @author Bill McDowell
  *

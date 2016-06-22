@@ -7,8 +7,8 @@ import edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute;
 
 /**
  * 
- * AnnotationTypeNLPEvent represents types of annotations that
- * the micro-event project can add to NLP documents
+ * AnnotationTypeNLPMID represents types of annotations that
+ * the micro-mid project can add to NLP documents
  * 
  * @author Bill McDowell
  *

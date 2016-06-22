@@ -1,5 +1,12 @@
 package edu.psu.ist.acs.micro.mid.data.annotation;
 
+/**
+ * COWCountry lists Correlates of War country codes taken
+ * from http://www.correlatesofwar.org/data-sets/cow-country-codes
+ * 
+ * @author Bill McDowell
+ *
+ */
 public enum COWCountry {
 	USA(2,"United States of America"),
 	CAN(20,"Canada"),
