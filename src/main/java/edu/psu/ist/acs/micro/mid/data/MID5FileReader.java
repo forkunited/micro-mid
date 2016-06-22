@@ -58,6 +58,11 @@ public class MID5FileReader {
 	private BufferedReader r;
 	private Singleton<Integer> readCount;
 	
+	public MID5FileReader(BufferedReader r) {
+		this.r = r;
+		this.readCount = new Singleton<Integer>(0);
+	}
+	
 	public MID5FileReader(String bulkFilePath) {
 		this.r = FileUtil.getFileReader(bulkFilePath);
 		this.readCount = new Singleton<Integer>(0);
@@ -201,14 +206,14 @@ public class MID5FileReader {
 			} else if (line.matches("-----+")) {
 				annotations.put(AnnotationTypeNLP.ORIGINAL_TEXT, documentContent.toString());
 				documentContentLine = false;
+				this.readCount.set(this.readCount.get() + 1);
 				return new Pair<String, Map<AnnotationTypeNLP<?>, Object>>(documentName, annotations);
 			} else if (documentContentLine) {
 				documentContent.append(line).append("\n");
 			}
 		}
-		System.out.println(this.readCount.get());
+		
 		this.readCount.set(this.readCount.get() + 1);
-		System.out.println(this.readCount.get());
 		
 		if (documentContent.length() > 0 && annotations.size() > 0) {
 			annotations.put(AnnotationTypeNLP.ORIGINAL_TEXT, documentContent.toString());
