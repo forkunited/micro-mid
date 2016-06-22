@@ -31,6 +31,12 @@ import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
  * attribute indicates whether a given document describes a "DISPLAY_OF_FORCE"
  * attribute from the Action enum.  
  * 
+ * A document is determined to have a MID attribute if
+ * it is annotated with a edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute that
+ * has the attribute as a "max action" or "max hostility level", 
+ * or if the MIDDispute contains a MIDIncident with the attribute 
+ * (see the documentHasAttribute method below).
+ * 
  * @author Bill McDowell
  *
  */

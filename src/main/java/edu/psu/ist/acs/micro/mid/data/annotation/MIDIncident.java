@@ -13,6 +13,14 @@ import org.json.JSONObject;
 
 import edu.cmu.ml.rtw.generic.util.JSONSerializable;
 
+/**
+ * MIDIncident represents an incident from a MID
+ * dispute from the data at 
+ * http://www.correlatesofwar.org/data-sets/MIDs.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class MIDIncident implements JSONSerializable {
 	private static final int NULL_ID = -9;
 	

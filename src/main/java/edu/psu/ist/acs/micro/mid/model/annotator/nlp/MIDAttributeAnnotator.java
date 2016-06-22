@@ -24,7 +24,21 @@ import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
-
+/**
+ * MIDAttributeAnnotator annotates a document with scored indicators
+ * of whether or not the document has some MID attributes.  MID attributes
+ * currently consist of all possible MIDIncident "Actions" and "HostilityLevels"
+ * from the Action and HostilityLevel enums defined in
+ * edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.
+ * 
+ * The annotator assumes that there are serialized trained classifiers loaded 
+ * through the micro-mid-data project 
+ * (currently located at /data_reitter/micro/projects/micro-mid-data/ on 
+ * ds9.ist.psu.edu).
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class MIDAttributeAnnotator implements AnnotatorDocument<WeightedStringList> {
 	private static final AnnotationType<?>[] REQUIRED_ANNOTATIONS = new AnnotationType<?>[] {
 		AnnotationTypeNLP.TOKEN,
@@ -35,6 +49,7 @@ public class MIDAttributeAnnotator implements AnnotatorDocument<WeightedStringLi
 		AnnotationTypeNLP.PREDICATE
 	};
 	
+	/* Path to resource in micro-mid-data project */
 	public static final File DEFAULT_MID_ATTRIBUTE_MODEL_FILE = new File("models/Attribute_Test_StanfordLinearCTOpt");
 	public static final String DEFAULT_MID_ATTRIBUTE_MODEL_PARSE_PATH_PREFIX = "eval";
 	public static final String DEFAULT_MID_ATTRIBUTE_MODEL_PARSE_PATH_SUFFIX = ".methodAttribute.methodFinal";

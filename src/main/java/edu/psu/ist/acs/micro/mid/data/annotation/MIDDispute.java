@@ -17,6 +17,17 @@ import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.Action;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.FatalityLevel;
 import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.HostilityLevel;
 
+/**
+ * MIDDispute represents a MID dispute from the data at
+ * http://www.correlatesofwar.org/data-sets/MIDs
+ * 
+ * MIDDispute consist of miltary disputes between at
+ * least two states.  Each dispute can consist of several
+ * incidents (edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident)
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class MIDDispute implements StoredJSONSerializable {
 	private static final int NULL_ID = -9;
 	

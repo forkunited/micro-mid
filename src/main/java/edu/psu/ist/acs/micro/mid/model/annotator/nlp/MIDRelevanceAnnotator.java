@@ -17,12 +17,25 @@ import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * MIDAttributeAnnotator annotates a document with scored indicators
+ * of whether or not the document is MID relevant.
+ * 
+ * The annotator assumes that there is a trained classifier loaded 
+ * through the micro-mid-data project 
+ * (currently located at /data_reitter/micro/projects/micro-mid-data/ on 
+ * ds9.ist.psu.edu).  
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class MIDRelevanceAnnotator implements AnnotatorDocument<Boolean> {
 	private static final AnnotationType<?>[] REQUIRED_ANNOTATIONS = new AnnotationType<?>[] {
 		AnnotationTypeNLP.TOKEN,
 		AnnotationTypeNLP.POS
 	};
 	
+	/* Path to resource in micro-mid-data project */
 	public static final File DEFAULT_MID_RELEVANCE_MODEL_FILE = new File("models/Relevance_Test_StanfordLinearCTOpt_NoProperNoun2_Unlabeled100");
 	public static final String DEFAULT_MID_RELEVANCE_MODEL_PARSE_PATH = "eval.methodRelevance.methodFinal";
 	

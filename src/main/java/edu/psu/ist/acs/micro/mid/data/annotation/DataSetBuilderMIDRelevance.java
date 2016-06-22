@@ -19,6 +19,18 @@ import edu.cmu.ml.rtw.generic.util.ThreadMapper;
 import edu.cmu.ml.rtw.generic.util.ThreadMapper.Fn;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 
+/**
+ * DataSetBuilderMIDRelevance takes a collection of documents, and constructs 
+ * a data set in which each datum consists of a 
+ * document mapped to a label indicating whether or not the document is MID
+ * relevant.
+ * 
+ * A document is MID relevant if it has a gold-standard MID relevance annotation
+ * (i.e. a human annotator determined that it was relevant).
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class DataSetBuilderMIDRelevance extends DataSetBuilder<DocumentNLPDatum<Boolean>, Boolean> {
 	private String storage;
 	private String collection;

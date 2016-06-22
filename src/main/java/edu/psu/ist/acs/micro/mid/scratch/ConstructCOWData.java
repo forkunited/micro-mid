@@ -54,6 +54,21 @@ import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident.RevisionType;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * ConstructCOWData builds a set of NLP annotated documents
+ * (annotated with Stanford CoreNLP and MateTools pipelines) 
+ * from the MID narratives files in the MID level data from
+ * http://www.correlatesofwar.org/data-sets/MIDs.  The narratives
+ * are annotated with NLP tools, and mapped to MID disputes 
+ * (edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute) from
+ * the MID level data.
+ * 
+ * The input narratives for this 
+ * 
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class ConstructCOWData {
 	private static Storage<?, Document> storage;
 	private static MIDProperties properties;
