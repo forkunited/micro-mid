@@ -2,6 +2,7 @@ context features = DocumentNLPBoolean(initScript="/attribute/Features.ctx", init
 context trainDevTestDataAttribute = DocumentNLPBoolean(initScript="/attribute/data/LoadTrainDevTest.ctx", initOnce="true", initOverrideByName="true");
 
 feature_set fs = FeatureSet(features=(
+								${features.fconstant},
 								${features.fdoc1}, 
 								${features.fdoc2},
 								${features.fpred},

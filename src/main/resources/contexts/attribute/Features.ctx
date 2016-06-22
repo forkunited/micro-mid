@@ -20,6 +20,7 @@ ts_str_fn lemma = TokenAnnotation(annotationType="lemma");
 ts_str_fn synset = WordNetSynset();
 ts_str_fn pred = PredicateSense();
 
+feature fconstant=Constant();
 feature fdoc1=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${doc1}));
 feature fdoc2=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${strClean} o ${doc2}));
 feature fpred=TokenSpanFnDataVocab(scale="INDICATOR", minFeatureOccurrence="2", tokenExtractor="FirstTokenSpan", fn=(${pred} o ${doc1}));
