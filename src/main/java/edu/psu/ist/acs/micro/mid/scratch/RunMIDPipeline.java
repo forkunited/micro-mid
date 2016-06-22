@@ -280,14 +280,14 @@ public class RunMIDPipeline {
 			File[] files = input.listFiles();
 			for (File file : files)
 				readers.add(new MID5FileReader(file));
-			
-			int i = 0;
-			while (minReaders > 0 && readers.size() < minReaders) {
-				readers.add(new MID5FileReader(readers.get(i)));
-				i++;
-			}
 		} else {
 			readers.add(new MID5FileReader(input));
+		}
+		
+		int i = 0;
+		while (minReaders > 0 && readers.size() < minReaders) {
+			readers.add(new MID5FileReader(readers.get(i)));
+			i++;
 		}
 		
 		return readers;
