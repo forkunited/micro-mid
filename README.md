@@ -26,7 +26,17 @@ from the root directory of the project assuming that you have
 Maven setup and configured to access the internal RTW repository
 as described at http://rtw.ml.cmu.edu/wiki/index.php?title=Maven.
 If you don't have access to this wiki, then contact Bill for
-instructions on how to configure Maven.
+instructions on how to configure Maven appropriately.
+
+If you need to recompile with updated dependencies, then you should
+run 
+
+	mvn clean compile -U
+
+If you want to pull the most recent version of the code, then
+you should run
+
+	git pull
 
 ## Configuration ##
 
@@ -70,10 +80,10 @@ that give paths to Word2Vec and MateTools models.  The 8 fields before that
 (prefixed by "mid") give the names of data collections (directories) at the
 location referenced by *storage_fs_bson_MIDBson*. The *context_dir* field
 should be modified to point to the location of the ctx scripts in your project
-(under *src/main/resources/contexts*).  *storage_fs_bson_MIDBson* and 
-*storage_fs_bson_MIDString* point to directories that store BSON and string data and 
-experiment outputs. *debug_dir* points to a directory containing debug log
-output from running ctx scripts to train models.
+copy of the project (under *src/main/resources/contexts*).  
+*storage_fs_bson_MIDBson* points to the directory containing BSON data, and
+ *storage_fs_bson_MIDString* points to a directory containing experiment 
+ evaluation output and serialized trained models.
 
 ## Layout of the project ##
 
@@ -111,120 +121,189 @@ runs documents through NLP annotators and MID annotators in
 ### Ctx experiments in the *src/main/resources/contexts* directory ###
 
 The ctx scripts in *src/main/resources/contexts* are used to train and
-evaluate new MID annotation models.  The most important scripts are in the
-*attribute*, *relevance*, and *util* folders.  Most of the remaining are left
-over from older versions of the project, and should be deleted eventually
-(except for the scripts prefixed by *MIDRelevance_Construct* which were 
-used to construct various train/dev/test partitions of the MID data).
+evaluate new MID annotation models.  The scripts are partitioned into
+the following sub-directories:
+
+* *attribute* - for training MID attribute models (to predict
+MID incident actions and their hostility levels described in text)
+
+* *relevance* - for training MID relevance models (to predict
+whether a given document is MID relevant)
+
+* *util* - for utilities included by other scripts
+
+* *old* - Old versions of scripts that are no longer used
+
+The *attribute* and *relevance* directories are split into further 
+sub-directories containing scripts for loading *data*, building feature
+sets (*featureSets*), training classification *methods*, and performing
+*evaluations* on those methods.  Each of these scripts is loaded through
+a top-level *experiment* script in the *experiment* sub-directory.  An 
+*experiment* script should be run using 
+*edu.psu.ist.acs.micro.mid.scratch.RunMIDContext*.
+
+Data for the experiments is generally loaded using scripts in the 
+*data* sub-directory from "MIDBson" storage.  "MIDBson" storage is
+in the directory specified by the *storage_fs_bson_MIDBson* property in 
+the *mid.properties* configuration file (see the *Configuration* section 
+above).  The evaluation results of the experiments are stored in 
+"MIDString" storage using the scripts in the *experiment/output* 
+sub-directory.  "MIDString" storage is in the directory specified by 
+the *storage_fs_str_MIDString* property in the *mid.properties*
+configuration file.
+
+## Relevant data currently on ds9 ##
+
+Correlates of War data 
+(from http://www.correlatesofwar.org/data-sets/folder_listing)
+ currently exists on ds9 in the following files and directories under
+ */data_reitter/COW/*:
  
+* *COW country codes.csv* - country codes from 
+http://www.correlatesofwar.org/data-sets/cow-country-codes
 
-  
+* *Dyadic-MID*, *Incident-level*, *MID-level*, *MID3_Sources* -
+MID4 data from http://www.correlatesofwar.org/data-sets/MIDs
 
-## Existing Data and Models on ds9 ##
+* *Narratives* - MID narratives of MID4 data, also from 
+http://www.correlatesofwar.org/data-sets/MIDs
 
+* *MID_NLP_1993.tar.gz*, *NewsGold20000* - Part of the data used
+to train Vito's old MID relevance SVM
 
+* *News* - MID5 news data classified by Vito's old SVM.  It's split
+into hand annotated SVM true and false positives, and non-hand 
+annotated (unlabeled) SVM negatives.
 
+* *nlp2011* - News data published in 2011
 
-## Building jar ## 
+The Correlates of War data has been annotated with some NLP annotations,
+and stored in BSON format in */data_reitter/micro/mid_bson/* in the 
+following directories:
 
-## Training models ##
+* *mid4*, *mid4_timexes*, *mid4_tvalues*, *mid4_ev_mentions*, 
+*mid4_narratives* - MID4 disputes, time expressions, event mentions,
+and annotated narrative documents created by running 
+*edu.psu.ist.acs.micro.mid.scratch.ConstructCOWData* on data
+in */data_reitter/COW/Narratives*.
 
-You can retrain the classification models used in the noun-phrase 
-categorization micro-reader by running 
-*edu.cmu.ml.rtw.micro.cat.scratch.TrainGSTBinaryNELLNormalized*.  
-Assuming that you've cloned the repository, and you're compiling
-the source, you should first copy the *src/main/resources/cat.properties*
-configuration file to the top-level directory of the project.  Before
-training, you need to fill out this configuration file with 
-paths pointing to the relevant data locations on the system.  At the
-minimum, you should fill in the following fields:
+* *mid4_narratives_test*, *mid4_narratives_dev*, *mid4_narratives_train* 
+- Partition of *mid4_narratives* data into train/dev/test split created
+by running *edu.psu.ist.acs.micro.mid.scratch.SplitCOWData*
 
-* *contextInputDirPath* - path to the *src/main/resources/contexts*.  The
-value *contexts* value that's already there should work.
+* *mid_news_gold_rel_labeled_tokens* - Tokenized documents created by
+running *edu.psu.ist.acs.micro.mid.scratch.ConstructMID4NewsDocumentSet* 
+on *NewsGold20000* (I recommend *not* using this in the future.  It's
+messy.  See documentation in *ConstructMID4NewsDocumentSet* for more
+details.
 
-* *experimentOutputDirPath* - path to the directory where the experiment
-output model files and results should be stored.
+* *mid_news_rel_labeled_POS* and *mid_news_unlabeled_POS* - These are
+tokenized and pos tagged documents created by running 
+*edu.psu.ist.acs.micro.mid.scratch.ConstructMID5SVMNewsDocumentSet* on
+*/data_reitter/COW/News*.  Similar directories suffixed with "tokens"
+in place of "POS" were generated the same way, but are only tokenized
+without part-of-speech annotations.
 
-* *hazyFacc1DataDirPath* - Path to the HazyFACC1 data.  This should be
-*/nell/data/parses/HazyFACC1/English/1/en0000/* on the rtw machines.
+- The remaining directories with names prefixed by *mid_news_rel* contain
+splits various splits of the data in *mid_news_rel_labeled_POS* and 
+*mid_news_unlabeled_POS*.  These splits were created by using
+*edu.psu.ist.acs.micro.mid.scratch.RunMIDContext* to run the *Full.ctx* and
+*SkewedUnlabeled.ctx* ctx scripts in 
+*src/main/resources/contexts/relevance/data/construct/*.  They were 
+used to train
+different versions of the MID relevance classification model using the 
+ctx scripts in *src/main/resources/contexts/relevance/experiment*.
 
-* *NELLDataFileDirPath* - Path to directory where you want to store the 
-noun-phrase categorization data generated from HazyFACC1. 
+## MID classification models currently on ds9 ##
 
-* All fields ending with *GazetteerPath* - paths to gazetteers on the file
-system.  The relative paths that are already there should work, but if 
-they don't, then you can use absolute paths to 
-*/nell/data/micro/micro-cat-data/src/main/resources/gazetteers/* on the
-rtw machines.
+Serialized models for classifying documents by their MID 
+relevance and attributes currently exist on ds9 in the
+*/data_reitter/micro/projects/micro-mid-data/src/main/resources/models/* 
+directory. They are:
 
-After you've filled out the properties file, you can run by executing something
-like:
+* *Relevance_Test_StanfordLinearCTOpt_BiasedNoProperNoun2_Unlabeled100* -
+This model determines whether or not a document is MID relevant.  It was
+created using the ctx script 
+*Test_StanfordLinearCTOpt_BiasedNoProperNoun2_Unlabeled100.ctx* in 
+*src/main/resources/contexts/relevance/experiment/*.  This script trains
+a Stanford CoreNLP binary maximum entropy (i.e. logistic regression) model
+with bigram bag-of-words features excluding proper nouns.  The training data
+consisted of 1 percent (human true) positives and 99 percent (human 
+unlabeled) negatives from Vito's old SVM.  This data is in the 
+*mid_news_rel_[train/dev/test]_data_pu100* directories under 
+*/data_reitter/micro/mid_bson/*.  Classifications are produced by this model
+using *edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDRelevanceAnnotator*.
 
-    cd [top-level directory of the project]
-    export MAVEN_OPTS=-Xmx190G (Can probably get away with a little less than this)
-    mvn clean compile -U
-    mvn exec:java -Dexec.mainClass="edu.cmu.ml.rtw.micro.cat.scratch.TrainGSTBinaryNELLNormalized" -Dexec.args="--experimentName=LRBasel2"
+* *Attribute_Test_StanfordLinearCTOpt* - This model determines whether or not
+a document has various MID action and hostility level attributes defined by
+the enum types in *edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident*.  
+It was created using the ctx script *Test_StanfordLinearCTOpt.ctx* in 
+*src/main/resources/contexts/attribute/experiment/*.  The script trains a
+Stanford CoreNLP binary maximum entropy (i.e. logistic regression) model
+for each attribute.  The training data consisted of labeled example narratives
+from MID4 data.  This data is in the *mid4_narratives_[train/dev/test]* 
+directories under */data_reitter/micro/mid_bson*.  Classifications are 
+produced by this model using 
+*edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDAttributeAnnotator*. 
 
-You can change the *experimentName* value to be the name of any of the ctx script
-files in *src/main/resources/contexts/GSTBinaryNELLNormalized*.  You can also
-create and use other ctx scripts that have different feature sets and models.
+These serialized models are both included in the *micro-mid-data* Maven 
+project at */data_reitter/micro/projects/micro-mid-data/*.  When they are updated,
+they should be redeployed using the command *mvn deploy* run from
+the project's top-level directory.  The *micro-mid* project includes these
+serialized models through its dependency on *micro-mid-data*.  They are 
+loaded into memory by the *MIDAttributeAnnotator* and *MIDRelevanceAnnotator* 
+classes when annotating documents as part of the pipeline run using 
+*edu.psu.ist.acs.micro.mid.scratch.RunMIDPipeline*.
 
-The models, features, and evaluation results will be stored in the 
-*experimentOutputDirPath* directory determined by the properties file.  The files
-in that directory are:
+## Execution ##
 
-* **.model.out.[category]* - serialized *[category]* model
-* **.data.out.[category]* - data where the model for *[category]* made the wrong classification
-* **.results.out.[category]* - evaluation results for the *[category]* model
-* **.debug.out.[category]* - debug messages output when training the *[category]* model
-* **.model.out* - serialized model feature vocabularies
-* **.results.out* - evaluation results aggregated across all categories
-* **.debug.out* - general debug messages
+You can run the classes in *edu.psu.ist.acs.micro.mid.scratch* using the Maven
+exec:java directive.  For example, the MID annotation pipeline can be run 
+using a script of the following form:
 
-If you want to replace the models used by the micro-reader in the NELL micro-reading pipeline
-then you can copy all the **.model.out* files to 
-*/nell/data/micro/micro-cat-data/src/main/resources/models/GSTBinaryNELLNormalized/HazyFacc1_AllNELL_c90_e2000/*
-on the rtw machines, and redeploy the *micro-cat-data* project.
+	#!/bin/bash
 
-There's additional documentation for how the training/evaluation process works
-at the top of the *edu.cmu.ml.rtw.micro.cat.scratch.TrainGSTBinaryNELLNormalized*
-source file.
+	cd [path/to/micro-mid]
 
-If all else fails, this is already set up for training in 
-*/home/wmcdowel/NELL/micro/Projects/micro-cat* on the rtw machines, and you can run it
-using the script at */home/wmcdowel/NELL/micro/Jobs/trainGSTBinaryNELLNormalized.sh*.
- 
-## Training other mention classifiers ##
+	INPUT=[path/to/input/directory/or/file]
+	MAX_THREADS=[maximum number of threads]
+	STORAGE_DIR=[path/to/output/storage/directory]
+	HTML_STORAGE_DIR=[path/to/output/html/storage/directory]
+	OUTPUT_RELEVANCE_FILE=[path/to/output/mid/relevance/classification/file]
+	PROPERTIES_FILE=[path/to/mid.properties/configuration/file]
 
-You can train additional classifiers on labeled token spans using the 
-*edu.cmu.ml.rtw.micro.cat.scratch.TrainGSTBinary*.  First, set up
-your *cat.properties* configuration file as described in the previous 
-section (except that you don't need to fill in the path to the HazyFACC1 data set).
-Next, create train, dev, and test document sets in the NELL micro-reading
-annotation format, and add them to 
-*edu.cmu.ml.rtw.micro.cat.data.annotation.nlp.DocumentSetNLPFactory*.  These
-document sets should have mention token spans labeled with some annotation
-for which you want to train classifiers.  Declare a constant for this
-custom annotation type in *edu.cmu.ml.rtw.micro.cat.data.annotation.nlp.AnnotationTypeNLPCat*,
-and add an instance of this annotation type to 
-*edu.cmu.ml.rtw.micro.cat.data.CatDataTools*. Then, you can train and
-evaluate classifiers by doing something like:
+	export MAVEN_OPTS=-Xmx[gigs of heap to reserve]G
+	git pull
+	mvn clean compile -U
 
-    cd [top-level directory of micro-cat]
-    mvn clean compile -U
-    mvn exec:java -Dexec.mainClass="edu.cmu.ml.rtw.micro.cat.scratch.TrainGSTBinary" -Dexec.args="--experimentName=[name of ctx script file]  --trainDocumentSetName=[train set] --devDocumentSetName=[dev set] --testDocumentSetName=[test set] --categoryType=[label annotation type]
+	mvn exec:java -Dexec.mainClass="edu.psu.ist.acs.micro.mid.scratch.RunMIDPipeline" -Dexec.args="--input=${INPUT} --maxThreads=${MAX_THREADS} --storageDir=${STORAGE_DIR} --htmlStorageDir=${HTML_STORAGE_DIR} --outputRelevanceFile=${OUTPUT_RELEVANCE_FILE} --propertiesFile=${PROPERTIES_FILE}"
 
-Your ctx script file should be in *src/main/resources/contexts/GSTBinary*.  
-The training, dev, and test sets should be the names of document sets declared as constants 
-in *DocumentSetNLPFactory*.  The *categoryType* should be the string
-name of the annotation type used for labels in the document sets.  See
-*/home/wmcdowel/NELL/micro/Jobs/trainGSTBinary.sh* on the rtw machines 
-for an example of how this is set up
-to train Freebase type noun-phrase classifiers on the the CoNLL-YAGO data.
+Similarly, you can run a ctx script experiment to train and evaluate a MID relevance
+model using a script of this form:
 
-## Running the noun-phrase categorizer ##
+	#!/bin/bash
 
-*edu.cmu.ml.rtw.micro.cat.scratch.NELLCategorizeNPMentions* provides
-a command-line version of the noun-phrase NELL categorization 
-micro-reader.  You can get information on the possible arguments for
-this tool by running with the '--help' option.
+	cd [path/to/micro-mid]
+
+	CONTEXT_DIR=[path/to/ctx/script/directory/i.e./src/main/resources/contexts]
+
+	export MAVEN_OPTS=-Xmx[gigs of heap to reserve]G
+	git pull
+	mvn clean compile -U
+
+	mvn exec:java -Dexec.mainClass="edu.psu.ist.acs.micro.mid.scratch.RunMIDContext" -Dexec.args="${CONTEXT_DIR}/relevance/experiment/[experiment-to-run].ctx"
+
+### Building a jar ###
+
+If you need to run things on a server that doesn't have Maven, then it might be necessary
+to build a jar to run.  You can build a fat jar containing all dependencies by running
+
+	mvn clean compile assembly:single
+	
+The jar will be output to the *target* directory.  
+
+### Training new models ###
+
+If you want to train new classifiers on the MID data, you can setup new ctx script
+experiments in the *src/main/resources/contexts* directory, and run them using 
+*edu.psu.ist.acs.micro.mid.scratch.RunMIDContext*.
