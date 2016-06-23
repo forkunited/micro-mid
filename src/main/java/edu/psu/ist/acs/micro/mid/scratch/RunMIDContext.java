@@ -11,8 +11,9 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
  * RunMIDContext runs ctx scripts from the
  * src/main/resources/contexts directory.  These
  * scripts are mainly used to train MID relevance
- * and attribute models.  See README.md for details
- * about the ctx scripts.
+ * and attribute models.  See the README.md section
+ * about training models  for details about the ctx 
+ * scripts.
  * 
  * @author Bill McDowell
  *
