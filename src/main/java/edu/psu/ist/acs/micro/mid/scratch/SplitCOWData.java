@@ -16,6 +16,17 @@ import edu.cmu.ml.rtw.generic.data.store.StoredCollection;
 import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * 
+ * SplitCOWData splits NLP annotated COW documents output
+ * from edu.psu.ist.acs.micro.mid.scratch.ConstructCOWData
+ * into train/dev/test split directories.  The output of this
+ * is currently stored on ds9 at 
+ * /data_reitter/micro/mid_bson/mid4_narratives_[train,dev,test].
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class SplitCOWData {
 	private static Storage<?, Document> storage;
 	private static MIDProperties properties;

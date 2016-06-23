@@ -53,7 +53,16 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
  * The directory containing the input documents for 
  * ConstructMID4NewsDocumentSet is currently on ds9 at:
  * 
+ * /data_reitter/COW/MID/NewsGold20000/
  * 
+ * The output NLP annotated documents have been deleted,
+ * so this needs to be rerun if that need to be used in
+ * the future.
+ * 
+ * Arguments:
+ * 0 => Input directory
+ * 1 => Indicate whether to only parse tokens or include other
+ *      NLP annotations
  * 
  * @author Bill McDowell
  *

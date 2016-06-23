@@ -33,6 +33,44 @@ import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * ConstructMID5SVMNewsDocumentSet constructs NLP
+ * annotated documents from a MID document set in the
+ * format parsed by 
+ * edu.psu.ist.acs.micro.mid.data.MID5FileReader (see
+ * there for details on the format).  Specifically, this
+ * is used to construct the NLP annotated documents from
+ * the data that was previously classified by Vito's old
+ * MID relevance SVM.  This data is separated into the
+ * hand-annotated true and false positives from the old
+ * SVM, as well as unlabeled (by human) SVM negatives.
+ * 
+ * Arguments:
+ * 0 => Path to SVM true positive file bulk documents
+ * 1 => Path to SVM false positve file bulk documents
+ * 2 => Path to SVM negative file bulk documents
+ * 3 => Mode (TOKENS, POS, ALL) determining which NLP annotations to include
+ * 4 => Indicates whether to only parse SVM true and false positive
+ * 
+ * The input document files are currently on ds9 at:
+ * 
+ * /data_reitter/COW/MID/News/true.txt 
+ * /data_reitter/COW/MID/News/false.txt 
+ * /data_reitter/COW/MID/News/negative.txt
+ * 
+ * The output NLP documents are in:
+ * 
+ * /data_reitter/micro/mid_bson/mid_news_rel_labeled_POS/ (SVM tp and fp)
+ * /data_reitter/micro/mid_bson/mid_news_unlabeled_POS/ (SVM negative)
+ *
+ * These documents are further split into different train/dev/test splits
+ * in the same /data_reitter/micro/mid_bson/ directory by running the
+ * ctx script in src/main/resources/contexts/MIDRelevance_ConstructFull.ctx
+ * using edu.psu.ist.acs.micro.mid.scratch.RunMIDContext.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class ConstructMID5SVMNewsDocumentSet {
 	private static enum Mode {
 		TOKENS,

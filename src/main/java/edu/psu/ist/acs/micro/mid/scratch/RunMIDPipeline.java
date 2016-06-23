@@ -50,6 +50,42 @@ import edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDAttributeAnnotator;
 import edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDRelevanceAnnotator;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * 
+ * RunMIDPipeline annotates documents in the format
+ * parsed by edu.psu.ist.acs.micro.mid.data.MID5FileReader.  
+ * All documents are annotated with Stanford CoreNLP tokenization,
+ * sentence splitting, lemmatization, pos tagging, and MID relevance.
+ * If a document is classified as MID relevant, then it is also
+ * annotated with Stanford CoreNLP annotations
+ * dependency parsing, constituency parsing, NER, and 
+ * time expressions, MateTools SRL, event mentions (with
+ * TimeML attributes), NELL noun-phrase 
+ * categories, and MID attributes (actions and hostility level).
+ * MID relevance and MID attributes are annotated using 
+ * edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDRelevanceAnnotator
+ * and 
+ * edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDAttributeAnnotator.
+ * 
+ * Annotated documents are output in BSON and HTML formats, but the HTML
+ * is only output for documents that are classified as MID relevant.
+ * 
+ * Arguments:
+ * --input - Input file or directory
+ * --maxThreads - Maximum number of threads
+ * --storageDir - Directory in which to store output BSON annotations
+ * --htmlStorageDir - Directory in which to store output HTML annotations
+ * --outputRelevanceFile - File in which to output MID relevance
+ * --propertiesFile - Properties configuration file
+ * 
+ * --help will display a help menu.
+ * 
+ * Arguments should be prefixed by argument names of the form
+ * "--[argumentName] "
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class RunMIDPipeline {
 	private static final int MAX_SENTENCE_LENGTH = 30;
 	private static final int BATCH_SIZE = 10;

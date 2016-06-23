@@ -30,6 +30,19 @@ import edu.psu.ist.acs.micro.mid.data.annotation.MIDIncident;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * @deprecated
+ * 
+ * TrainMIDGSTBinary was previously used for training 
+ * MID attribute classification models. From now on, these models
+ * should be trained using 
+ * edu.psu.ist.acs.micro.mid.scratch.RunMIDContext with 
+ * ctx scripts from 
+ * src/main/resources/contexts/attribute/experiment. 
+ *
+ * @author Bill McDowell
+ *
+ */
 public class TrainMIDGSTBinary {
 	public enum PredictionType {
 		ACTION,

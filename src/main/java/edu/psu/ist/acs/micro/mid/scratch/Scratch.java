@@ -1,6 +1,12 @@
 package edu.psu.ist.acs.micro.mid.scratch;
 
-
+/**
+ * Scratch isn't for anything in particular.  It's just
+ * for running short pieces of code when trying new things.
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class Scratch {
 	public static void main(String[] args) {
 		/*YearMonth ym = new YearMonth(1999, 12);

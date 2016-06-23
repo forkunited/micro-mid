@@ -88,6 +88,14 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
  * 
  * /data_reitter/micro/mid_bson/mid4_narratives_[train,dev,test]
  * 
+ * Arguments are given as:
+ *  0 => Input text document containing older narratives from PDF
+ * 	1 => Input text document containing newer narratives from PDF
+ * 	2 => Input MID incident participant CSV file
+ *  3 => Input MID incident CSV file
+ *  4 => Input MID CSV file
+ *  5 => Indicate only disputes?
+ * 
  * @author Bill McDowell
  *
  */

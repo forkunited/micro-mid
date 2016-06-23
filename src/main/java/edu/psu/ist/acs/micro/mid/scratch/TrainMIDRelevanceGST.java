@@ -26,6 +26,19 @@ import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID.TernaryRelevanceClass;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * @deprecated
+ * 
+ * TrainMIDRelevanceGST was previously used for training 
+ * MID relevance classification models. From now on, these models
+ * should be trained using 
+ * edu.psu.ist.acs.micro.mid.scratch.RunMIDContext with 
+ * ctx scripts from 
+ * src/main/resources/contexts/relevance/experiment. 
+ *
+ * @author Bill McDowell
+ *
+ */
 public class TrainMIDRelevanceGST {
 	private static String experimentName;
 	private static int randomSeed;

@@ -39,6 +39,22 @@ import edu.psu.ist.acs.micro.mid.data.MIDDataTools;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * @deprecated
+ * 
+ * MIDRelevanceClassifier was previously used for running
+ * trained MID relevance models to annotate documents with
+ * indicators of whether they are MID relevant or not.  
+ * From now on, this should be done with
+ * edu.psu.ist.acs.micro.mid.scratch.RunMIDPipeline instead
+ * (which annotates documents with NLP annotations, MID relevance,
+ * and MID attributes).  It uses 
+ * edu.psu.ist.acs.micro.mid.model.annotator.nlp.MIDRelevanceAnnotator
+ * to annotate MID relevance.
+ *
+ * @author Bill McDowell
+ *
+ */
 public class MIDRelevanceClassifier {
 	private static final int CLASSIFICATION_BATCH_SIZE = 100;
 
