@@ -1,9 +1,11 @@
 package edu.psu.ist.acs.micro.mid.scratch;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -257,6 +259,38 @@ public class RunMIDPipeline {
 			} catch (IOException e) {
 				
 			}
+		}
+		
+		sortRelevance();
+	}
+	
+	private static void sortRelevance() {
+		BufferedReader r = FileUtil.getFileReader(outputRelevanceFile.getAbsolutePath());
+		List<Pair<String, Double>> relevanceResults = new ArrayList<>();
+		String line = null;
+		
+		try {
+			while ((line = r.readLine()) != null) {
+				int tabIndex = line.lastIndexOf('\t');
+				String prefix = line.substring(0, tabIndex);
+				double score = Double.valueOf(line.substring(tabIndex + 1));
+				relevanceResults.add(new Pair<String, Double>(prefix, score));
+			}
+			r.close();
+			
+			relevanceResults.sort(new Comparator<Pair<String, Double>>() {
+				@Override
+				public int compare(Pair<String, Double> o1, Pair<String, Double> o2) {
+					return o2.getSecond().compareTo(o1.getSecond());
+				}
+			});
+			
+			outputRelevanceWriter = FileUtil.getFileWriter(outputRelevanceFile.getAbsolutePath());
+			for (Pair<String, Double> result : relevanceResults)
+				outputRelevanceWriter.write(result.getFirst() + "\t" + result.getSecond() + "\n");
+			outputRelevanceWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
