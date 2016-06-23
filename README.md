@@ -38,7 +38,42 @@ copy it to the top-level directory of the project, and modify it there
 the repository).  The code is set up to automatically read the file in 
 the top-level directory if it finds it there. 
 
-If you are on ds9, then you can m
+If you are on ds9, then you can modify *mid.properties* as follows:
+
+	debug_dir=/data_reitter/micro/mid_debug
+	storage_fs_bson_MIDBson=/data_reitter/micro/mid_bson
+	storage_fs_str_MIDString=/data_reitter/micro/mid_string
+	context_dir=[PATH TO THE MICRO-MID PROJECT]/src/main/resources/contexts/
+	
+	midNewsSvmUnlabeledDocumentCollectionName=mid_news_unlabeled
+	midNewsSvmRelevanceLabeledDocumentCollectionName=mid_news_rel_labeled
+	midNewsGoldRelevanceLabeledDocumentCollectionName=mid_news_gold_rel_labeled
+	mid4CollectionName=mid4
+	mid4NarrativeDocumentCollectionName=mid4_narratives
+	mid4NarrativeEventMentionCollectionName=mid4_ev_mentions
+	mid4NarrativeTimexCollectionName=mid4_timexes
+	mid4NarrativeTimeValueCollectionName=mid4_tvalues
+
+	word2vec_vectors_googlenews=/data_reitter/nlp_tools/word2vec/GoogleNews-vectors-negative300.bin.gz
+	matetools_model_lemma=/data_reitter/nlp_tools/mateplus/models/CoNLL2009-ST-English-ALL.anna-3.3.lemmatizer.model
+	matetools_model_parser=/data_reitter/nlp_tools/mateplus/models/CoNLL2009-ST-English-ALL.anna-3.3.parser.model
+	matetools_model_tagger=/data_reitter/nlp_tools/mateplus/models/CoNLL2009-ST-English-ALL.anna-3.3.postagger.model
+	
+	contextInputDirPath=
+	experimentOutputDirPath=/data_reitter/micro/experiment/
+	storageMongoMicroEventDatabaseName=micro_event
+	storageFileSystemMicroEventDirPath=/data_reitter/micro/mid_bson/
+	useMongoStorage=false
+	
+Note that the last 5 fields are deprecated, and unimportant.  The 4 before
+that give paths to Word2Vec and MateTools models.  The 8 fields before that
+(prefixed by "mid") give the names of data collections (directories) at the
+location referenced by *storage_fs_bson_MIDBson*. The *context_dir* field
+should be modified to point to the location of the ctx scripts in your project
+(under *src/main/resources/contexts*).  *storage_fs_bson_MIDBson* and 
+*storage_fs_bson_MIDString* point to directories that store BSON and string data and 
+experiment outputs. *debug_dir* points to a directory containing debug log
+output from running ctx scripts to train models.
 
 ## Layout of the project ##
 
@@ -81,6 +116,7 @@ evaluate new MID annotation models.  The most important scripts are in the
 over from older versions of the project, and should be deleted eventually
 (except for the scripts prefixed by *MIDRelevance_Construct* which were 
 used to construct various train/dev/test partitions of the MID data).
+ 
 
   
 
