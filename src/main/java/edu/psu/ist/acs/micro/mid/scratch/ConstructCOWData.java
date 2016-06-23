@@ -63,8 +63,30 @@ import edu.psu.ist.acs.micro.mid.util.MIDProperties;
  * (edu.psu.ist.acs.micro.mid.data.annotation.MIDDispute) from
  * the MID level data.
  * 
- * The input narratives for this 
+ * The input narratives and MID data for this
+ * are currently at the following locations on ds9:
  * 
+ * Narratives:
+ * /data_reitter/COW/MID/Narratives/narrativesPDF1993-2001.txt
+ * /data_reitter/COW/MID/Narratives/narrativesPDF2002-2010.txt
+ * 
+ * MID participants, incidents and disputes:
+ * /data_reitter/COW/MID/Incident-level/MIDIP_4.01.csv
+ * /data_reitter/COW/MID/Incident-level/MIDI_4.01.csv
+ * /data_reitter/COW/MID/MID-level/MIDA_4.01.csv
+ *  
+ * The output NLP annotations and serialized MID dispute objects
+ * are currently at the following locations on ds9:
+ * 
+ * /data_reitter/micro/mid_bson/mid4_narratives
+ * /data_reitter/micro/mid_bson/mid4
+ * 
+ * The narratives are split into an existing train/dev/test
+ * split for developing models by 
+ * edu.psu.ist.acs.micro.mid.scratch.SplitCOWData.  The split
+ * is stored in the following three directories:
+ * 
+ * /data_reitter/micro/mid_bson/mid4_narratives_[train,dev,test]
  * 
  * @author Bill McDowell
  *

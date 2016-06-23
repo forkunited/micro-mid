@@ -36,6 +36,28 @@ import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID;
 import edu.psu.ist.acs.micro.mid.data.annotation.nlp.AnnotationTypeNLPMID.TernaryRelevanceClass;
 import edu.psu.ist.acs.micro.mid.util.MIDProperties;
 
+/**
+ * ConstructMID4NewsDocumentSet constructs NLP annotated MID4 
+ * news documents. These documents were supposedly some of the 
+ * ones used to train the original MID relevance SVM.  They are 
+ * very messy with inconsistent formats, and many
+ * of the documents that were used to train the original SVM 
+ * seem to be missing. Nevertheless, at one point, 
+ * ConstructMID4NewsDocumentSet was used to construct
+ * a smaller data set to train a MID relevance model.  
+ * The resulting model didn't work very well, and we never had
+ * much confidence that ConstructMID4NewsDocumentSet actually 
+ * constructed the data set correctly because the formats of the
+ * data were so inconsistent.
+ * 
+ * The directory containing the input documents for 
+ * ConstructMID4NewsDocumentSet is currently on ds9 at:
+ * 
+ * 
+ * 
+ * @author Bill McDowell
+ *
+ */
 public class ConstructMID4NewsDocumentSet {
 	private static DateTimeFormatter dateOutputFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 	private static MIDDataTools dataTools;

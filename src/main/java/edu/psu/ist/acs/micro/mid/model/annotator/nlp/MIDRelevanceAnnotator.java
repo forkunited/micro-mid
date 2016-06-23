@@ -36,7 +36,7 @@ public class MIDRelevanceAnnotator implements AnnotatorDocument<Boolean> {
 	};
 	
 	/* Path to resource in micro-mid-data project */
-	public static final File DEFAULT_MID_RELEVANCE_MODEL_FILE = new File("models/Relevance_Test_StanfordLinearCTOpt_NoProperNoun2_Unlabeled100");
+	public static final File DEFAULT_MID_RELEVANCE_MODEL_FILE = new File("models/Relevance_Test_StanfordLinearCTOpt_BiasedNoProperNoun2_Unlabeled100");
 	public static final String DEFAULT_MID_RELEVANCE_MODEL_PARSE_PATH = "eval.methodRelevance.methodFinal";
 	
 	private MIDDataTools dataTools;
