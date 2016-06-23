@@ -28,6 +28,18 @@ as described at http://rtw.ml.cmu.edu/wiki/index.php?title=Maven.
 If you don't have access to this wiki, then contact Bill for
 instructions on how to configure Maven.
 
+## Configuration ##
+
+You can use the *src/main/resources/mid.properties* file to configure
+the project to reference data and resources at locations particular to
+your system.  You should *not* modify this file in-place, but instead,
+copy it to the top-level directory of the project, and modify it there
+(so that your local system-specific modifications will not be checked into
+the repository).  The code is set up to automatically read the file in 
+the top-level directory if it finds it there. 
+
+If you are on ds9, then you can m
+
 ## Layout of the project ##
 
 ### Packages in the *src/main/java* directory ###

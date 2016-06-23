@@ -240,14 +240,17 @@ public class RunMIDPipeline {
 						System.exit(0);
 					}
 					
-					reader.close();
 					return true;
 				}		
 			}
 		);
 		
 		threadMapper.run(readers, maxThreads);
-	
+		
+		for (MID5FileReader r : readers) {
+			r.close();
+		}
+			
 		if (outputRelevanceWriter != null) {
 			try {
 				outputRelevanceWriter.close();
