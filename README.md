@@ -30,7 +30,7 @@ instructions on how to configure Maven.
 
 ## Layout of the project ##
 
-### Packages in the *src/main/java* directory: ###
+### Packages in the *src/main/java* directory ###
 
 * *edu.psu.ist.acs.micro.mid.data* - tools for managing,
 serializing, and serializing MID data.
@@ -61,13 +61,23 @@ runs documents through NLP annotators and MID annotators in
 
 * *edu.psu.ist.acs.micro.mid.util* - utilities and configuration
 
-### Ctx experiments in the *src/main/resources/contexts* directory: ###
+### Ctx experiments in the *src/main/resources/contexts* directory ###
 
+The ctx scripts in *src/main/resources/contexts* are used to train and
+evaluate new MID annotation models.  The most important scripts are in the
+*attribute*, *relevance*, and *util* folders.  Most of the remaining are left
+over from older versions of the project, and should be deleted eventually
+(except for the scripts prefixed by *MIDRelevance_Construct* which were 
+used to construct various train/dev/test partitions of the MID data).
 
+  
 
 ## Existing Data and Models on ds9 ##
 
 
+
+
+## Building jar ## 
 
 ## Training models ##
 
