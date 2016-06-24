@@ -8,7 +8,7 @@ heavily on the https://github.com/cmunell/micro-util
 "micro-reading" NLP library, and the 
 https://github.com/forkunited/micro-event event 
 extraction, coref, and temporal ordering library.
-It might be useful to read micro-util's READM documentation
+It might be useful to read micro-util's README documentation
 before you read this README to get an idea about why this
 project is organized as it is.
 
@@ -75,10 +75,10 @@ If you are on ds9, then you can modify *mid.properties* as follows:
 	storageFileSystemMicroEventDirPath=/data_reitter/micro/mid_bson/
 	useMongoStorage=false
 	
-Note that the last 5 fields are deprecated, and unimportant.  The 4 before
-that give paths to Word2Vec and MateTools models.  The 8 fields before that
-(prefixed by "mid") give the names of data collections (directories) at the
-location referenced by *storage_fs_bson_MIDBson*. The *context_dir* field
+Note that the last 5 fields are deprecated, and unimportant.  The 4 prior to
+the last 5 give paths to Word2Vec and MateTools models.  The 8 fields before those
+(prefixed by "mid") give the names of data collections (sub-directories under the
+location referenced by *storage_fs_bson_MIDBson*). The *context_dir* field
 should be modified to point to the location of the ctx scripts in your project
 copy of the project (under *src/main/resources/contexts*).  
 *storage_fs_bson_MIDBson* points to the directory containing BSON data, and
