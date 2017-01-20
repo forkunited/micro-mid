@@ -3,7 +3,8 @@
 This repository contains code for applying 
 NLP methods to the Correlates of War (COW)
 Military Interstate Dispute (MID) project 
-(http://www.correlatesofwar.org/).  It relies 
+(http://www.correlatesofwar.org/) supported by the National Science Foundation
+(under Grant Number 1528624 and 1528409).  It relies 
 heavily on the https://github.com/cmunell/micro-util
 "micro-reading" NLP library, and the 
 https://github.com/forkunited/micro-event event 
