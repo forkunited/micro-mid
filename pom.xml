@@ -69,12 +69,12 @@
   	<dependency>
  		<groupId>edu.cmu.ml.rtw</groupId>
  		<artifactId>micro-cat</artifactId>
- 		<version>0.0.5-SNAPSHOT</version>
+ 		<version>0.0.6-SNAPSHOT</version>
     </dependency>
   	<dependency>
  		<groupId>edu.cmu.ml.rtw</groupId>
  		<artifactId>micro-util</artifactId>
- 		<version>0.0.5-SNAPSHOT</version>
+ 		<version>0.0.6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
